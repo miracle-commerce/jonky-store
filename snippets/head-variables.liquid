@@ -1,0 +1,300 @@
+{%- assign headings_font = settings.headings_font -%}
+{%- assign body_font = settings.body_font -%}
+
+{%- unless headings_font.system? -%}
+  <link rel="preload" href="{{ headings_font | font_url }}" as="font" type="font/woff2" crossorigin>
+{%- endunless -%}
+
+{%- unless body_font.system? -%}
+  <link rel="preload" href="{{ body_font | font_url }}" as="font" type="font/woff2" crossorigin>
+{%- endunless -%}
+
+<style type="text/css">
+  {%- comment -%} Fonts {% endcomment %}
+  {%- liquid
+
+    echo headings_font | font_face: font_display: 'swap'
+
+    echo body_font | font_face: font_display: 'swap'
+    assign body_font_bold = body_font | font_modify: 'weight', '+100'
+
+    if body_font_bold == blank
+      assign body_font_bold = body_font | font_modify: 'weight', '700'
+    endif
+    echo body_font_bold | font_face: font_display: 'swap'
+
+    assign body_font_italic = body_font | font_modify: 'style', 'italic'
+    if body_font_italic
+      echo body_font_italic | font_face: font_display: 'swap'
+    endif
+
+
+  -%}
+
+  {%- comment -%} Header Colors {% endcomment %}
+  {%- liquid
+
+    assign color_background_header = settings.color_background_header
+    assign color_text_header = settings.color_text_header
+    assign color_accent_header = settings.color_accent_header
+
+    assign brightness_text_header = color_text_header | color_brightness
+    if brightness_text_header > 150
+      assign color_foreground_header = '#000'
+    else
+      assign color_foreground_header = '#fff'
+    endif
+
+    assign brightness_accent_header = color_accent_header | color_brightness
+    if brightness_accent_header > 150
+      assign color_foreground_accent_header = '#000'
+    else
+      assign color_foreground_accent_header = '#fff'
+    endif
+
+    assign color_borders_header = color_text_header | color_modify: 'alpha', 0.1
+    assign color_secondary_background_header = color_text_header | color_modify: 'alpha', 0.08
+    assign color_opacity_background_header = color_background_header | color_modify: 'alpha', 0
+
+
+  -%}
+
+  {%- comment -%} Card colors {% endcomment %}
+  {%- liquid
+
+    assign color_background_cards = settings.color_background_cards
+    assign color_text_cards = settings.color_text_cards
+    assign color_accent_cards = settings.color_accent_cards
+
+    assign brightness_accent_cards = color_accent_cards | color_brightness
+    if brightness_accent_cards > 150
+      assign color_foreground_accent_cards = '#000'
+    else
+      assign color_foreground_accent_cards = '#fff'
+    endif
+
+    assign brightness_text_cards = color_text_cards | color_brightness
+    if brightness_text_cards > 150
+      assign color_foreground_cards = '#000'
+    else
+      assign color_foreground_cards = '#fff'
+    endif
+
+    assign color_borders_cards = settings.color_borders_cards
+    assign color_secondary_text_cards = color_text_cards | color_modify: 'alpha', 0.6
+
+  -%}
+
+  {%- comment -%} Footer Colors {% endcomment %}
+  {%- liquid
+
+    assign color_background_footer = settings.color_background_footer
+    assign color_text_footer = settings.color_text_footer
+    assign color_accent_footer = settings.color_accent_footer
+    assign color_borders_footer = color_text_footer | color_modify: 'alpha', 0.15
+
+  -%}
+
+  {%- comment -%} Main Colors {% endcomment %}
+  {%- liquid
+
+    assign color_background_main = settings.color_background_main
+    assign color_text_main = settings.color_text_main
+    assign color_accent_main = settings.color_accent_main
+
+    assign brightness_accent_main = color_accent_main | color_brightness
+    if brightness_accent_main > 150
+      assign color_foreground_accent_main = '#000'
+    else
+      assign color_foreground_accent_main = '#fff'
+    endif
+
+    assign brightness_text_main = color_text_main | color_brightness
+    if brightness_text_main > 150
+      assign color_foreground_main = '#000'
+    else
+      assign color_foreground_main = '#fff'
+    endif
+
+    assign color_borders_main = color_text_main | color_modify: 'alpha', 0.15
+    assign color_secondary_background_main = color_text_main | color_modify: 'alpha', 0.08
+    assign color_third_background_main = color_text_main | color_modify: 'alpha', 0.04
+    assign color_fourth_background_main = color_text_main | color_modify: 'alpha', 0.02
+    assign color_secondary_text_main = color_text_main | color_modify: 'alpha', 0.6
+
+    assign color_borders_forms_primary = color_text_main | color_modify: 'alpha', 0.3
+    assign color_borders_forms_secondary = color_text_main | color_modify: 'alpha', 0.6
+
+    assign color_opacity_background_main = color_background_main | color_modify: 'alpha', 0
+
+  -%}
+</style>
+<style type="text/css">
+  :root {
+
+    /* Direction */
+    --direction: {{ direction }};
+
+    /* Font variables */
+
+    --font-stack-headings: {{ headings_font.family }}, {{ headings_font.fallback_families }};
+    --font-weight-headings: {{ headings_font.weight }};
+    --font-style-headings: {{ headings_font.style }};
+
+    --font-stack-body: {{ body_font.family }}, {{ body_font.fallback_families }};
+    --font-weight-body: {{ body_font.weight }};
+    {%- if body_font_bold -%}
+      --font-weight-body-bold: {{ body_font_bold.weight }};
+    {%- else -%}
+      --font-weight-body-bold: 700;
+    {%- endif -%}
+    --font-style-body: {{ body_font.style }};
+
+    {%- if settings.buttons_weight == 'bolder' -%}
+      --font-weight-buttons: var(--font-weight-body-bold);
+    {%- else -%}
+      --font-weight-buttons: var(--font-weight-body);
+    {%- endif -%}
+
+    {%- if settings.menu_weight == 'bolder' -%}
+      --font-weight-menu: var(--font-weight-body-bold);
+    {%- else -%}
+      --font-weight-menu: var(--font-weight-body);
+    {%- endif -%}
+
+    --base-headings-size: {{ settings.headings_size }};
+    --base-headings-line: {{ settings.headings_line }};
+    --base-body-size: {{ settings.body_size }};
+    --base-body-line: {{ settings.body_line }};
+
+    --base-menu-size: {{ settings.menu_size }};
+
+    /* Color variables */
+
+    --color-background-header: {{ color_background_header }};
+    --color-secondary-background-header: {{ color_secondary_background_header }};
+    --color-opacity-background-header: {{ color_opacity_background_header }};
+    --color-text-header: {{ color_text_header }};
+    --color-foreground-header: {{ color_foreground_header }};
+    --color-accent-header: {{ color_accent_header }};
+    --color-foreground-accent-header: {{ color_foreground_accent_header }};
+    --color-borders-header: {{ color_borders_header }};
+
+    --color-background-main: {{ color_background_main }};
+    --color-secondary-background-main: {{ color_secondary_background_main }};
+    --color-third-background-main: {{ color_third_background_main }};
+    --color-fourth-background-main: {{ color_fourth_background_main }};
+    --color-opacity-background-main: {{ color_opacity_background_main }};
+    --color-text-main: {{ color_text_main }};
+    --color-foreground-main: {{ color_foreground_main }};
+    --color-secondary-text-main: {{ color_secondary_text_main }};
+    --color-accent-main: {{ color_accent_main }};
+    --color-foreground-accent-main: {{ color_foreground_accent_main }};
+    --color-borders-main: {{ color_borders_main }};
+
+    --color-background-cards: {{ color_background_cards }};
+    --color-gradient-cards: {{ settings.color_gradient_cards }};
+    --color-text-cards: {{ color_text_cards }};
+    --color-foreground-cards: {{ color_foreground_cards }};
+    --color-secondary-text-cards: {{ color_secondary_text_cards }};
+    --color-accent-cards: {{ color_accent_cards }};
+    --color-foreground-accent-cards: {{ color_foreground_accent_cards }};
+    --color-borders-cards: {{ color_borders_cards }};
+
+    --color-background-footer: {{ color_background_footer }};
+    --color-text-footer: {{ color_text_footer }};
+    --color-accent-footer: {{ color_accent_footer }};
+    --color-borders-footer: {{ color_borders_footer }};
+
+    --color-borders-forms-primary: {{ color_borders_forms_primary }};
+    --color-borders-forms-secondary: {{ color_borders_forms_secondary }};
+
+    /* Borders */
+
+    --border-width-cards: {{ settings.border_width_cards }}px;
+    --border-radius-cards: {{ settings.border_radius_cards }}px;
+    --border-width-buttons: {{ settings.border_width_buttons }}px;
+    --border-radius-buttons: {{ settings.border_radius_buttons }}px;
+    --border-width-forms: {{ settings.border_width_forms }}px;
+    --border-radius-forms: {{ settings.border_radius_forms }}px;
+
+    /* Shadows */
+    --shadow-x-cards: {{ settings.shadow_cards_x }}px;
+    --shadow-y-cards: {{ settings.shadow_cards_y }}px;
+    --shadow-blur-cards: {{ settings.shadow_cards_blur }}px;
+    --color-shadow-cards: {{ settings.shadow_cards_color }};
+    --shadow-x-buttons: {{ settings.shadow_buttons_x }}px;
+    --shadow-y-buttons: {{ settings.shadow_buttons_y }}px;
+    --shadow-blur-buttons: {{ settings.shadow_buttons_blur }}px;
+    --color-shadow-buttons: {{ settings.shadow_buttons_color }};
+
+    /* Layout */
+
+    --grid-gap-original-base: {{ settings.grid_gap }}px;
+    --container-vertical-space-base: {{ settings.container_vertical_space }}px;
+    --image-fit-padding: {{ settings.proudct_card_aspect_ratio_padding }}%;
+
+  }
+
+
+  .product-item {
+    {%- if settings.product_card_color_background_main != 'rgba(0,0,0,0)' -%}
+      --color-background-cards: {{ settings.product_card_color_background_main }};
+    {%- endif -%}
+    {%- if settings.product_card_color_text_main != 'rgba(0,0,0,0)' -%}
+      --color-text-cards: {{ settings.product_card_color_text_main }};
+    {%- endif -%}
+    {%- if settings.product_card_color_borders_main != 'rgba(0,0,0,0)' -%}
+      --color-borders-cards: {{ settings.product_card_color_borders_main }};
+    {%- endif -%}
+    {%- if settings.product_card_color_shadow_main != 'rgba(0,0,0,0)' -%}
+      --color-shadow-cards: {{ settings.product_card_color_shadow_main }};
+    {%- endif -%}
+    {%- if settings.product_card_color_hide_borders -%}
+      --border-width-cards: 0;
+    {%- endif -%}
+    {%- if settings.product_card_color_hide_shadow -%}
+      --shadow-x-cards: 0;
+      --shadow-y-cards: 0;
+      --shadow-blur-cards: 0;
+    {%- endif -%}
+  }
+
+  .facets__summary, #main select, .sidebar select, .modal-content select {
+    background-image: url('data:image/svg+xml;utf8,<svg width="13" height="8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.414.086 7.9 6.57 6.485 7.985 0 1.5 1.414.086Z" fill="{{ settings.color_text_main | url_encode }}"/><path d="M12.985 1.515 6.5 8 5.085 6.586 11.571.101l1.414 1.414Z" fill="{{ settings.color_text_main | url_encode }}"/></svg>');
+  }
+
+  .card .star-rating__stars {
+    background-image: url('data:image/svg+xml;utf8,<svg width="20" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m7 0 1.572 4.837h5.085l-4.114 2.99 1.572 4.836L7 9.673l-4.114 2.99 1.571-4.837-4.114-2.99h5.085L7 0Z" stroke="{{ settings.color_text_cards | url_encode }}" stroke-width="1"/></svg>');
+  }
+  .card .star-rating__stars-active {
+    background-image: url('data:image/svg+xml;utf8,<svg width="20" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m7 0 1.572 4.837h5.085l-4.114 2.99 1.572 4.836L7 9.673l-4.114 2.99 1.571-4.837-4.114-2.99h5.085L7 0Z" fill="{{ settings.color_text_cards | url_encode }}" stroke-width="0"/></svg>');
+  }
+
+  .star-rating__stars {
+    background-image: url('data:image/svg+xml;utf8,<svg width="20" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m7 0 1.572 4.837h5.085l-4.114 2.99 1.572 4.836L7 9.673l-4.114 2.99 1.571-4.837-4.114-2.99h5.085L7 0Z" stroke="{{ settings.color_text_main | url_encode }}" stroke-width="1"/></svg>');
+  }
+  .star-rating__stars-active {
+    background-image: url('data:image/svg+xml;utf8,<svg width="20" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m7 0 1.572 4.837h5.085l-4.114 2.99 1.572 4.836L7 9.673l-4.114 2.99 1.571-4.837-4.114-2.99h5.085L7 0Z" fill="{{ settings.color_text_main | url_encode }}" stroke-width="0"/></svg>');
+  }
+  {%- if settings.product_card_color_button_main != 'rgba(0,0,0,0)' -%}
+    .product-item .button {
+      --color-text-cards: {{ settings.product_card_color_button_main }};
+      {%- liquid
+        assign brightness_product_button = settings.product_card_color_button_main | color_brightness
+        if brightness_product_button > 150
+          assign color_foreground_product_button = '#000'
+        else
+          assign color_foreground_product_button = '#fff'
+        endif
+      -%}
+      --color-foreground-cards: {{ color_foreground_product_button }};
+    }
+  {%- endif -%}
+</style>
+
+<style id="root-height">
+  :root {
+    --window-height: 100vh;
+  }
+</style>

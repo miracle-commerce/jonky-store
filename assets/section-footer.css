@@ -1,0 +1,90 @@
+/*
+ *  1.0. Mixins
+*/
+.main-footer {
+  margin-top: var(--container-vertical-space);
+  border-top: 1px solid var(--color-borders-footer);
+  background: var(--color-background-footer);
+  color: var(--color-text-footer);
+}
+.main-footer a {
+  color: var(--color-text-footer);
+  transition: all 100ms linear;
+}
+.no-touchevents .main-footer a:hover {
+  color: var(--color-accent-footer);
+}
+.main-footer .social-icons svg * {
+  fill: var(--color-text-footer);
+  transition: all 100ms linear;
+}
+.no-touchevents .main-footer .social-icons a:hover svg * {
+  fill: var(--color-accent-footer);
+}
+.main-footer .localization-form__item-text {
+  color: var(--color-text-footer);
+}
+.main-footer .localization-form__item-symbol svg path {
+  fill: var(--color-text-footer);
+}
+.main-footer .footer-item__menu span {
+  display: block;
+  margin-bottom: 0.3125rem;
+}
+
+.shop-login-button {
+  display: block;
+}
+
+.footer-bottom > div {
+  display: flex;
+  justify-content: space-between;
+}
+@media screen and (max-width: 767px) {
+  .footer-bottom > div {
+    flex-direction: column;
+  }
+  .footer-bottom > div .localization-form {
+    margin-inline-start: -0.9375rem;
+    margin-top: 0.625rem;
+  }
+}
+.footer-top + .footer-bottom {
+  border-top: 1px solid var(--color-borders-footer);
+}
+
+.footer-item__icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3125rem;
+}
+
+.footer-item__newsletter input {
+  padding-inline-end: 2.5rem;
+}
+.footer-item__newsletter button[type=submit] {
+  top: var(--gutter-small);
+  position: absolute;
+  width: 50px;
+  height: calc(100% - var(--gutter-small));
+  padding-top: 9px;
+}
+html[dir=rtl] .footer-item__newsletter button[type=submit] {
+  left: 0;
+}
+html[dir=ltr] .footer-item__newsletter button[type=submit] {
+  right: 0;
+}
+.no-touchevents .footer-item__newsletter button[type=submit]:hover svg {
+  opacity: 1;
+}
+.footer-item__newsletter button[type=submit] svg {
+  width: 65%;
+  height: 65%;
+  opacity: 0.66;
+  transition: all 100ms linear;
+}
+.footer-item__newsletter button[type=submit] svg path {
+  stroke: var(--color-text-footer);
+}
+

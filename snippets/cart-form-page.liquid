@@ -1,0 +1,190 @@
+<cart-form id="AjaxCartForm">
+
+	<form action="{{ routes.cart_url }}" method="post" novalidate class="cart__form {% if cart.item_count == 0 %} cart--empty {% endif %}" id="cart">
+	
+		<div class="cart-holder cart-block element--has-border--body element--border-radius element--no-border-on-small margin-bottom--regular" data-items="{{ cart.items.size }}">
+
+			<div class="cart-form__items {% if cart.item_count == 0 %} gutter--regular {% endif %}">
+				{%- if cart.item_count > 0 -%}
+					<div class="cart-block__head element--hide-on-small">
+						<span>{{ 'cart.table.product' | t }}</span>
+						<span>{{ 'cart.table.quantity' | t }}</span>
+						<span class="text-align--right">{{ 'cart.table.total' | t }}</span>
+					</div>
+					{%- for item in cart.items -%}
+
+						<div id="item-{{ item.id }}" class="cart-form-item" data-title="{{ item.product.title | escape }} {%- unless item.product.has_only_default_variant -%} ({{ item.variant.title | escape }}) {%- endunless -%}" data-id="{{ item.key }}" data-qty="{{ item.quantity }}" data-product-id="{{ item.product.id }}" data-js-cart-item>
+
+							<div class="cart-item__product-info cart-form-item--layout">
+
+								<a href="{{ item.url }}" class="cart-item__thumbnail element--border-width-clamped element--border-radius">
+									{%- render 'lazy-image-small', image: item.image, aspect_ratio: settings.cart_image_ratio, fit: settings.cart_image_fit -%}
+								</a>
+
+								<div class="cart-form-item__price-title-variants">
+									<div class="cart-item__price">
+
+										<div class="element--hide-on-small">
+
+											{%- if item.variant.compare_at_price > item.variant.price -%}
+												<span class="visually-hidden">{{ 'general.accessibility_labels.price.regular' | t }}</span>
+												<span>{{ item.variant.price | money }}</span>
+												<span class="visually-hidden">{{ 'general.accessibility_labels.price.sale' | t }}</span>
+												<span><del>{{ item.variant.compare_at_price | money }}</del></span>
+											{%- else -%}
+												<span class="visually-hidden">{{ 'general.accessibility_labels.price.regular' | t }}</span>
+												<span>{{ item.variant.price | money }}</span>
+											{%- endif -%}
+
+										</div>
+
+										<div class="element--hide-on-desk">
+											{%- if item.final_line_price < item.original_line_price -%}
+												<span class="visually-hidden">{{ 'general.accessibility_labels.price.regular' | t }}</span>
+												<strong>{{ item.final_line_price | money }}</strong>
+												<span class="visually-hidden">{{ 'general.accessibility_labels.price.sale' | t }}</span>
+												<span><del>{{ item.original_line_price | money }}</del></span>
+											{%- elsif item.variant.compare_at_price > item.variant.price -%}
+												<span class="visually-hidden">{{ 'general.accessibility_labels.price.regular' | t }}</span>
+												<strong>{{ item.final_line_price | money }}</strong>
+												<span class="visually-hidden">{{ 'general.accessibility_labels.price.sale' | t }}</span>
+												<span><del>{{ item.variant.compare_at_price | times: item.quantity | money }}</del></span>
+											{%- else -%}
+												<span class="visually-hidden">{{ 'general.accessibility_labels.price.regular' | t }}</span>
+												<strong>{{ item.final_line_price | money }}</strong>
+											{%- endif -%}
+										</div>
+
+									</div>
+
+									{%- if item.unit_price_measurement -%}
+										<span class="cart-item__unit-price text-size--small text-color--opacity">
+											{{ item.unit_price | money }} / 
+											{% if item.unit_price_measurement.reference_value != 1 %}
+												{{ item.unit_price_measurement.reference_value }}
+											{% endif %}
+											{{ item.unit_price_measurement.reference_unit }}
+										</span>
+									{%- endif -%}
+								
+									<a href="{{ item.url }}" class="cart-item__title">
+										<span class="text-animation--underline-thin">{{ item.product.title | escape }}</span>
+									</a>
+
+									{%- unless item.product.has_only_default_variant -%}
+											{%- for option in item.options_with_values -%}
+												<span class="cart-item__variant text-size--small text-color--opacity">
+													{{ option.name }}: {{ option.value }}
+												</span>
+											{%- endfor -%}
+									{%- endunless -%}
+
+									{%- if item.selling_plan_allocation -%}
+										<span class="text-size--small">
+											{{ item.selling_plan_allocation.selling_plan.name }} 
+										</span>
+									{%- endif -%}
+
+									{%- if item.line_level_discount_allocations.size > 0 -%}
+										{%- for discount_allocation in item.line_level_discount_allocations -%}
+											<spann class="text-size--xsmall">{{ 'cart.discount' | t }} {{ discount_allocation.discount_application.title }} (-{{ discount_allocation.amount | money }})</spann>
+										{%- endfor -%}
+									{%- endif -%}
+
+									{%- assign property_size = item.properties | size -%}
+									{%- if property_size > 0 -%}
+										{%- for p in item.properties -%}
+											{%- assign p_first_char = p.first | slice: 0 -%}
+											{%- if p.last != blank and p_first_char != '_' -%}
+												<span class="cart-item__property text-size--small text-line-height--small">
+													<strong>{{ p.first }}: </strong>
+													{%- if p.last contains '/uploads/' -%}
+														<a href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
+													{%- else -%}
+														<span>{{ p.last }}</span>
+													{%- endif -%}
+												</span>
+											{%- endif -%}
+										{%- endfor -%}
+									{%- endif -%}		
+								</div>
+
+								<div class="cart__quantity">
+									<div class="cart-item__actions">
+	
+										<product-quantity class="quantity-selector-holder">
+											<cart-product-quantity>
+												<button class="qty-button qty-minus no-js-hidden" aria-label="{{ 'general.accessibility_labels.decrease_quantity' | t }}" role="button" controls="updates_{{ item.id }}">
+													{%- render 'theme-symbols', icon: 'minus' -%}
+												</button>
+												<label for="qty-{{ id }}" class="visually-hidden">{{ 'general.accessibility_labels.quantity' | t }}</label>
+												<input type="number" name="updates[]" value="{{ item.quantity }}" min="0" class="qty qty-selector product__quantity" id="updates_{{ item.id }}" data-href="{{ routes.cart_change_url }}?line={{ forloop.index }}&amp;quantity=$qty">
+												<button class="qty-button qty-plus no-js-hidden" aria-label="{{ 'general.accessibility_labels.increase_quantity' | t }}" role="button" controls="updates_{{ item.id }}">
+													{%- render 'theme-symbols', icon: 'plus' -%}
+												</button>
+											</cart-product-quantity>
+										</product-quantity>
+										<a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&amp;quantity=0" class="remove text-link text-size--xsmall text-color--opacity" title="{{ 'cart.remove_item' | t }}">{{ 'cart.remove_item' | t }}</a>
+									</div>
+								</div>
+								
+								<div class="cart-item__total text-align--right">
+									{%- if item.final_line_price < item.original_line_price -%}
+										<span class="visually-hidden">{{ 'general.accessibility_labels.price.regular' | t }}</span>
+										<strong>{{ item.final_line_price | money }}</strong>
+										<span class="visually-hidden">{{ 'general.accessibility_labels.price.sale' | t }}</span>
+										<span><del>{{ item.original_line_price | money }}</del></span>
+									{%- elsif item.variant.compare_at_price > item.variant.price -%}
+										<span class="visually-hidden">{{ 'general.accessibility_labels.price.regular' | t }}</span>
+										<strong>{{ item.final_line_price | money }}</strong>
+										<span class="visually-hidden">{{ 'general.accessibility_labels.price.sale' | t }}</span>
+										<span><del>{{ item.variant.compare_at_price | times: item.quantity | money }}</del></span>
+									{%- else -%}
+										<span class="visually-hidden">{{ 'general.accessibility_labels.price.regular' | t }}</span>
+										<strong>{{ item.final_line_price | money }}</strong>
+									{%- endif -%}
+								</div>
+							</div>
+
+						</div>
+
+					{%- endfor -%}
+
+				{%- else -%}
+
+					{{ 'cart.empty' | t }}
+					<div class="gutter-top--regular">
+						<a href="{{ routes.all_products_collection_url }}" class="button button--solid button--large">
+							{{ 'cart.continue_browsing' | t }}
+						</a>
+					</div>
+
+				{%- endif -%}
+
+			</div>
+
+		</div>
+
+	</form>
+
+	<span class="cart__count hidden" aria-hidden="true" data-cart-count>{{ cart.item_count }}</span>
+	<span class="cart__total hidden" aria-hidden="true" data-cart-total>{{ cart.total_price | money }}</span>
+
+</cart-form>
+
+<noscript>
+	<button type="submit" class="button button--outline button--regular" form="cart">
+		{{ 'cart.update' | t }}
+	</button>
+</noscript>
+
+<script type="text/javascript">
+	document.querySelector('cart-form').addEventListener('cart-updated', ()=>{
+		const items = parseInt(document.querySelector('.cart-holder').getAttribute('data-items'));
+		if ( items == 0 ) {
+			document.querySelector('.cart-section').classList.add('cart-section--empty');
+		} else {
+			document.querySelector('.cart-section').classList.remove('cart-section--empty');
+		}
+	});
+</script>

@@ -1,0 +1,34 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-blog",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+          }
+        },
+        "info": {
+          "type": "info",
+          "settings": {
+          }
+        },
+        "summary": {
+          "type": "summary",
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "info",
+        "summary"
+      ],
+      "settings": {
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

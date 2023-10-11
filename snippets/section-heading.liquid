@@ -1,0 +1,33 @@
+{%- unless heading == blank and subheading == blank and button == blank -%}
+
+  <div class="section-heading {{ layout }} gutter-bottom--page">
+    
+    {%- unless heading == blank and subheading == blank -%}
+
+      <div class="section-heading__text remove-empty-space">
+
+        {%- unless heading == blank -%}
+          <{{ heading_tag }} class="section-heading__title h4">{{ heading | escape }}</{{ heading_tag }}>
+        {%- endunless -%}
+
+        {%- unless subheading == blank -%}
+          <span class="section-heading__subheading text-size--large">{{ subheading }}</span>
+        {%- endunless -%}
+
+      </div>
+
+    {%- endunless -%}
+    
+    {%- unless button == blank or layout contains 'center' -%}
+
+      <div class="section-heading__actions">
+        {%- if button -%}
+          <a class="text-size--large text-link" href="{{ link }}">{{ button_label | t }}</a>
+        {%- endif -%}
+      </div>
+
+    {%- endunless -%}
+  
+  </div>
+
+{%- endunless -%}

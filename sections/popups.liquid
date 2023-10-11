@@ -1,0 +1,677 @@
+{%- if section.blocks.size > 0 -%}
+
+  <div class="stacked-popups">
+  
+    {%- for block in section.blocks -%}
+      
+      {%- liquid
+        
+        assign show = false
+
+        if block.type == 'cookies'
+          assign show = true
+        elsif block.settings.visibility == 'all'
+          assign show = true
+        elsif block.settings.visibility == 'homepage' and template == 'index'
+          assign show = true
+        elsif block.settings.visibility == 'no-homepage' and template != 'index'
+          assign show = true
+        elsif block.settings.visibility == 'product' and template contains 'product'
+          assign show = true
+        elsif block.settings.visibility == 'cart' and template contains 'cart'
+          assign show = true
+        endif
+
+      -%}
+
+      {%- if show -%}
+
+        {%- if block.settings.enable or request.design_mode -%}
+
+          {%- liquid
+            if block.type == 'cookies'
+              assign freq = 'month'
+            else  
+              assign freq = block.settings.show_repeat
+            endif
+            if block.type == 'custom' or block.type == 'image'
+              assign size = block.settings.box_size
+            else 
+              assign size = 'small'
+            endif
+          -%}
+        
+          <modal-box id="modal-{{ block.id }}" class="popup popup-block popup--{{ block.type }} popup-size--{{ size }}" 
+            data-options='{
+              "show": {% unless request.design_more %} {{ block.settings.show_after }} {% else %} 1000 {% endunless %},
+              "frequency": "{{ freq }}",
+              "enabled": {{ block.settings.enable }},
+              "closeByKey": false,
+              "disableScroll": false
+            }'
+            style="display:none;"
+            data-modal-box
+            {{ block.shopify_attributes }}
+          >
+
+            {%- case block.type -%}
+              
+              {%- when 'cookies' -%}
+
+                <div class="popup-text gutter--regular spacing--large remove-empty-space">
+
+                  <div><span class="h4 popup-title">{{ 'general.cookies_popup.title' | t }}</span></div>
+                  <div><span class="text-size--small">{{ 'general.cookies_popup.content' | t }}</span></div>
+                  <div class="increased-spacing"><button data-js-close class="button button--outline button--regular button--fullwidth">{{ 'general.cookies_popup.button_label' | t }}</button></div>
+            
+                </div>
+            
+              {%- when 'newsletter' -%}
+
+                <div class="popup-text gutter--regular">
+
+                  {%- assign form_id = 'newsletter-' | append: block.id -%}
+                  {%- form 'customer', id: form_id, class: '' -%}
+
+                    <div class="spacing--large remove-empty-space">
+                      <div><span class="h4 popup-title">{{ block.settings.title | escape }}</span></div>
+                      <div class="rte remove-empty-space text-size--small">
+                        {%- liquid 
+                          if form.posted_successfully?
+                            echo 'general.newsletter.confirmation' | t
+                          else
+                            echo block.settings.content
+                          endif
+                        -%}
+                      </div>
+                    </div>
+            
+                    {%- unless form.posted_successfully? -%}
+
+                      <fieldset>
+                        <input type="hidden" name="contact[tags]" value="newsletter">
+                        <div class="form-row" style="position:relative">
+                          <input type="email" class="newsletter__input" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter.email_label' | t }}" name="contact[email]" id="Email-{{ form_id }}" aria-label="{{ 'general.newsletter.email_label' | t }}" autocorrect="off" autocapitalize="off" required> 
+                          <button type="submit" id="Subscribe-{{ form_id }}" aria-label="{{ 'general.newsletter.submit_label' | t }}">
+                              <span class="visually-hidden">{{ 'general.newsletter.submit_label' | t }}</span>
+                              <span aria-hidden="true" role="img">{%- render 'theme-symbols': icon: 'send' -%}
+                          </button>
+                        </div>
+                        
+                      </fieldset>
+
+                    {%- endunless -%}
+
+                  {%- endform -%}
+
+                  <script>
+                    if ( document.location.search.includes('customer_posted') ) {
+                      window.addEventListener('load', function() {
+                        const newsletterPopup = document.getElementById(`modal-{{ block.id }}`)
+                        newsletterPopup.show();
+                        localStorage.setItem(newsletterPopup._modalKey, JSON.stringify({
+                          'shown': (new Date().getTime()),
+                          'content': newsletterPopup._modalText
+                        }));	
+                        setTimeout(()=>{
+                          newsletterPopup.querySelectorAll('[data-js-close]').forEach(elm=>elm.addEventListener('click',()=>{newsletterPopup.hide(true)}));
+                        }, 100);
+                        clearTimeout(newsletterPopup._modalTimeout);
+                      });
+                    }
+                  </script>
+                
+                </div>    
+
+              {%- when 'custom' -%}
+
+                <div class="popup-text gutter--regular">
+
+                  <div class="spacing--large remove-empty-space">
+                    {%- if block.settings.title -%}
+                      <div><span class="h4 popup-title">{{ block.settings.title | escape }}</span></div>
+                    {%- endif -%}
+
+                    {%- if block.settings.content -%}
+                      <div class="rte remove-empty-space text-size--small">{{ block.settings.content }}</div>
+                    {%- endif -%}
+                  </div>
+
+                </div>
+
+              {%- when 'image' -%}
+
+                <div class="popup-text {% unless block.settings.image %}popup-text--no-content{% endunless %}">
+
+                  <div class="spacing--large remove-empty-space">
+                    {%- if block.settings.image -%}
+                      {%- if block.settings.link -%} <a href="{{ block.settings.link }}" target="{{ block.settings.link_type }}"> {%- endif -%}
+                        {%- render 'lazy-image', image: block.settings.image, type: '', class: 'lazy-image--animation' -%}
+                      {%- if block.settings.link -%} </a> {%- endif -%}
+                    {%- else -%}
+                      {%- liquid
+                        if block.settings.size == 'small'
+                          assign sizes = 'sizes="340px"'
+                        else
+                          assign sizes = 'sizes="(max-width: 640px) calc(100vw - 30px), 540px"'
+                        endif
+                        render 'lazy-svg', image: 'image', ratio: 1.5, class: 'svg-placeholder svg-placeholder--foreground', sizes: sizes -%}
+                    {%- endif -%}
+                  </div>
+
+                </div>
+                
+            {%- endcase -%}
+
+            {%- unless block.type == 'cookies' -%}
+              <button class="popup-close" data-js-close>
+                <span class="visually-hidden">{{ 'general.accessibility_labels.close' | t }}</span>
+                <span aria-hidden="true" class="exit">{%- render 'theme-symbols', icon: 'close' -%}</span>
+              </button>
+            {%- endunless -%}
+
+            <div data-content style="display:none" aria-hidden="true">{{ block.type }}-{{ block.id }}</div>
+
+            <style>
+              {%- if block.settings.popup_txtcolor != 'rgba(0,0,0,0)' -%}
+                {%- liquid
+                  assign popup_txtcolor = block.settings.popup_txtcolor
+                  assign popup_txt_brightness = popup_txtcolor | color_brightness 
+                  if popup_txt_brightness > 150 
+                    assign popup_txt_foreground = '#000' 
+                  else 
+                    assign popup_txt_foreground = '#fff' 
+                  endif 
+                -%}
+                #modal-{{ block.id }}, 
+                #modal-{{ block.id }} a {
+                  color: {{ popup_txtcolor }};
+                }
+                #modal-{{ block.id }} svg path {
+                  stroke: {{ popup_txtcolor }};
+                }
+                #modal-{{ block.id }} .button,
+                #modal-{{ block.id }} input {
+                  border-color: {{ popup_txtcolor }};
+                  color: {{ popup_txtcolor }};
+                  background: transparent;
+                }
+                #modal-{{ block.id }} input::placeholder {
+                  color: {{ popup_txtcolor }};
+                }
+                .no-touchevents #modal-{{ block.id }} .button:hover {
+                  background: {{ popup_txtcolor }};
+                  color: {{ popup_txt_foreground }};
+                }
+              {%- endif -%}
+
+              {%- if block.settings.popup_bgcolor != 'rgba(0,0,0,0)' -%}
+                #modal-{{ block.id }} {
+                  background: {{ block.settings.popup_bgcolor }};
+                  border: none;
+                }
+              {%- endif -%}
+
+            </style>
+
+          </modal-box>
+
+        {%- endif -%}
+
+      {%- endif -%}
+        
+    {%- endfor -%}
+
+  </div>
+
+  {% style %}
+    #shopify-section-{{ section.id }} modal-box,
+    #shopify-section-{{ section.id }} modal-box img {
+      border-radius: {{ section.settings.popup_border_radius }}px;
+    }
+  {% endstyle %}
+
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "t:sections.local-extra-words.sections.popups.name",
+    "max_blocks": 12,
+    "blocks": [
+      {
+        "type": "image",
+        "name": "t:sections.gallery.blocks.image.settings.image.label",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "enable",
+            "label": "t:sections.popup.settings.enable.label",
+            "default": false
+          },
+          {
+            "type": "range",
+            "id": "show_after",
+            "label": "t:sections.popup.settings.show_after.label",
+            "min": 1,
+            "max": 60,
+            "step": 1,
+            "unit": "s",
+            "default": 1
+          },
+          {
+            "type": "select",
+            "id": "show_repeat",
+            "label": "t:sections.popup.settings.frequency.label",
+            "options": [
+              {
+                "value": "day",
+                "label": "t:sections.popup.settings.frequency.options__1.label"
+              },
+              {
+                "value": "week",
+                "label": "t:sections.popup.settings.frequency.options__2.label"
+              },
+              {
+                "value": "once",
+                "label": "t:sections.popup.settings.frequency.options__3.label"
+              }
+            ],
+            "default": "week"
+          },
+          {
+            "type": "select",
+            "id": "visibility",
+            "label": "t:sections.refactor_words.announcement-bar.visibility.label",
+            "options": [
+              {
+                "value": "all",
+                "label": "t:sections.refactor_words.announcement-bar.visibility.option_1"
+              },
+              {
+                "value": "homepage",
+                "label": "t:sections.refactor_words.announcement-bar.visibility.option_2"
+              },
+              {
+                "value": "product",
+                "label": "t:sections.refactor_words.announcement-bar.visibility.option_4"
+              },
+              {
+                "value": "cart",
+                "label": "t:sections.refactor_words.announcement-bar.visibility.option_5"
+              },
+              {
+                "value": "no-homepage",
+                "label": "t:sections.refactor_words.announcement-bar.visibility.option_3"
+              }
+            ],
+            "default": "all"
+          },
+          {
+            "type": "header",
+            "content": "t:sections.local-extra-words.sections.faq.headings.content"
+          },
+          {
+            "id": "image",
+            "type": "image_picker",
+            "label": "t:sections.gallery.blocks.image.settings.image.label"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "t:sections.image-with-text.blocks.image.settings.url.label"
+          },
+          {
+            "type": "select",
+            "id": "link_type",
+            "label": "t:sections.local-extra-words.sections.header.blocks.info.link_type.label",
+            "options": [
+              {
+                "value": "_blank",
+                "label": "t:sections.local-extra-words.sections.header.blocks.info.link_type.option__3"
+              },
+              {
+                "value": "_self",
+                "label": "t:sections.local-extra-words.sections.header.blocks.info.link_type.option__2"
+              }
+            ],
+            "default": "_self"
+          },
+          {
+            "type": "select",
+            "id": "box_size",
+            "label": "t:sections.local-extra-words.sections.popups.blocks.settings.size.label",
+            "options": [
+              {
+                "value": "small",
+                "label": "t:sections.local-extra-words.sections.popups.blocks.settings.size.option_1"
+              },
+              {
+                "value": "large",
+                "label": "t:sections.local-extra-words.sections.popups.blocks.settings.size.option_2"
+              }
+            ],
+            "default": "small"
+          }
+        ]
+      },
+      {
+        "type": "cookies",
+        "name": "t:sections.local-extra-words.sections.popups.blocks.model.model-1",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "enable",
+            "label": "t:sections.popup.settings.enable.label",
+            "default": false
+          },
+          {
+            "type": "range",
+            "id": "show_after",
+            "label": "t:sections.popup.settings.show_after.label",
+            "min": 1,
+            "max": 60,
+            "step": 1,
+            "unit": "s",
+            "default": 1
+          },
+          {
+            "type": "select",
+            "id": "visibility",
+            "label": "t:sections.refactor_words.announcement-bar.visibility.label",
+            "options": [
+              {
+                "value": "all",
+                "label": "t:sections.refactor_words.announcement-bar.visibility.option_1"
+              },
+              {
+                "value": "homepage",
+                "label": "t:sections.refactor_words.announcement-bar.visibility.option_2"
+              },
+              {
+                "value": "product",
+                "label": "t:sections.refactor_words.announcement-bar.visibility.option_4"
+              },
+              {
+                "value": "cart",
+                "label": "t:sections.refactor_words.announcement-bar.visibility.option_5"
+              },
+              {
+                "value": "no-homepage",
+                "label": "t:sections.refactor_words.announcement-bar.visibility.option_3"
+              }
+            ],
+            "default": "all"
+          },
+          {
+            "type": "header",
+            "content": "t:sections.local-extra-words.sections.faq.headings.content"
+          },
+          {
+            "type": "header",
+            "content": "t:settings_schema.colors.name"
+          },
+          {
+            "type": "color",
+            "id": "popup_bgcolor",
+            "label": "t:sections.announcement-bar.settings.bar_bgcolor.label",
+            "default": "#111111"
+          },
+          {
+            "type": "color",
+            "id": "popup_txtcolor",
+            "label": "t:sections.announcement-bar.settings.bar_txtcolor.label",
+            "default": "#ffffff"
+          }
+        ]
+      },
+      {
+        "type": "newsletter",
+        "name": "t:sections.local-extra-words.sections.popups.blocks.model.model-2",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "enable",
+            "label": "t:sections.popup.settings.enable.label",
+            "default": false
+          },
+          {
+            "type": "select",
+            "id": "visibility",
+            "label": "t:sections.refactor_words.announcement-bar.visibility.label",
+            "options": [
+              {
+                "value": "all",
+                "label": "t:sections.refactor_words.announcement-bar.visibility.option_1"
+              },
+              {
+                "value": "homepage",
+                "label": "t:sections.refactor_words.announcement-bar.visibility.option_2"
+              },
+              {
+                "value": "product",
+                "label": "t:sections.refactor_words.announcement-bar.visibility.option_4"
+              },
+              {
+                "value": "cart",
+                "label": "t:sections.refactor_words.announcement-bar.visibility.option_5"
+              },
+              {
+                "value": "no-homepage",
+                "label": "t:sections.refactor_words.announcement-bar.visibility.option_3"
+              }
+            ],
+            "default": "all"
+          },
+          {
+            "type": "range",
+            "id": "show_after",
+            "label": "t:sections.popup.settings.show_after.label",
+            "min": 1,
+            "max": 60,
+            "step": 1,
+            "unit": "s",
+            "default": 5
+          },
+          {
+            "type": "select",
+            "id": "show_repeat",
+            "label": "t:sections.popup.settings.frequency.label",
+            "options": [
+              {
+                "value": "day",
+                "label": "t:sections.popup.settings.frequency.options__1.label"
+              },
+              {
+                "value": "week",
+                "label": "t:sections.popup.settings.frequency.options__2.label"
+              },
+              {
+                "value": "once",
+                "label": "t:sections.popup.settings.frequency.options__3.label"
+              }
+            ],
+            "default": "week"
+          },
+          {
+            "type": "header",
+            "content": "t:sections.local-extra-words.sections.faq.headings.content"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "t:sections.popup.settings.title.label",
+            "default": "Newsletter"
+          },
+          {
+            "type": "richtext",
+            "id": "content",
+            "label": "t:sections.popup.settings.content.label",
+            "default": "<p>Subscribe and receive exclusive information and offers!</p>"
+          },
+          {
+            "type": "header",
+            "content": "t:settings_schema.colors.name"
+          },
+          {
+            "type": "color",
+            "id": "popup_bgcolor",
+            "label": "t:sections.announcement-bar.settings.bar_bgcolor.label",
+            "default": "#111111"
+          },
+          {
+            "type": "color",
+            "id": "popup_txtcolor",
+            "label": "t:sections.announcement-bar.settings.bar_txtcolor.label",
+            "default": "#ffffff"
+          }
+        ]
+      },
+      {
+        "type": "custom",
+        "name": "t:sections.local-extra-words.sections.popups.blocks.model.model-3",
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "enable",
+            "label": "t:sections.popup.settings.enable.label",
+            "default": false
+          },
+          {
+            "type": "select",
+            "id": "visibility",
+            "label": "t:sections.refactor_words.announcement-bar.visibility.label",
+            "options": [
+              {
+                "value": "all",
+                "label": "t:sections.refactor_words.announcement-bar.visibility.option_1"
+              },
+              {
+                "value": "homepage",
+                "label": "t:sections.refactor_words.announcement-bar.visibility.option_2"
+              },
+              {
+                "value": "product",
+                "label": "t:sections.refactor_words.announcement-bar.visibility.option_4"
+              },
+              {
+                "value": "cart",
+                "label": "t:sections.refactor_words.announcement-bar.visibility.option_5"
+              },
+              {
+                "value": "no-homepage",
+                "label": "t:sections.refactor_words.announcement-bar.visibility.option_3"
+              }
+            ],
+            "default": "all"
+          },
+          {
+            "type": "range",
+            "id": "show_after",
+            "label": "t:sections.popup.settings.show_after.label",
+            "min": 1,
+            "max": 60,
+            "step": 1,
+            "unit": "s",
+            "default": 10
+          },
+          {
+            "type": "select",
+            "id": "show_repeat",
+            "label": "t:sections.popup.settings.frequency.label",
+            "options": [
+              {
+                "value": "day",
+                "label": "t:sections.popup.settings.frequency.options__1.label"
+              },
+              {
+                "value": "week",
+                "label": "t:sections.popup.settings.frequency.options__2.label"
+              },
+              {
+                "value": "once",
+                "label": "t:sections.popup.settings.frequency.options__3.label"
+              }
+            ],
+            "default": "week"
+          },
+          {
+            "type": "header",
+            "content": "t:sections.local-extra-words.sections.faq.headings.content"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "t:sections.popup.settings.title.label",
+            "default": "Popup"
+          },
+          {
+            "type": "richtext",
+            "id": "content",
+            "label": "t:sections.popup.settings.content.label",
+            "default": "<p>Stay up to date on the latest product releases, special offers & news by signing up for our newsletter.</p>"
+          },
+          {
+            "type": "select",
+            "id": "box_size",
+            "label": "t:sections.local-extra-words.sections.popups.blocks.settings.size.label",
+            "options": [
+              {
+                "value": "small",
+                "label": "t:sections.local-extra-words.sections.popups.blocks.settings.size.option_1"
+              },
+              {
+                "value": "large",
+                "label": "t:sections.local-extra-words.sections.popups.blocks.settings.size.option_2"
+              }
+            ],
+            "default": "small"
+          },
+          {
+            "type": "header",
+            "content": "t:settings_schema.colors.name"
+          },
+          {
+            "type": "color",
+            "id": "popup_bgcolor",
+            "label": "t:sections.announcement-bar.settings.bar_bgcolor.label",
+            "default": "#111111"
+          },
+          {
+            "type": "color",
+            "id": "popup_txtcolor",
+            "label": "t:sections.announcement-bar.settings.bar_txtcolor.label",
+            "default": "#ffffff"
+          }
+        ]
+      }
+    ],
+    "settings": [
+			{
+				"type": "range",
+				"id": "popup_border_radius",
+				"label": "t:sections.local-extra-words.settings_schema.borders.settings.radius",
+				"min": 0,
+				"max": 30,
+				"step": 1,
+				"unit": "px",
+				"default": 0
+			}
+    ],
+    "default": {
+      "blocks": [
+        {
+          "type": "cookies",
+          "settings": {
+            "enable": true,
+            "show_after": 1,
+            "popup_bgcolor": "#111111",
+            "popup_txtcolor": "#ffffff"
+          }
+        }
+      ]
+    }
+  }
+{% endschema %}

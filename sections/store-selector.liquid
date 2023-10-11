@@ -1,0 +1,373 @@
+{%- liquid
+  if section.blocks.size == 1
+    assign single_store = true
+  endif
+-%}
+
+{%- if section.blocks.size > 0 -%}
+  
+  {%- assign store_blocks_found = 0 -%}
+  {%- capture store_blocks -%}
+
+    {%- for block in section.blocks -%}
+
+      {%- assign store_blocks_found = store_blocks_found | plus: 1 -%}
+
+      <div class="store-selector-item {% if single_store %} store-selector-item--active {% endif %}" 
+        id="{{ block.id }}"
+        data-handle="{{ block.settings.store_name | handleize }}" 
+        data-title="{{ block.settings.store_name | escape }}"
+        {{ block.shopify_attributes }}
+      >
+
+        <div class="store-selector-item__header js-accordion-tab" role="tab" aria-selected="{%- if single_store -%} true {%- else -%} false {%- endif -%}" aria-controls="store-selector-tab-{{ block.settings.store_name | handleize }}">
+  
+          <div class="store-selector-item__container store-selector-item__input">
+            
+            <div class="store-selector-item__input-container"><input type="checkbox" class="styled-checkbox" id="store-select-{{ block.settings.store_name | handleize }}" {% if single_store %} style="display:none" {% endif %}></div>
+            <div>
+              <span class="store-selector-item__title"><strong>{{ block.settings.store_name | escape }}</strong></span>
+              <span class="store-selector-item__subtitle">
+                <strong>{{ block.settings.store_pickup_price | escape }}</strong>.
+                {{ block.settings.store_pickup_time | escape }}
+              </span>
+            </div>
+  
+          </div>
+  
+        </div>
+
+        {%- if block.settings.store_address != blank or block.settings.store_details != blank -%}
+  
+          <div class="store-selector-item__body" role="tabpanel" id="store-selector-tab-{{ block.settings.store_name | handleize }}-{{ block.id }}">
+    
+            <div class="store-selector-item__address rte">
+              {{ block.settings.store_address }}
+            </div>
+
+            {%- if block.settings.image -%}
+  
+              <div class="gutter-bottom--regular guter-top--small">
+                <div class="element--border-radius">
+                  {%- liquid
+                    if section.settings.map_enable
+                      assign sizes = 'sizes="(max-width: 1024px) calc(100vw - 100px), (max-width: 1360px) 40vw, 540px"'
+                    else
+                    
+                    endif
+                    render 'lazy-image', image: block.settings.image, sizes: sizes
+                  -%}
+                </div>
+              </div>
+  
+            {%- endif -%}
+
+            {%- if block.settings.store_map_latitude != blank and block.settings.store_map_longitude != blank -%}
+              <div>
+                <a target="_blank" href="http://www.google.com/maps/place/{{ block.settings.store_map_latitude | escape }},{{ block.settings.store_map_longitude | escape }}" class="button button--small button--outline">
+                  {{ 'store_availability.store_selector.google_maps_link_label' | t }}
+                </a>
+              </div>
+            {%- endif -%}
+    
+          </div>
+
+        {%- endif -%}
+
+        {%- unless block.settings.store_closing_times == blank -%}
+          <div class="store-selector-item__closing-times" data-timezone="{{ block.settings.store_zone }}" style="display:none">
+            {{ block.settings.store_closing_times }}
+          </div>
+        {%- endunless -%}
+          
+      </div>
+
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- assign map_blocks_found = 0 -%}
+  {%- capture map_blocks -%}
+
+    {%- for block in section.blocks -%}
+
+      {%- if block.settings.store_map_latitude != blank and block.settings.store_map_longitude != blank -%}
+
+        {%- assign map_blocks_found = map_blocks_found | plus: 1 -%}
+        <li
+          data-id="{{ block.settings.store_name | handleize }}"
+          data-latitude="{{ block.settings.store_map_latitude | escape }}"
+          data-longitude="{{ block.settings.store_map_longitude | escape }}"
+          data-marker="{%- liquid
+            unless block.settings.store_map_pin == blank
+              echo block.settings.store_map_pin | image_url: width: 60
+            else  
+              echo 'image-map-pin.png' | asset_url
+            endunless
+          -%}"
+        ><!-- map marker --></li>
+
+      {%- endif -%}
+
+    {%- endfor -%}
+
+  {%- endcapture -%}
+
+  <modal-box id="modal-store-selector" class="modal" 
+    data-options='{
+      "enabled": false,
+      "showOnce": false,
+      "blockTabNavigation": true
+    }'
+    tabindex="-1" role="dialog" aria-modal="true" 
+    style="display:none"
+  >
+
+    <div class="container--large">
+
+      <div class="store-selector-container modal-content">
+        
+        <div class="modal-heading">
+          <div class="modal-heading__text remove-empty-space">
+            <span class="text-size--xlarge text-weight--bold">
+              {%- liquid 
+                if section.blocks.size > 1
+                  echo 'store_availability.store_selector.select_pickup_location_title' | t 
+                else
+                  echo 'store_availability.store_selector.single_pickup_location_title' | t
+                endif
+              -%}
+            </span>
+          </div>
+          <div class="modal-heading__actions">
+            <button class="modal-close" data-js-close data-js-first-focus>{%- render 'theme-symbols', icon: 'close' -%}</button>
+          </div>
+        </div>
+
+        <div class="grid grid--layout grid--no-stretch {% if section.settings.map_enable %} grid-2 grid-portable-1 {% else %} grid-1 {% endif %}" style="z-index:9">
+
+          {%- if section.settings.map_enable -%}
+            
+            <interactive-map
+              id="map-{{ section.id }}"
+              class="map store-selector-map"
+              data-style="{{ section.settings.map_style }}"
+              data-zoom="{{ section.settings.map_zoom }}"
+              data-style="{{ section.settings.map_style }}"
+              tabindex="-1"
+            >
+              {%- if map_blocks_found > 0 -%}
+                <ul class="map-addresses" data-js-map-addresses style="display:none">
+                  {{ map_blocks }}
+                </ul>
+              {%- endif -%}
+              <div class="map-object element--border-radius" data-js-map-object id="interactive-map-{{ section.id }}"></div>
+              <div class="map-loader"><svg class="map-loader-element" viewBox="25 25 50 50"><circle cx="50" cy="50" r="20" fill="none" stroke-width="4"/></svg></div>
+            </interactive-map>
+
+          {%- endif -%}
+
+          {%- if store_blocks_found > 0 -%}
+
+            <store-selector id="StoreSelector" class="store-selector"
+              {% if single_store %} data-single-store {% endif %}
+              data-main-selector
+              data-map-selector="map-{{ section.id }}"
+            >
+
+              <div class="store-selector-list">
+                {{ store_blocks }}
+              </div>
+
+            </store-selector>
+
+          {%- endif -%}
+
+        </div>
+
+        {%- unless single_store -%}
+          <div class="store-selector-set" style="display:none" data-js-select-store>
+            <button class="button button--solid button--regular button--fullwidth" data-js-close>
+              <span class="store-selector-set__set-label">{{ 'store_availability.store_selector.set_store_label' | t }}</span>
+              <span class="store-selector-set__change-label">{{ 'store_availability.store_selector.change_store_label' | t }}</span>
+            </button>
+          </div>
+        {%- endunless -%}
+
+      </div>
+
+    </div>
+
+    <span class="modal-background" data-js-close></span>
+
+  </modal-box>
+
+  <script src="{{ 'component-store-selector.js' | asset_url }}" defer></script>
+  <link rel="stylesheet" href="{{ 'component-store-selector.css' | asset_url }}" {% unless request.design_mode %} media="print" onload="this.media='all'" {% endunless %}>
+
+  {%- if section.settings.map_enable -%}
+    <script>window.initLocalMap = () => {}</script>
+    <script src="{{ 'component-interactive-map.js' | asset_url }}" defer></script>
+  {%- endif -%}
+
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "t:sections.local-extra-words.sections.store-selector.name",
+    "class": "mount-popup mount-store-selector mount-map",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "t:sections.local-extra-words.sections.header.blocks.store-selector.info"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.local-extra-words.sections.stores-map.name"
+      },
+      {
+        "type": "checkbox",
+        "id": "map_enable",
+        "label": "t:sections.local-extra-words.sections.store-selector.settings.map.label",
+        "info": "t:sections.local-extra-words.sections.store-selector.settings.map.info",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "map_zoom",
+        "label": "t:sections.local-extra-words.sections.store-selector.settings.zoom.label",
+        "min": 2,
+        "max": 19,
+        "step": 1,
+        "default": 16,
+        "info": "t:sections.local-extra-words.sections.store-selector.settings.zoom.info"
+      },
+      {
+        "type": "select",
+        "id": "map_style",
+        "label": "t:sections.local-extra-words.sections.store-selector.blocks.map.settings.style.label",
+        "options": [
+          {
+            "value": "standard",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.map.settings.style.option__1"
+          },
+          {
+            "value": "silver",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.map.settings.style.option__2"
+          },
+          {
+            "value": "retro",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.map.settings.style.option__3"
+          },
+          {
+            "value": "dark",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.map.settings.style.option__4"
+          },
+          {
+            "value": "night",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.map.settings.style.option__5"
+          },
+          {
+            "value": "aubergine",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.map.settings.style.option__6"
+          }
+        ],
+        "default": "standard"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "store",
+        "name": "t:sections.local-extra-words.sections.store-selector.blocks.store.name",
+        "settings": [
+          {
+            "type": "text",
+            "id": "store_name",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.name.label",
+            "info": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.name.info",
+            "default": "My Store"
+          },
+          {
+            "type": "text",
+            "id": "store_pickup_price",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.pickup_price.label",
+            "default": "Free"
+          },
+          {
+            "type": "text",
+            "id": "store_pickup_time",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.pickup_time.label",
+            "default": "Usually ready in 24 hrs"
+          },
+          {
+            "type": "richtext",
+            "id": "store_address",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.address.label",
+            "default": "<p>123 John Doe Street<br\/>Your Town, YT 12345<\/p><p> <\/p><p><strong>Store Hours<br\/><\/strong>Sun: Closed<br\/>Mon-Fri: 9:00 - 17:00<br\/>Sat: 10:00 - 13:00<\/p><p><strong>What to expect at pickup<\/strong><\/p><p> <\/p>"
+          },
+          {
+            "type": "richtext",
+            "id": "store_closing_times",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.closing_times.label",
+            "info": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.closing_times.info",
+            "default": "<p>Closed<\/p><p>Closing at 5pm<\/p><p>Closing at 5pm<\/p><p>Closing at 5pm<\/p><p>Closing at 5pm<\/p><p>Closing at 5pm<\/p><p>Closing at 1pm<\/p>"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.image.label"
+          },
+          {
+            "type": "header",
+            "content": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.map.name"
+          },
+          {
+            "type": "paragraph",
+            "content": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.map.info"
+          },
+          {
+            "type": "text",
+            "id": "store_map_latitude",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.map_latitude.label",
+            "info": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.map_latitude.info",
+            "default": "46.7834818"
+          },
+          {
+            "type": "text",
+            "id": "store_map_longitude",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.map_longitude.label",
+            "info": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.map_longitude.info",
+            "default": "23.5464733"
+          },
+          {
+            "type": "image_picker",
+            "id": "store_map_pin",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.map_pin.label",
+            "info": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.map_pin.info"
+          }
+        ]
+      }
+    ],
+    "default": {
+      "settings": {
+        "map_enable": true,
+        "map_zoom": 10,
+        "map_style": "silver"
+      },
+      "blocks": [
+        {
+          "type": "store",
+          "settings": {
+            "store_name": "My store",
+            "store_pickup_price": "Free",
+            "store_pickup_time": "Usually ready in 24 hrs",
+            "store_address": "<p>123 John Doe Street<br\/>Your Town, YT 12345<\/p><p> <\/p><p><strong>Store Hours<br\/><\/strong>Sun: Closed<br\/>Mon-Fri: 9:00 - 17:00<br\/>Sat: 10:00 - 13:00<\/p><p><strong>What to expect at pickup<\/strong><\/p><p> <\/p>",
+            "store_closing_times": "<p>Closed<\/p><p>Closing at 5pm<\/p><p>Closing at 5pm<\/p><p>Closing at 5pm<\/p><p>Closing at 5pm<\/p><p>Closing at 5pm<\/p><p>Closing at 1pm<\/p>",
+            "image": "",
+            "store_map_latitude": "46.7834818",
+            "store_map_longitude": "23.5464733"
+          }
+        }
+      ]
+    }
+  }
+{% endschema %}

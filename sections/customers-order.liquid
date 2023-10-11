@@ -1,0 +1,212 @@
+{{ 'section-account.css' | asset_url | stylesheet_tag }}
+
+<div class="container--large container--vertical-space">
+
+	<h1 class="h2 gutter-bottom--small">{{ 'customers.orders_page.title' | t }}</h1>
+
+	<a class="text-link--has-icon" href="{{ routes.account_url }}">
+		{% render 'theme-symbols' icon: 'chevron-left' %}
+		<span>{{ 'customers.addresses_page.return' | t }}</span>
+	</a>
+
+	<h3 class="h5 gutter-top--large">{{ 'customers.account_page.orders_table.order' | t }} {{ order.name }}</h3>
+
+	<p class="text-size--small">{{ 'customers.orders_page.placed_order' | t }} {{ order.created_at | date: "%B %d, %Y %I:%M%p" }}</p>
+
+  <div class="account-layout gutter-top--regular">
+
+    <main class="gutter-bottom--regular">
+
+      {% if order.cancelled %}
+        <div class="errors">
+          {% assign cancelled_at = order.cancelled_at | date: "%B %d, %Y %I:%M%p" %}
+          <strong>{{ 'customers.orders_page.cancelled' | t: date: cancelled_at }}</strong>
+          <p>{{ 'customers.orders_page.cancelled_reason' | t: reason: order.cancel_reason }}</p>
+        </div>
+      {% endif %}
+
+    	<div class="account-table">
+				<div class="thead">
+					<div class="tr order">
+						<span class="th">{{ 'customers.orders_page.orders_table.product' | t }}</span>
+						<span class="th">{{ 'customers.orders_page.orders_table.price' | t }}</span>
+						<span class="th">{{ 'customers.orders_page.orders_table.qty' | t }}</span>
+						<span class="th">{{ 'customers.orders_page.orders_table.total' | t }}</span>
+					</div>
+				</div>
+
+        <div class="tbody">
+
+          {% for line_item in order.line_items %}
+
+            <div class="tr order" id="{{ line_item.id }}">
+
+              <div class="td">
+
+                <span class="label">{{ 'customers.orders_page.orders_table.product' | t }}</span>
+                {{ line_item.title | link_to: line_item.product.url }}
+
+                {%- if line_item.selling_plan_allocation -%}
+                  <div class="note">
+                    <span style=" font-size: 90%; margin-top: 0px; display: block;">
+                      {{ line_item.selling_plan_allocation.selling_plan.name }}
+                    </span>
+                  </div>
+                {%- endif -%}
+
+                {%- assign property_size = line_item.properties | size -%}
+                {%- if property_size != 0 -%}
+                  <div class="note">
+                    {%- for property in line_item.properties -%}
+                      {% assign property_first_char = property.first | slice: 0 %}
+                      {%- if property.last != blank and property_first_char != '_' -%}
+                        <div class="text-size--small">
+                          <strong>{{ property.first }}:</strong>
+                          <span>
+                            {%- if property.last contains '/uploads/' -%}
+                              <a href="{{ property.last }}">{{ property.last | split: '/' | last }}</a>
+                            {%- else -%}
+                              {{ property.last }}
+                            {%- endif -%}
+                          </span>
+                        </div>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                {%- endif -%}
+                            
+                {% if line_item.fulfillment %}
+                  <div class="note">
+                    {% assign fulfilled_at = line_item.fulfillment.created_at | date: "%B %d, %Y %I:%M%p" %}
+                    {{ 'customers.orders_page.orders_table.fulfilled_at' | t: date: fulfilled_at }}
+                    {% if line_item.fulfillment.tracking_number %}
+                      <br /><a style="font-weight: bold" href="{{ line_item.fulfillment.tracking_url }}">{{ line_item.fulfillment.tracking_company }} #{{ line_item.fulfillment.tracking_number }}</a>
+                    {% endif %}
+                  </div>
+                {% endif %}
+
+								{% unless line_item.sku == blank %} 
+                  <span class="label">{{ 'customers.orders_page.orders_table.sku' | t }}</span>
+                  {{ line_item.sku }}
+              	{% endunless %}
+
+              </div>
+
+              <div class="td">
+
+                <span class="label">{{ 'customers.orders_page.orders_table.price' | t }}</span>
+                {{ line_item.final_price | money }} 
+                {% if line_item.original_line_price > line_item.final_line_price %} 
+                  <del>{{ line_item.original_price | money }}</del> 
+                {% endif %}
+
+                {%- if line_item.unit_price_measurement -%}
+                  <span class="unit-price text-size--small text-color--opacity">
+                    {{ line_item.unit_price | money }} / 
+                    {% if line_item.unit_price_measurement.reference_value != 1 %}
+                      {{ line_item.unit_price_measurement.reference_value }}
+                    {% endif %}
+                    {{ line_item.unit_price_measurement.reference_unit }}
+                  </span>
+                {%- endif -%}
+                
+              </div>
+
+              <div class="td">
+                <span class="label">{{ 'customers.orders_page.orders_table.qty' | t }}</span>
+                {{ line_item.quantity }}
+							</div>
+
+              <div class="td">
+                <span class="label">{{ 'customers.orders_page.orders_table.total' | t }}</span>
+                {{ line_item.final_line_price | money }}
+
+								{% if line_item.line_level_discount_allocations.size > 0 %}
+                {% for discount_allocation in line_item.line_level_discount_allocations %}
+									<span class="label">{{ 'customers.orders_page.orders_table.discount' | t }}</span>
+									<small class="discount">{{ discount_allocation.discount_application.title }} (-{{ discount_allocation.amount | money }})</small>
+                {% endfor %}
+              {% endif %}
+							</div>
+
+            </div>
+
+          {% endfor %}
+
+				</div>
+
+        <div class="tfoot">
+
+          <div>
+						{{ 'customers.orders_page.orders_table.subtotal' | t }} {{ order.line_items_subtotal_price | money }}
+					</div>
+          
+          {% if order.cart_level_discount_applications != blank %} 
+            {% for discount_application in order.cart_level_discount_applications %}
+              <div>
+                {{ 'cart.discounts' | t }}<span>{{ discount_application.title }} ( -{{ discount_application.total_allocated_amount | money }} )</span>
+							</div>
+            {% endfor %}
+          {% endif %}
+
+          {% for shipping_method in order.shipping_methods %}
+          <div>
+            {{ 'customers.orders_page.orders_table.shipping' | t }} ({{ shipping_method.title }}) {{ shipping_method.price | money }}
+					</div>
+          {% endfor %}
+
+          {% for tax_line in order.tax_lines %}
+            <div>
+              {{ 'customers.orders_page.orders_table.tax' | t }} ({{ tax_line.title }} {{ tax_line.rate | times: 100 }}%){{ tax_line.price | money }}
+						</div>
+          {% endfor %}
+
+          <div class="text-size--xlarge gutter-top--small">
+          	{{ 'customers.orders_page.orders_table.total' | t }}  <strong>{{ order.total_price | money }} {{ order.currency }}</strong>
+					</div>
+        </div>
+
+      </div>
+
+    </main>
+
+		<aside>
+			<div class="account-widget">
+
+				<div class="account-widget__head">
+					{{ 'customers.orders_page.billing_title' | t }}
+				</div>
+
+				<div class="account-widget__body">
+					<p><strong>{{ 'customers.orders_page.billing_status' | t }}</strong> {{ order.financial_status_label }}</p>
+					<strong>{{ order.billing_address.name }}</strong>
+    			{{ order.billing_address | format_address }}
+				</div>
+
+			</div>
+
+			<div class="account-widget">
+
+				<div class="account-widget__head">
+					{{ 'customers.orders_page.shipping_title' | t }}
+				</div>
+
+				<div class="account-widget__body">
+					<p><strong>{{ 'customers.orders_page.shipping_status' | t }}</strong> {{ order.fulfillment_status_label }}</p>
+    			<strong>{{ order.shipping_address.name }}</strong>
+    			{{ order.shipping_address | format_address }}
+				</div>
+
+			</div>
+		</aside>
+
+  </div>
+
+</div> 
+
+{% schema %}
+  {
+    "name": "t:sections.local-extra-words.sections.customers.order.name",
+    "class": "section--remove-bottom-margin-after"
+  }
+{% endschema %}

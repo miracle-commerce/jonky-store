@@ -1,0 +1,121 @@
+/*
+ *  1.0. Mixins
+*/
+.modal {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 250ms linear;
+}
+html[dir=rtl] .modal {
+  right: 0;
+}
+html[dir=ltr] .modal {
+  left: 0;
+}
+.modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+.modal .section-heading {
+  margin-top: -0.625rem;
+  margin-bottom: 1.25rem;
+}
+
+.modal-background {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+html[dir=rtl] .modal-background {
+  right: 0;
+}
+html[dir=ltr] .modal-background {
+  left: 0;
+}
+
+.modal-content {
+  position: relative;
+  top: 0;
+  background: var(--color-background-main);
+  color: var(--color-text-main);
+  transform: translateY(50px);
+  padding: calc(var(--gutter-large) * 0.4) calc(var(--gutter-large) * 0.75) calc(var(--gutter-large) * 0.6);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 300ms linear 50ms;
+  z-index: 9;
+  overflow-y: auto;
+  max-height: calc(100vh - (var(--gutter-large) * 2));
+  pointer-events: none;
+}
+html[dir=rtl] .modal-content {
+  right: 0;
+}
+html[dir=ltr] .modal-content {
+  left: 0;
+}
+.modal-content interactive-map {
+  z-index: 0;
+}
+modal-box.active .modal-content {
+  pointer-events: all;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.modal--product .modal-content {
+  padding: calc(var(--gutter-large) * 0.75);
+}
+
+.modal-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: calc(var(--gutter-large) * 0.3);
+}
+
+.modal-close {
+  cursor: pointer;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-inline-end: -0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-close path {
+  stroke: var(--color-text-main);
+}
+
+@media screen and (max-width: 767px) {
+  .modal {
+    height: var(--window-height);
+  }
+  .modal > div {
+    padding: 0;
+    height: 100%;
+  }
+  .modal-content {
+    max-height: none;
+    height: 100%;
+  }
+  .modal .store-selector-map {
+    width: calc(100% + (var(--gutter-large) * 1.5));
+    margin-inline-start: calc(var(--gutter-large) * -0.75);
+  }
+  .modal .store-selector-map .map-object {
+    border-radius: 0;
+  }
+}

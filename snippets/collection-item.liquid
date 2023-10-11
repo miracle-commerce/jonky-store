@@ -1,0 +1,43 @@
+<div class="card js-collection-item text-align--center" {{ shopify_attributes }}>
+	{% if collection.url != "" %}
+	<a class="card__whole-link" href="{{ collection.url | escape }}" title="{{ collection.title | escape }}">
+	{% endif %}
+	
+		<div 
+			class="card__image border-radius-top"
+			style="padding-top:{{ 100 | divided_by: section.settings.image_aspect_ratio }}%"
+		>
+			{%- liquid
+				unless image == blank
+					assign collection_image = image
+				else
+					assign collection_image = collection.featured_image
+				endunless
+			-%}
+	
+			{%- unless collection_image == blank %}
+				{%- render 'lazy-image', image: collection_image, type: 'background', alt: collection.title, sizes: sizes, ratio: section.settings.image_aspect_ratio, class: 'lazy-image--animation element--border-radius-top' -%}
+			{%- else -%}
+				{%- assign no = index | modulo: 6 | plus: 1 -%}
+				{{ 'collection-X' | replace: 'X', no | placeholder_svg_tag }}
+			{%- endunless -%}
+		</div>
+
+		<div class="card__text gutter--small spacing--xsmall remove-empty-space">
+			<span class="text-line-height--medium">
+				<span class="text-size--regular text-animation--underline-thin">
+					{%- liquid
+						unless collection.title == blank
+							echo collection.title | escape
+						else
+							echo 'general.onboarding.collection_title' | t
+						endunless
+					-%}
+				</span>
+			</span>
+		</div>
+	{% if collection.url != "" %}
+	</a>
+	{% endif %}
+
+</div>

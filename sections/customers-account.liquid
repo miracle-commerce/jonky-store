@@ -1,0 +1,102 @@
+{{ 'section-account.css' | asset_url | stylesheet_tag }}
+
+<div class="container--large container--vertical-space">
+
+	<h1 class="h2 gutter-bottom--small">{{ 'customers.account_page.title' | t }}</h1>
+
+  {% if shop.customer_accounts_enabled and customer %}
+    <a class="button button--outline button--small" href="{{ routes.account_logout_url }}">{{ 'customers.login_page.form_logout_button' | t }}</a>
+  {% endif %}
+
+	<div class="account-layout gutter-top--large">
+		
+		<main class="gutter-bottom--regular">
+			<h2 class="h5 gutter-bottom--small">{{ 'customers.account_page.subtitle' | t }}</h2>
+			{% paginate customer.orders by 20 %}
+
+				{% if customer.orders.size != 0 %}
+
+					<div class="account-table">
+						<div class="thead">
+							<div class="tr orders">
+								<span class="th">{{ 'customers.account_page.orders_table.order' | t }}</span>
+								<span class="th">{{ 'customers.account_page.orders_table.date' | t }}</span>
+								<span class="th">{{ 'customers.account_page.orders_table.payment_status' | t }}</span>
+								<span class="th">{{ 'customers.account_page.orders_table.fulfillment_status' | t }}</span>
+								<span class="th">{{ 'customers.account_page.orders_table.total' | t }}</span>
+							</div>
+						</div>
+						<div class="tbody">
+							{% for order in customer.orders %}
+								<div class="tr orders">
+									<div class="td">
+										<span class="label">{{ 'customers.account_page.orders_table.order' | t }}</span>
+										<span>{{ order.name | link_to: order.customer_url }}</span>
+									</div>
+									<div class="td">
+										<span class="label">{{ 'customers.account_page.orders_table.date' | t }}</span>
+										<span>{{ order.created_at | date: "%b %d, %Y" }}</span>
+									</div>
+									<div class="td">
+										<span class="label">{{ 'customers.account_page.orders_table.payment_status' | t }}</span>
+										<span>{{ order.financial_status_label }}</span>
+									</div>
+									<div class="td">
+										<span class="label">{{ 'customers.account_page.orders_table.fulfillment_status' | t }}</span>
+										{{ order.fulfillment_status_label }}</span>
+									</div>
+									<div class="td">
+										<span class="label">{{ 'customers.account_page.orders_table.total' | t }}</span>
+										<span>{{ order.total_price | money }}</span>
+									</div>
+									<div class="td mobile-cta">
+										<a href="{{ order.customer_url }}" class="button button--outline button--regular" >View Order</a>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+						
+					</div>
+
+				{% else %}
+
+					<p>{{ 'customers.account_page.no_orders_message' | t }}</p>
+
+				{% endif %}		
+			
+				{% if paginate.pages > 1 %}
+					{% render 'pagination', paginate: paginate %}
+				{% endif %}
+
+			{% endpaginate %}
+		</main>
+
+		<aside>
+			
+			<h2 class="h5 gutter-bottom--small">{{ 'customers.account_page.account_details_subtitle' | t }}</h2>
+
+			<div class="account-widget">
+
+				<div class="account-widget__head">
+					<span>{{ customer.name }}</span>
+				</div>
+
+				<div class="account-widget__body">
+					
+					{{ customer.default_address | format_address }}
+	
+					<p><a class="text-link" href="{{ routes.account_addresses_url }}">{{ 'customers.account_page.view_addresses_link' | t }} ({{ customer.addresses_count }})</a></p>
+				</div>
+
+			</div>			
+		</aside>
+		
+	</div>
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.local-extra-words.sections.customers.account.name",
+    "class": "section--remove-bottom-margin-after"
+  }
+{% endschema %}

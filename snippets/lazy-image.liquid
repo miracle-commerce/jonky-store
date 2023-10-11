@@ -1,0 +1,114 @@
+{%- liquid
+
+	assign no_crop = true
+
+	if image.alt == blank
+		assign image_alt = alt
+	else
+		assign image_alt = image.alt
+	endif	
+
+	if fit == true and ratio != 'natural'
+		assign ratio = aspect_ratio
+	elsif ratio == blank or ratio == 'natural'
+		assign ratio = image.aspect_ratio
+	else
+		assign divide_ratio = 1 | divided_by: ratio
+		assign height_240 = 240 | times: divide_ratio | round
+		assign height_360 = 360 | times: divide_ratio | round
+		assign height_420 = 420 | times: divide_ratio | round
+		assign height_480 = 480 | times: divide_ratio | round
+		assign height_640 = 640 | times: divide_ratio | round
+		assign height_840 = 840 | times: divide_ratio | round
+		assign height_1080 = 1080 | times: divide_ratio | round
+		assign height_1280 = 1280 | times: divide_ratio | round
+		assign height_1540 = 1540 | times: divide_ratio | round
+		assign height_1860 = 1860 | times: divide_ratio | round
+		assign height_2100 = 2100 | times: divide_ratio | round
+		assign height_2460 = 2460 | times: divide_ratio | round
+		assign height_2820 = 2820 | times: divide_ratio | round
+		assign height_3360 = 3360 | times: divide_ratio | round
+		assign height_3820 = 3820 | times: divide_ratio | round
+	  assign no_crop = false
+	endif
+
+-%}
+
+{%- if no_crop -%}	
+	{%- capture srcset -%} 
+		srcset="
+			{%- if image.width >= 240 -%}{{ image | image_url: width: 240 }} 240w{%- endif -%} 
+			{%- if image.width >= 360 -%},{{ image | image_url: width: 360 }} 360w{%- endif -%} 
+			{%- if image.width >= 420 -%},{{ image | image_url: width: 420 }} 420w{%- endif -%} 
+			{%- if image.width >= 480 -%},{{ image | image_url: width: 480 }} 480w{%- endif -%} 
+			{%- if image.width >= 640 -%},{{ image | image_url: width: 640 }} 640w{%- endif -%} 
+			{%- if image.width >= 840 -%},{{ image | image_url: width: 840 }} 840w{%- endif -%} 
+			{%- if image.width >= 1080 -%},{{ image | image_url: width: 1080 }} 1080w{%- endif -%} 
+			{%- if image.width >= 1280 -%},{{ image | image_url: width: 1280 }} 1280w{%- endif -%} 
+			{%- if image.width >= 1540 -%},{{ image | image_url: width: 1540 }} 1540w{%- endif -%} 
+			{%- if image.width >= 1860 -%},{{ image | image_url: width: 1860 }} 1860w{%- endif -%} 
+			{%- if image.width >= 2100 -%},{{ image | image_url: width: 2100 }} 2100w{%- endif -%}
+			{%- if image.width >= 2460 -%},{{ image | image_url: width: 2460 }} 2460w{%- endif -%}
+			{%- if image.width >= 2820 -%},{{ image | image_url: width: 2820 }} 2820w{%- endif -%}
+			{%- if image.width >= 3360 -%},{{ image | image_url: width: 3360 }} 3360w{%- endif -%}
+			{%- if image.width >= 3820 -%},{{ image | image_url: width: 3820 }} 3820w{%- endif -%}
+		" 
+	{%- endcapture -%}
+{%- else -%}
+	{%- capture srcset -%} 
+		srcset="
+			{%- if image.width >= 240 and image.height >= height_240 -%}{{ image | image_url: width: 240, height: height_240, crop: 'center' }} 240w{%- endif -%}
+			{%- if image.width >= 360 and image.height >= height_360 -%},{{ image | image_url: width: 360, height: height_360, crop: 'center' }} 360w{%- endif -%}
+			{%- if image.width >= 420 and image.height >= height_420 -%},{{ image | image_url: width: 420, height: height_420, crop: 'center' }} 420w{%- endif -%}
+			{%- if image.width >= 480 and image.height >= height_480 -%},{{ image | image_url: width: 480, height: height_480, crop: 'center' }} 480w{%- endif -%}
+			{%- if image.width >= 640 and image.height >= height_640 -%},{{ image | image_url: width: 640, height: height_640, crop: 'center' }} 640w{%- endif -%}
+			{%- if image.width >= 840 and image.height >= height_840 -%},{{ image | image_url: width: 840, height: height_840, crop: 'center' }} 840w{%- endif -%}
+			{%- if image.width >= 1080 and image.height >= height_1080 -%},{{ image | image_url: width: 1080, height: height_1080, crop: 'center' }} 1080w{%- endif -%}
+			{%- if image.width >= 1280 and image.height >= height_1280 -%},{{ image | image_url: width: 1280, height: height_1280, crop: 'center' }} 1280w{%- endif -%}
+			{%- if image.width >= 1540 and image.height >= height_1540 -%},{{ image | image_url: width: 1540, height: height_1540, crop: 'center' }} 1540w{%- endif -%}
+			{%- if image.width >= 1860 and image.height >= height_1860 -%},{{ image | image_url: width: 1860, height: height_1860, crop: 'center' }} 1860w{%- endif -%}
+			{%- if image.width >= 2100 and image.height >= height_2100 -%},{{ image | image_url: width: 2100, height: height_2100, crop: 'center' }} 2100w{%- endif -%}
+			{%- if image.width >= 2460 and image.height >= height__2460 -%},{{ image | image_url: width: 2460, height: height_2460 }} 2460w{%- endif -%}
+			{%- if image.width >= 2820 and image.height >= height__2820 -%},{{ image | image_url: width: 2820, height: height_2820 }} 2820w{%- endif -%}
+			{%- if image.width >= 3360 and image.height >= height__3360 -%},{{ image | image_url: width: 3360, height: height_3360 }} 3360w{%- endif -%}
+			{%- if image.width >= 3820 and image.height >= height__3820 -%},{{ image | image_url: width: 3820, height: height_3820 }} 3820w{%- endif -%}
+		" 
+	{%- endcapture -%}
+{%- endif -%}
+
+<figure 
+	class="lazy-image {{ class }}
+		{% if type == 'background' %}lazy-image--background{% endif %}  
+		{% if fit %} lazy-image--fit {% endif %}
+	" 
+	{% unless ratio == blank %} 
+		data-ratio="{{ ratio }}" style="padding-top: {{ 100 | divided_by: ratio }}%" 
+	{% endunless %}
+	data-crop="{{ no_crop }}"
+>
+
+	<img
+	  src="{{ image | image_url: width: 480 }}" alt="{{ image_alt | strip_html | escape }}"
+	  {{ srcset }}
+	  class="img"
+	  width="{{ image.width }}"
+	  height="{{ image.height }}"
+		data-ratio="{{ ratio }}"
+	  {{ sizes }}
+	  {% unless preload %} loading="lazy" {% endunless %}
+		{% if image_alignment %} style="object-position: {{ image.presentation.focal_point }}" {% endif %}
+		{% if id %} id="responsive-background-{{ id }}" {% endif %}
+		onload="this.parentNode.classList.add('lazyloaded')"
+ 	/>
+
+</figure>
+
+{%- assign ratio = blank -%}
+{%- assign fit = false -%}
+
+{%- if id -%}
+  <script>
+    rbi.push(document.getElementById('responsive-background-{{ id }}'));
+    ribSetSize(document.getElementById('responsive-background-{{ id }}'));
+  </script>
+{%- endif -%}

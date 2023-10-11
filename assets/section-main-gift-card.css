@@ -1,0 +1,75 @@
+/*
+ *  1.0. Mixins
+*/
+.template-gift-card {
+  height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.gift-card {
+  width: 100%;
+  max-width: 620px;
+}
+
+.gift-card-logo {
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.gift-card-content {
+  border: 1px solid var(--color-borders-main);
+  padding: 50px;
+  position: relative;
+}
+
+.gift-card__icon {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  top: -55px;
+  background: var(--color-background-main);
+}
+html[dir=rtl] .gift-card__icon {
+  left: 1.25rem;
+}
+html[dir=ltr] .gift-card__icon {
+  right: 1.25rem;
+}
+
+.gift-card__code {
+  margin-top: 20px;
+}
+
+.gift-card-qr {
+  display: block;
+  background: var(--color-background-main);
+  margin: 0;
+  margin-top: 20px;
+}
+.gift-card-qr #QrCode {
+  padding: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  width: 142px;
+}
+
+.add-to-apple-wallet {
+  height: 55px;
+  vertical-align: bottom;
+}
+
+@media screen and (max-width: 474px) {
+  .gift-card-content {
+    padding: 25px;
+  }
+
+  .gift-card__actions a {
+    width: 100%;
+  }
+  .gift-card__actions a:first-child {
+    margin-bottom: 10px;
+  }
+}

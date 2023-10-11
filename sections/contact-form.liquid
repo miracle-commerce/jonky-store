@@ -1,0 +1,250 @@
+<div class="container--large container--vertical-space remove-empty-space">
+
+  <div class="contact-form">
+    <div class="contact-form__the-form">
+
+      {%- unless section.settings.heading == blank -%}
+        <{{ section.settings.seo_h_tag }} class="h4 gutter-bottom--small" style="display:block">{{ section.settings.heading | escape }}</{{ section.settings.seo_h_tag }}>
+      {%- endunless -%}
+
+      {%- assign form_id = 'contact-' | append: section.id -%}
+      {%- form 'contact', id: form_id, class: 'isolate' -%}
+
+        {%- liquid 
+          if form.posted_successfully?
+            assign message = 'general.contact_form.success_message' | t
+            render 'form-success', message: message
+          elsif form.errors
+            render 'form-errors', form: form
+          endif
+        -%}
+        
+        <div class="contact__fields">
+          
+          <div class="contact-form__row">
+            <label class="visually-hidden" for="{{ form_id }}-name">{{ 'general.contact_form.name_label' | t }}</label>
+            <input class="field__input" autocomplete="name" type="text" id="{{ form_id }}-name" name="contact[{{ 'general.contact_form.name_label' | t }}]" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}" placeholder="{{ 'general.contact_form.name_label' | t }}">
+          </div>
+
+          <div class="contact-form__row">
+            <label class="visually-hidden" for="{{ form_id }}-email">{{ 'general.contact_form.email_label' | t }} <span aria-hidden="true">*</span></label>
+            <input
+              autocomplete="email"
+              type="email"
+              id="{{ form_id }}-email"
+              class="field__input"
+              name="contact[email]"
+              spellcheck="false"
+              autocapitalize="off"
+              value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+              aria-required="true"
+              {% if form.errors contains 'email' %}
+                aria-invalid="true"
+                aria-describedby="{{ form_id }}-email-error"
+              {% endif %}
+              placeholder="{{ 'general.contact_form.email_label' | t }}"
+            >
+          </div>
+        </div>
+
+        {%- if section.settings.show_subject -%}
+          <div class="contact-form__row">
+            <label class="visually-hidden" for="{{ form_id }}-subject">{{ 'general.contact_form.subject_label' | t }}</label>
+            <input type="text" id="{{ form_id }}-subject" class="field__input" autocomplete="tel" name="contact[Subject]"  value="{% if form.subject %}{{ form.subject }}{% elsif customer %}{{ customer.subject }}{% endif %}" placeholder="{{ 'general.contact_form.subject_label' | t }}">
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_phone -%}
+          <div class="contact-form__row">
+            <label class="visually-hidden" for="{{ form_id }}-phone">{{ 'general.contact_form.phone_label' | t }}</label>
+            <input type="tel" id="{{ form_id }}-phone" class="field__input" autocomplete="tel" name="contact[{{ 'general.contact_form.phone_label' | t }}]" pattern="[0-9\-]*" value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}" placeholder="{{ 'general.contact_form.phone_label' | t }}">
+            
+          </div>
+        {%- endif -%}
+
+        <div class="contact-form__row">
+          <label class="visually-hidden" for="{{ form_id }}-body">{{ 'general.contact_form.message_label' | t }}</label>
+          <textarea
+            rows="10"
+            id="{{ form_id }}-body"
+            class="text-area field__input"
+            name="contact[{{ 'general.contact_form.message_label' | t }}]"
+            placeholder="{{ 'general.contact_form.message_label' | t }}"
+          >{{ form.body }}</textarea>
+        </div>
+
+        <div class="contact-form__row">
+          <button type="submit" class="button button--solid button--regular">
+            {{ 'general.contact_form.submit_label' | t }}
+          </button>
+        </div>
+        
+      {%- endform -%}
+
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      {%- for block in section.blocks -%}
+      <div class="contact-form__info">
+        {%- unless block.settings.title == blank -%}
+          <{{ block.settings.seo_h_tag }} class="h4 gutter-bottom--small" style="display:block">{{ block.settings.title | escape }}</{{ block.settings.seo_h_tag }}>
+        {%- endunless -%}
+        <div class="gutter--regular element--border-radius" style="border: 1px solid var(--color-borders-main)">
+          {{ block.settings.content }}
+        </div>
+      </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+
+</div>
+
+{%- if section.settings.section_background_color != "rgba(0,0,0,0)" -%}
+  {% style %}
+    #shopify-section-{{ section.id }} .container--has-background {
+      --color-background-section: {{ section.settings.section_background_color }};
+    }
+  {% endstyle %}
+{%- endif -%}
+
+{% schema %}
+	{
+    "name": "t:sections.contact-form.name",
+    "tag": "section",
+		"settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "t:sections.local-extra-words.sections.headings.heading",
+        "default": "Drop us a line"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.local-extra-words.sections.contact-form.settings.form-fields.name"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_phone",
+        "label": "t:sections.local-extra-words.sections.contact-form.settings.form-fields.show-phone",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_subject",
+        "label": "t:sections.local-extra-words.sections.contact-form.settings.form-fields.show-subject",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "t:sections.refactor_words.seo.name"
+      },
+      {
+        "type": "select",
+        "id": "seo_h_tag",
+        "label": "t:sections.refactor_words.seo.label",
+        "info": "t:sections.refactor_words.seo.info",
+        "options": [
+          {
+            "value": "h1",
+            "label": "H1"
+          },
+          {
+            "value": "h2",
+            "label": "H2"
+          },
+          {
+            "value": "h3",
+            "label": "H3"
+          },
+          {
+            "value": "h4",
+            "label": "H4"
+          },
+          {
+            "value": "span",
+            "label": "span"
+          }
+        ],
+        "default": "h2"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "text",
+        "name": "t:sections.local-extra-words.sections.contact-form.blocks.contact-info.name",
+        "limit": 2,
+        "settings": [
+          {
+            "type": "text",
+            "label": "t:sections.local-extra-words.sections.contact-form.blocks.contact-info.settings.title.label",
+            "id": "title",
+            "default": "Contact information"
+          },
+          {
+            "type": "richtext",
+            "label": "t:sections.local-extra-words.sections.contact-form.blocks.contact-info.settings.content.label",
+            "id": "content",
+            "default": "<p>Write some useful information about your business, contact information or links to various FAQ pages.<\/p>"
+          },
+          {
+            "type": "header",
+            "content": "t:sections.refactor_words.seo.name"
+          },
+          {
+            "type": "select",
+            "id": "seo_h_tag",
+            "label": "t:sections.refactor_words.seo.label",
+            "info": "t:sections.refactor_words.seo.info",
+            "options": [
+              {
+                "value": "h1",
+                "label": "H1"
+              },
+              {
+                "value": "h2",
+                "label": "H2"
+              },
+              {
+                "value": "h3",
+                "label": "H3"
+              },
+              {
+                "value": "h4",
+                "label": "H4"
+              },
+              {
+                "value": "span",
+                "label": "span"
+              }
+            ],
+            "default": "h3"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "t:sections.contact-form.presets.name",
+        "blocks": [
+          {
+            "type": "text",
+            "settings": {
+              "title": "Mailing Address",
+              "content": "<p>Write some useful information about your business, contact information or links to various FAQ pages.<\/p>"
+            }
+          },
+          {
+            "type": "text",  
+            "settings": {
+              "title": "Have a question?",
+              "content": "<p>Link to some useful pages that your customers might want to know about.<\/p><p><a href='#'>Returns & Exchanges</a><a href='#'>General Questions</a><a href='#'>Returns & Exchanges</a><a href='#'>Shipping Policies</a>.<\/p>"
+            }
+          }
+        ]
+      }
+    ],
+    "disabled_on": {
+      "groups": ["header"]
+    }
+  }
+{% endschema %}

@@ -1,0 +1,14 @@
+{% assign cartParts = cart | json | split: ',' | first | split: '"' %}
+{% assign tokenIndex = cartParts.size | minus: 1%}
+<script>
+    if(typeof(Spurit) === 'undefined'){
+        var Spurit = {};
+    }
+    if(!Spurit.QuantityBreaks2){
+        Spurit.QuantityBreaks2 = {};
+    }
+    if(!Spurit.QuantityBreaks2.snippet){
+        Spurit.QuantityBreaks2.snippet = {};
+    }
+    Spurit.QuantityBreaks2.snippet.cart = {{ cart | json }};
+</script>

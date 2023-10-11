@@ -1,0 +1,90 @@
+/*
+ *  1.0. Mixins
+*/
+.localization-form {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-inline-end: -0.625rem;
+  padding: 0 0.3125rem;
+}
+.localization-form ul {
+  list-style: none;
+}
+.localization-form ul li {
+  margin-top: 0 !important;
+}
+.localization-form__item {
+  position: relative;
+  margin: 0.125rem 0.625rem;
+  font-size: calc(14px / 16 * var(--base-body-size) + 0px);
+}
+.localization-form__item-text {
+  color: var(--color-text-main);
+}
+.localization-form__item-symbol {
+  margin-inline-start: 0.3125rem;
+}
+.localization-form__item-symbol path {
+  fill: var(--color-text-main);
+}
+.localization-form__content {
+  list-style: none;
+  background-color: var(--color-background-main);
+  position: absolute;
+  top: -2px;
+  height: auto;
+  border: 1px solid var(--color-borders-main);
+  color: var(--color-text-main);
+  margin: 0;
+  display: none;
+  width: max-content;
+  min-width: 11.25rem;
+  left: 0px;
+  max-height: 22.5rem;
+  overflow-y: auto;
+}
+.localization-form__content-item button {
+  background-color: var(--color-background-main);
+  display: block;
+  padding: 0.4375rem 0.75rem;
+  color: var(--color-text-main);
+  text-align: start;
+  width: 100%;
+  cursor: pointer;
+  text-transform: capitalize;
+  transition: all 100ms linear;
+}
+.localization-form__content-item.localization-form__content-item--selected button {
+  font-weight: var(--font-weight-body-bold);
+  background-color: var(--color-secondary-background-main);
+}
+.no-touchevents .localization-form__content-item:hover:not(.localization-form__content-item--selected) button {
+  background-color: var(--color-third-background-main);
+}
+.localization-form__content.content-opened {
+  display: block;
+  top: 100%;
+}
+.localization-form__content.content-opened.invert-y {
+  display: block;
+  top: auto;
+  bottom: calc(100% + 0.75rem);
+  position: absolute;
+}
+html[dir=rtl] .localization-form__content.content-opened.invert-x {
+  left: -0.75rem;
+}
+html[dir=ltr] .localization-form__content.content-opened.invert-x {
+  right: -0.75rem;
+}
+html[dir=rtl] .localization-form__content.content-opened.invert-x {
+  right: auto;
+}
+html[dir=ltr] .localization-form__content.content-opened.invert-x {
+  left: auto;
+}
+
+.localization-form__item-text .localization-form__country {
+  display: none;
+}

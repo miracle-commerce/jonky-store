@@ -1,0 +1,45 @@
+{{ 'section-account.css' | asset_url | stylesheet_tag }}
+
+<div class="container--large container--vertical-space">
+	<div class="account">
+		
+		<span class="alert alert--note">
+			{% render 'theme-symbols' icon: 'info-color' %}
+			{{ 'customers.account_activation_page.subtitle' | t }}
+		</span>
+		
+		<div class="account__form-block ">
+
+			{% form 'activate_customer_password' %}
+
+				{% render 'form-errors', form: form, class: 'simple-form' %}
+
+				<div class="account__form-row">
+					<label for="customer_password" class="hidden">{{ 'customers.account_activation_page.form_password_label' | t }}</label>
+					<input type="password" value="" name="customer[password]" placeholder="{{ 'customers.account_activation_page.form_password_label' | t }}" id="customer_password">
+				</div>
+
+				<div class="account__form-row">
+					<label for="customer_password_confirmation" class="hidden">{{ 'customers.account_activation_page.form_password_confirm_label' | t }}</label>
+					<input type="password" value="" name="customer[password_confirmation]" placeholder="{{ 'customers.account_activation_page.form_password_confirm_label' | t }}" id="customer_password_confirmation">
+				</div>
+
+				<div class="form-actions gutter-top--small">
+					<button type="submit" class="button button--solid button--large" >{{ 'customers.account_activation_page.form_activate_button' | t }}</button>
+					<button type="submit" class="button button--outline button--large" name="decline" id="customer_decline" >{{ 'customers.account_activation_page.form_decline_button' | t }}</button>
+				</div>
+
+			</div>
+
+		{% endform %}
+
+	</div>
+
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.local-extra-words.sections.customers.activate-account.name",
+    "class": "section--remove-bottom-margin-after"
+  }
+{% endschema %}

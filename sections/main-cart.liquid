@@ -1,0 +1,171 @@
+{{ 'section-main-cart.css' | asset_url | stylesheet_tag }}
+{{ 'component-cart.css' | asset_url | stylesheet_tag }}
+
+<div class="container--large container--vertical-space">
+  <h1 class="title h2 gutter-bottom--page">{{ 'cart.title' | t }}</h1>
+  <div class="cart-section {% if cart.items.size == 0 %} cart-section--empty {% endif %}">
+    <main>
+
+      {%- for block in section.blocks -%}
+
+        {%- case block.type -%}
+
+          {%- when '@app' -%}
+            <div class="margin-bottom--regular" {{ block.shopify_attributes }}>
+              {%- render block -%}
+            </div>
+
+          {%- when 'cart-items' -%}
+            <div {{ block.shopify_attributes }}>
+              {%- render 'cart-form-page' -%}
+            </div>
+          
+          {%- when 'shipping-calculator' -%}
+
+            <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer></script>
+            <script src="{{ 'component-shipping-calculator.js' | asset_url }}" defer></script>
+            {{ 'component-shipping-calculator.css' | asset_url | stylesheet_tag }}
+            
+            <shipping-calculator {{ block.shopify_attributes }}>
+
+              <div class="shipping-calculator cart-block element--has-border--body element--border-radius margin-bottom--regular margin-top--regular">
+                <div class="cart-block__head">
+                  <span>{{ 'cart.shipping_calculator.title' | t }}</span>
+                </div>
+
+                <div class="shipping-calculator__content cart-block__content">
+
+                  <div class="shipping-calculator__cell">
+                    <label for="country">{{ 'customers.addresses_page.form.country_label' | t }}</label>
+                    <select name="country" id="shipping-estimator-country" data-default="{{ customer.default_address.country | default: section.settings.shipping_estimator_default_country }}" required>
+                      {{- country_option_tags -}}
+                    </select>
+                  </div>
+
+                  <div class="shipping-calculator__cell" id="address_province_container" style="display: none">
+                    <label for="province">{{ 'customers.addresses_page.form.province_label' | t }}</label>
+                    <select name="province" id="shipping-estimator-province" data-default="{{ customer.default_address.province }}"></select>
+                  </div>
+
+                  <div class="shipping-calculator__cell">
+                    <label for="zip">{{ 'customers.addresses_page.form.zip_label' | t }}</label>
+                    <input type="text" name="zip" id="shipping-estimator-zip" class="form__field form__field--text" value="{{ customer.default.address.zip }}" required>
+                  </div>
+
+                  <div class="shipping-calculator__cell">
+                    <button type="submit" data-action="estimate-shipping" class="button button--outline button--regular js-estimate-shipping">{{ 'cart.shipping_calculator.form_button_label' | t }}</button>
+                  </div>
+
+                </div>
+
+                <div class="gutter--regular shipping-estimator__results" style="display: none;">
+                  <div class="alert alert--error"></div>
+
+                  <div class="shipping-estimator__results-content" style="display: none;">
+                    <span class="shipping-estimator__results-content-heading text-size--regular"></span>
+                    <ul class="shipping-estimator__results-content-list"></ul>
+                  </div>
+                </div>
+                
+              </div>
+
+            </shipping-calculator>
+
+          {%- when 'related-items' -%}
+            <product-recommendations {{ block.shopify_attributes }} id="cart-recommendations" 
+              data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ cart.items[0].product_id }}&limit={{ block.settings.products_number }}">
+              {%- if recommendations.performed and recommendations.products_count > 0 -%}
+                <div class="cart-product-recommendations">
+                  <div class="cart-holder cart-block cart-block__item--spacing element--has-border--body element--border-radius margin-bottom--regular">
+                    <div class="cart-block__head">
+                        <span>{{ block.settings.title | escape }}</span>
+                    </div>
+                    
+                    {%- for product in recommendations.products -%}
+                      <div class="product-related-item" data-js-product-item>
+                  
+                        <a href="{{ product.url }}" class="product-related-item__image element--border-width-clamped element--border-radius">
+                          {%- render 'lazy-image-small', image: product.featured_media, aspect_ratio: settings.cart_image_ratio, fit: settings.cart_image_fit -%}
+                        </a>
+                  
+                        <div class="product-related-item__text">
+                          <a class="product-related-item__title text-size--large text-weight--bold" href="{{ product.url }}">
+                            <span class="text-animation--underline-thin">{{ product.title | escape }}</span>
+                          </a>
+                          <span class="product-related-item__price">
+                            {%- render 'product-price', variant: product.selected_or_first_available_variant, target: product.selected_or_first_available_variant, product_price_varies: product.price_varies -%}
+                          </span>
+                        </div>
+                  
+                        <div class="product-related-item__button">
+                          {%- render 'quick-buy', product: product, button_classes: 'button--small' -%}
+                        </div>
+                  
+                      </div>
+                  
+                    {%- endfor -%}
+                  </div>
+                 </div>
+              {%- endif -%}
+            </product-recommendations>
+            
+          {%- endcase -%}
+
+      {%- endfor -%}
+      
+    </main>
+
+    <aside>
+      {%- render 'cart-subtotal', type: 'page' -%}
+
+
+    </aside>
+  </div>  
+</div>
+
+{% schema %}
+{
+  "name": "t:settings_schema.cart-page.name",
+  "blocks": [
+    {
+      "type": "cart-items",
+      "limit": 1,
+      "name": "t:sections.main-cart-items.name"
+    },
+    {
+      "type": "shipping-calculator",
+      "limit": 1,
+      "name": "t:sections.local-extra-words.sections.main-cart.blocks.shipping-calculator.name"
+    },
+    {
+      "type": "related-items",
+      "limit": 1,
+      "name": "t:sections.local-extra-words.sections.main-product.blocks.related.name",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "t:sections.local-extra-words.sections.main-cart.blocks.related-products.info"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.local-extra-words.sections.headings.title",
+          "default": "Related products"
+        },
+        {
+          "type": "range",
+          "id": "products_number",
+          "label": "t:sections.featured-collection.settings.products_number.label",
+          "min": 1,
+          "max": 6,
+          "step": 1,
+          "default": 3
+        }
+      ]
+    },
+    {
+      "type": "@app"
+    }
+  ]
+}
+{% endschema %}

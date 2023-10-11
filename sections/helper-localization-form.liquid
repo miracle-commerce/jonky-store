@@ -1,0 +1,8 @@
+{%- for country in localization.available_countries -%}
+  <li class="localization-form__content-item {% if country.iso_code == localization.country.iso_code %}localization-form__content-item--selected{% endif %}" data-js-localization-form-item>
+    <button type="submit" name="country_code" value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}aria-current="true"{% endif %}>
+      <span class="localization-form__country">{{ country.name }}</span> 
+      <span class="localization-form__currency">({{ country.currency.iso_code }} {{ country.currency.symbol }})</span>
+    </button>
+  </li>
+{%- endfor -%}

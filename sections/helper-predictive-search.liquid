@@ -1,0 +1,102 @@
+{%- if predictive_search.performed -%}
+
+	<div class="search-results" data-js-search-results-holder>
+
+    {%- if predictive_search.resources.queries.size > 0 or predictive_search.resources.collections.size > 0 -%}
+      <div class="search-block">
+        {%- for query in predictive_search.resources.queries -%}
+          <a class="search-item" href="{{ query.url }}" data-js-search-item tabindex="-1">
+            <span class="text-weight--bold"><span class="text-animation--underline-thin">{{ query.styled_text }}</span></span>
+          </a>
+        {%- endfor -%}
+        {%- for collection in predictive_search.resources.collections -%}
+          <a class="search-item" href="{{ collection.url }}" data-js-search-item tabindex="-1">
+            <span class="text-weight--bold"><span class="text-animation--underline-thin">{{ collection.title }}</span></span>
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+		{%- if predictive_search.resources.products.size > 0 -%}
+
+      <div class="search-block">
+
+        <span class="search-title">{{ 'search.form.product_results_title' | t }}</span>
+
+        {%- for product in predictive_search.resources.products -%}
+
+          <div class="search-item cart-item" data-js-search-item>
+
+            <a tabindex="-1" href="{{ product.url }}" title="{{ product.title | escape }}" class="cart-item__thumbnail element--border-width-clamped element--border-radius">
+              {%- render 'lazy-image-small', image: product.featured_media, aspect_ratio: settings.cart_image_ratio, fit: settings.cart_image_fit -%}
+            </a>
+
+            <div class="cart-item__content">
+
+              <div>
+
+                <div class="cart-item__price">
+                  {%- assign variant = product.selected_or_first_available_variant -%}
+                  <span class="price">
+                    <span class="visually-hidden">{{ 'general.accessibility_labels.price.regular' | t }}</span>
+                    {{ variant.price | money }}
+                    {%- if variant.compare_at_price > variant.price -%}
+                      <span class="visually-hidden">{{ 'general.accessibility_labels.price.sale' | t }}</span>
+                      <span><del>{{ variant.compare_at_price | money }}</del></span>
+                    {%- endif -%}
+                  </span>
+                </div>
+
+                <a tabindex="-1" href="{{ product.url }}" class="cart-item__title">
+                  <span class="text-animation--underline-thin">{{ product.title | escape }}</span>
+                </a>
+
+              </div>
+
+            </div>
+
+          </div>
+
+			  {%- endfor -%}
+
+      </div>
+
+		{%- endif -%}
+
+		{%- if predictive_search.resources.pages.size > 0 -%}
+      <div class="search-block">
+        <span class="search-title">{{ 'search.form.page_results_title' | t }}</span>
+        {%- for page in predictive_search.resources.pages -%}
+          <a 
+            href="{{ page.url }}" tabindex="-1" 
+            class="search-item"
+            data-js-search-item
+          >
+            <span class="text-weight--bold"><span class="text-animation--underline-thin">{{ page.title | escape }}</span></span>
+          </a>
+        {%- endfor -%}
+      </div>
+		{%- endif -%}
+
+		{%- if predictive_search.resources.articles.size > 0 -%}
+      <div class="search-block">
+        <span class="search-title">{{ 'search.form.article_results_title' | t }}</span>
+        {%- for article in predictive_search.resources.articles -%}
+          <a 
+            href="{{ article.url }}" tabindex="-1" 
+            class="search-item"
+            data-js-search-item
+          >
+            <span class="text-weight--bold"><span class="text-animation--underline-thin">{{ article.title | escape }}</span></span>
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+	</div>
+
+  <div class="search-link">
+  	<a tabindex="-1" class="search-more button button--solid button--regular button--fullwidth" data-js-search-item href="{{ routes.search_url }}?q={{ predictive_search.terms }}">{{ 'search.form.search_for_html' | t: terms: predictive_search.terms }}</a>
+  </div>
+
+{%- endif -%}

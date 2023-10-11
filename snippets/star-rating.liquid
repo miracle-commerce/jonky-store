@@ -1,0 +1,65 @@
+{% liquid
+
+  assign star_size = 20
+
+  assign rating = 0
+  assign no_reviews = true
+  assign reviews = 0
+
+  if vendor == "loox"
+    assign rating = product.metafields.loox.avg_rating
+    assign reviews = product.metafields.loox.num_reviews
+  elsif vendor == "judgeme"
+    assign rating = shop.metafields.judgeme.all_reviews_rating
+    assign reviews = shop.metafields.judgeme.all_reviews_count | plus: 0
+  else 
+    assign rating = product.metafields.reviews.rating.value.rating
+    assign reviews = product.metafields.reviews.rating_count 
+  endif
+
+  assign rating_decimal = 0
+  assign decimal = rating | modulo: 1
+  if decimal >= 0.3 and decimal <= 0.7
+    assign rating_decimal = 0.5
+  elsif decimal > 0.7
+    assign rating_decimal = 1
+  endif
+
+  if reviews > 0
+    assign no_reviews = false
+  endif
+
+  assign scale_max = 5
+  assign active_stars_shown = rating | floor | plus: rating_decimal | times: 100 | divided_by: scale_max
+
+  -%}
+
+  <div class="star-rating" aria-label="">
+
+    <span class="visually-hidden">
+      {%- liquid
+        unless no_reviews 
+          echo 'general.accessibility_labels.rating_info' | t: rating_value: product.metafields.reviews.rating.value, rating_max: product.metafields.reviews.rating.value.scale_max
+        else 
+          echo 'products.page.reviews_count.none' | t
+        endunless
+      -%}
+    </span>
+      
+    <span class="star-rating__stars" style="
+      width:{{ scale_max | times: star_size }}px;
+    ">
+      <span class="star-rating__stars-active" style="width:{{ active_stars_shown }}%"></span>
+    </span>
+    
+    <span class="star-rating__caption text-size--xsmall {% if hide_no_reviews_on_mobile %} palm-hide {% endif %}">
+      {%- liquid
+        unless no_reviews 
+          echo reviews | prepend: '(' | append: ')'
+        else
+          echo 'products.page.reviews_count.none' | t
+        endunless
+      -%}
+    </span>
+
+  </div>

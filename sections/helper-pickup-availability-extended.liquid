@@ -1,0 +1,151 @@
+<div id="PickupAvailabilityWidget">
+    
+  {%- assign pick_up_availabilities = product_variant.store_availabilities | where: 'pick_up_enabled', true -%}
+
+  <div class="pickup-availability-widget__header">
+      {%- if product_variant.available and pick_up_availabilities.size > 0 -%}
+        {%- render 'theme-symbols', icon: 'check' -%}
+        <strong>{{ 'store_availability.extended_widget.available_for_pickup' | t }}</strong>
+      {%- else -%}
+        {%- render 'theme-symbols', icon: 'cross' -%}
+        {{ 'store_availability.extended_widget.unavailable_for_pickup' | t }}
+      {%- endif %}
+  </div>
+
+  {%- if product_variant.available and pick_up_availabilities.size > 0 -%}
+      
+    <div class="pickup-availability-widget__locations">
+
+      {%- assign availability_found = 0 -%}
+      {%- for availability in pick_up_availabilities limit: 6 -%}
+        {%- unless availability_found == 2 -%}
+          {%- if availability.available -%}
+            {%- assign availability_found = availability_found | plus: 1 -%}
+            <div class="pickup-availability-widget__location">
+              <div class="pickup-availability-widget__location-icon">
+                {%- render 'icon-pack', icon: 'store' -%}
+              </div>
+              <div class="pickup-availability-widget__location-address">
+                <span><strong>{{ availability.location.name }}</strong></span>
+                <button class="pickup-availability-widget__location-view"
+                  role="tab" aria-selected="false" aria-controls="pickup-availability-widget-tab-{{ availability.location.name | handleize }}"
+                >
+                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" width="1" height="11" fill="black"/><path d="M11 5L11 6L-4.37114e-08 6L0 5L11 5Z" fill="black"/></svg>
+                  <span class="text-animation--underline-thin">{{ 'store_availability.extended_widget.view_store_info' | t }}</span>
+                </button>
+              </div>
+              <div class="pickup-availability-widget__location-time">
+                <span><strong>{{ availability.pick_up_time }}</strong></span>
+              </div>
+              <div class="pickup-availability-widget__location-details" 
+                role="tabpanel"
+                id="pickup-availability-widget-tab-{{ availability.location.name | handleize }}"
+              >
+                {%- assign address = availability.location.address -%}
+                <address class="pickup-availability-widget__location-details__address text-size--small text-color--secondary">
+                  {{ address | format_address }}
+                </address>
+                {%- if address.phone.size > 0 -%}
+                  <p class="pickup-availability-widget__location-details__phone text-size--small text-color--secondary">
+                    <a href="tel:{{ address.phone }}">{{ address.phone }}</a><br>
+                  </p>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endunless -%}
+      {%- endfor -%}
+      
+    </div>
+
+  {%- endif -%}
+
+  {%- if pick_up_availabilities.size > 1 -%}
+    <button class="pickup-availability-widget__more" aria-expanded="false" aria-controls="site-availability-sidebar">
+      <span>{{ 'store_availability.extended_widget.check_other_stores' | t }}</span>
+    </button>
+  {%- endif -%}
+
+</div>
+
+{%- if pick_up_availabilities.size > 1 -%}
+
+  <div id="PickupAvailabilitySidebar">
+
+    <sidebar-drawer id="site-availability-sidebar" class="sidebar sidebar--right" tabindex="-1" role="dialog" aria-modal="true">
+        
+      <div class="sidebar__header">
+        <div>
+          <span class="sidebar__title h5">
+            {{ product_variant.product.title | escape }}
+          </span>
+          {%- unless product_variant.product.has_only_default_variant -%}
+            <span class="sidebar__subtitle text-size--small text-color--secondary">
+              {%- liquid
+                for product_option in product_variant.product.options_with_values
+                  for value in product_option.values
+                    if product_option.selected_value == value
+                      echo '<span style="display:block">'
+                        echo product_option.name
+                        echo ' : '
+                        echo value | escape
+                      echo '</span>'
+                    endif
+                  endfor
+                endfor
+              -%}
+            </span>
+          {%- endunless -%}
+        </div>
+        <button class="sidebar__close" data-js-close>
+          <span class="visually-hidden">{{ 'general.accessibility_labels.close_sidebar' | t }}</span>
+          <span aria-hidden="true" aria-role="img">{%- render 'theme-symbols', icon: 'close' -%}</span>
+        </button>
+      </div>
+
+      <div class="sidebar__body">
+
+        <div class="sidebar-large-padding">
+        
+          <ul class="store-availabilities-list">
+            {%- for availability in pick_up_availabilities -%}
+              <li class="store-availability-list__item">
+
+                <div class="store-availability-list-header">
+                  <span class="store-availability-list-header__location text-size--large text-weight--bold">{{ availability.location.name }}</span>
+                </div>
+
+                <span class="store-availability-list__stock alert {% if availability.available %} alert--success {% else %} alert--error {% endif %} alert--circle alert--unstyled">
+                  <span style="color:var(--color-text-main)">
+                    {%- if availability.available -%}
+                      {{ 'store_availability.general.available_for_pickup' | t }}
+                      <span class="store-availability-list__pickup-time  text-color--secondary">{{ availability.pick_up_time }}</span>
+                    {%- else -%}
+                      {{ 'store_availability.general.unavailable_for_pickup' | t }}
+                    {%- endif -%}
+                  </span>
+                </span>
+
+                {%- assign address = availability.location.address -%}
+                <address class="store-availability-list__address text-size--small">
+                  {{ address | format_address }}
+                </address>
+                {%- if address.phone.size > 0 -%}
+                  <p class="store-availability-list__phone text-size--small">
+                    <a href="tel:{{ address.phone }}">{{ address.phone }}</a><br>
+                  </p>
+                {%- endif -%}
+
+              </li>
+            {%- endfor -%}
+          </ul>
+
+        </div>
+
+      </div>
+
+    </sidebar-drawer>
+
+  </div>
+
+{%- endif -%}

@@ -1,0 +1,26 @@
+{%- if product.has_only_default_variant -%}
+  <quick-add-to-cart class="quick-add-to-cart">
+    <product-form {% if settings.cart_action == 'overlay' %} data-ajax-cart {% endif %}>
+      <div class="quick-add-to-cart-button">
+        {%- form 'product', product -%}
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          <button class="button button--{{ settings.product_card_button_style }} {{ button_classes }} button--loader" data-js-product-add-to-cart type="submit" name="add">
+            <span class="button__text {% if layout == 'shop' %} text-size--regular {% endif %}">{{ 'products.grid.quick_buy' | t }}</span>
+            <span class="button__preloader">
+              <svg class="button__preloader-element" viewBox="25 25 50 50"><circle cx="50" cy="50" r="20" fill="none" stroke-width="4"/></svg>
+            </span>
+          </button>
+        {%- endform -%} 
+      </div>
+    </product-form>
+  </quick-add-to-cart>
+{%- else -%}
+  <quick-view-product class="quick-add-to-cart">
+    <a href="{{ product.url }}" class="button button--{{ settings.product_card_button_style }} {{ button_classes }} button--loader" data-js-product-add-to-cart data-id="{{ product.id }}">
+      <span class="button__text {% if layout == 'shop' %} text-size--regular {% endif %}">{{ 'products.grid.quick_buy' | t }}</span>
+      <span class="button__preloader">
+        <svg class="button__preloader-element" viewBox="25 25 50 50"><circle cx="50" cy="50" r="20" fill="none" stroke-width="4"/></svg>
+      </span>
+    </a>
+  </quick-view-product>
+{%- endif -%}

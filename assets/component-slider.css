@@ -1,0 +1,254 @@
+/*
+ *  1.0. Mixins
+*/
+.css-slider-holder {
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.css-slider-holder::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.css-slider {
+  width: 100%;
+  position: relative;
+}
+.css-slider.enabled {
+  display: block;
+}
+
+.css-slider-viewport {
+  width: 100%;
+}
+
+.css-slider-holder {
+  overflow-y: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  cursor: grab;
+}
+.css-slider-holder.mouse-down {
+  cursor: grabbing;
+}
+.css-slider-holder.dragging *, .css-slider-holder.pointer-events-off * {
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.css-slider-holder.mouse-fallback, .css-slider-holder.disable-snapping, .css-slider-holder.force-disable-snapping {
+  scroll-behavior: unset;
+  scroll-snap-type: none;
+}
+
+css-slider:not(.enabled) .grid--slider {
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+  overflow-x: auto;
+}
+css-slider:not(.enabled) .grid--slider::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.css-slide--snap {
+  scroll-snap-align: start;
+}
+
+.css-slider--singular, .css-slider--singular .css-slider-holder {
+  cursor: default;
+}
+.css-slider--singular .css-slider-navigation-container {
+  display: none;
+}
+
+.css-slider--no-drag {
+  cursor: default !important;
+}
+
+.css-slider-viewport.auto-height {
+  overflow: hidden;
+  transition: height 200ms linear;
+}
+.css-slider-viewport.auto-height .css-slide {
+  height: fit-content;
+}
+
+.css-slider-dot-navigation {
+  width: fit-content;
+  margin-top: 20px;
+}
+.css-slider-dot-navigation .css-slider-dot {
+  width: 9px;
+  height: 9px;
+  display: inline-block;
+  margin: 0 5px;
+  border-radius: 7px;
+  transition: all 100ms linear;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: var(--color-text-main);
+  opacity: 0.25;
+  position: relative;
+}
+.card .css-slider-dot-navigation .css-slider-dot, .panel .css-slider-dot-navigation .css-slider-dot {
+  background-color: var(--color-text-cards);
+}
+.no-touchevents .css-slider-dot-navigation .css-slider-dot:not(.active):hover {
+  opacity: 0.5;
+}
+.css-slider-dot-navigation .css-slider-dot.active {
+  opacity: 1;
+  width: 30px;
+}
+.css-slider-dot-navigation--autoplay .css-slider-dot.active:after {
+  content: "";
+  animation-name: animate-width;
+  animation-duration: var(--autorotate-interval);
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+  animation-timing-function: linear;
+  height: 100%;
+  position: absolute;
+  background: var(--color-background-main);
+  opacity: 0.36;
+  width: 0;
+  top: 0;
+}
+html[dir=rtl] .css-slider-dot-navigation--autoplay .css-slider-dot.active:after {
+  right: 0;
+}
+html[dir=ltr] .css-slider-dot-navigation--autoplay .css-slider-dot.active:after {
+  left: 0;
+}
+
+@keyframes animate-width {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+.css-slider-button {
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+  transition: all 100ms linear;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.8;
+}
+html[dir=rtl] .css-slider-button {
+  transform: scale(-1);
+}
+.css-slider-button.disabled {
+  opacity: 0.3;
+  cursor: auto;
+  pointer-events: none;
+}
+.css-slider-button[style*=block] {
+  display: flex !important;
+}
+.no-touchevents .css-slider-button:not(.disabled):hover {
+  opacity: 1;
+}
+.css-slider-button svg path {
+  fill: var(--color-text-main);
+}
+.card .css-slider-button svg path, .panel .css-slider-button svg path {
+  fill: var(--color-text-cards);
+}
+
+.css-slider-prev {
+  left: 0;
+}
+
+.css-slider-next {
+  right: 0;
+}
+
+.css-slider--bottom-navigation .css-slider-navigation-container {
+  margin-top: 0.625rem;
+  margin-bottom: -0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.css-slider--bottom-navigation .css-slider-navigation-container .css-slider-prev {
+  order: 1;
+}
+.css-slider--bottom-navigation .css-slider-navigation-container .css-slider-dot-navigation {
+  order: 2;
+  margin-top: -0.125rem;
+}
+@media screen and (max-width: 474px) {
+  .css-slider--bottom-navigation .css-slider-navigation-container .css-slider-dot-navigation {
+    display: none !important;
+  }
+}
+.css-slider--bottom-navigation .css-slider-navigation-container .css-slider-index-navigation {
+  order: 2;
+  display: none;
+}
+@media screen and (max-width: 474px) {
+  .css-slider--bottom-navigation .css-slider-navigation-container .css-slider-index-navigation {
+    display: block;
+  }
+}
+.card .css-slider--bottom-navigation .css-slider-navigation-container .css-slider-index-navigation, .panel .css-slider--bottom-navigation .css-slider-navigation-container .css-slider-index-navigation {
+  color: var(--color-text-cards);
+}
+.css-slider--bottom-navigation .css-slider-navigation-container .css-slider-next {
+  order: 3;
+}
+
+.css-slider--left-navigation .css-slider-navigation-container {
+  justify-content: flex-start;
+  margin-inline-start: -0.9375rem;
+}
+
+.css-slider-index-navigation {
+  color: var(--color-text-main);
+}
+.card .css-slider-index-navigation, .panel .css-slider-index-navigation {
+  color: var(--color-text-main);
+}
+.css-slider-index-navigation--autoplay {
+  position: relative;
+}
+.css-slider-index-navigation--autoplay:after, .css-slider-index-navigation--autoplay:before {
+  content: "";
+  height: 2px;
+  position: absolute;
+  bottom: -2px;
+}
+html[dir=rtl] .css-slider-index-navigation--autoplay:after, html[dir=rtl] .css-slider-index-navigation--autoplay:before {
+  right: 0;
+}
+html[dir=ltr] .css-slider-index-navigation--autoplay:after, html[dir=ltr] .css-slider-index-navigation--autoplay:before {
+  left: 0;
+}
+.css-slider-index-navigation--autoplay:before {
+  width: 100%;
+  background: var(--color-text-main);
+  opacity: 0.36;
+}
+.css-slider-index-navigation--autoplay--running:after {
+  background: var(--color-text-main);
+  animation-name: animate-width;
+  animation-duration: var(--autorotate-interval);
+  animation-iteration-count: infinite;
+  animation-fill-mode: none;
+  animation-play-state: running;
+  animation-timing-function: linear;
+}
+
+.element--border-radius .css-slider-viewport {
+  border-radius: var(--border-radius-cards);
+}

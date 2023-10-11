@@ -1,0 +1,436 @@
+{{ 'component-store-selector.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  if section.blocks.size == 1 
+    assign single_store = true
+  endif
+-%}
+
+{%- assign store_blocks_found = 0 -%}
+
+{%- if section.blocks.size > 0 -%}
+
+  {%- capture store_blocks -%}
+
+    {%- for block in section.blocks -%}
+
+      {%-liquid
+        assign gallery_has_image = false
+        if block.settings.image_1 or block.settings.image_2 or block.settings.image_3
+          assign gallery_has_image = true
+        endif
+        assign store_blocks_found = store_blocks_found | plus: 1
+      -%}
+
+      <div class="store-selector-item {% if single_store %} store-selector-item--active {% endif %}" 
+        id="{{ block.id }}"
+        data-handle="{{ block.settings.store_name | handleize }}-{{ block.id }}" 
+        data-title="{{ block.settings.store_name | escape }}"
+        {{ block.shopify_attributes }}
+      >
+
+        <div class="store-selector-item__header js-accordion-tab" role="tab" aria-selected="{%- if single_store -%} true {%- else -%} false {%- endif -%}" aria-controls="store-selector-tab-{{ block.settings.store_name | handleize }}-{{ block.id }}">
+  
+          <div class="store-selector-item__container store-selector-item__input element--align-self-center">
+            <span class="store-selector-item__title"><strong>{{ block.settings.store_name | escape }}</strong></span>
+          </div>
+
+        </div>
+        
+        <!-- Gallery + Address  -->
+        
+        <div class="js-tab-panel"  role="tabpanel" id="store-selector-tab-{{ block.settings.store_name | handleize }}-{{ block.id }}">
+          
+          <div class="{% if gallery_has_image %} grid grid--layout grid-2 grid-lap-1 {% endif %} store-selector-item__content">
+
+            {%- if gallery_has_image -%}
+
+              <div class="store-selector-item__gallery">
+                <css-slider data-options='{
+                  "selector": ".js-slider-item",
+                  "navigation": false
+                }'
+                  class="css-slider css-slider--bottom-navigation {% if block.settings.image_2 == blank and block.settings.image_3 == blank %} css-slider--singular {% endif %}" 
+                >
+
+                  <div class="grid grid--slider grid-1">
+
+                    {%- assign sizes = 'sizes="(max-width: 767px) calc(100vw - 100px), (max-width: 1024px) 50vw, (max-width: 1360px) 22vw, 275px"' -%}
+
+                    {%- if block.settings.image_1 -%}
+                      <div class="js-slider-item element--border-radius">
+                        {%- render 'lazy-image', image: block.settings.image_1, ratio: block.settings.image_aspect_ratio, sizes: sizes -%}
+                      </div>
+                    {%- endif -%}
+                    
+                    {%- if block.settings.image_2 -%}
+                      <div class="js-slider-item element--border-radius">
+                        {%- render 'lazy-image', image: block.settings.image_2, ratio: block.settings.image_aspect_ratio, sizes: sizes -%}
+                      </div>
+                    {%- endif -%}
+                    
+                    {%- if block.settings.image_3 -%}
+                      <div class="js-slider-item element--border-radius">
+                        {%- render 'lazy-image', image: block.settings.image_3, ratio: block.settings.image_aspect_ratio, sizes: sizes -%}
+                      </div>
+                    {%- endif -%}
+
+                  </div>
+                  
+                </css-slider>
+              </div>
+
+            {%- endif -%}
+
+            <div>
+              
+              <div class="rte">{{ block.settings.store_address }}</div>
+
+              {%- if block.settings.store_map_latitude != blank and block.settings.store_map_longitude != blank -%}
+                <div class="store-selector-item__container">
+                  <a target="_blank" href="http://www.google.com/maps/place/{{ block.settings.store_map_latitude | escape }},{{ block.settings.store_map_longitude | escape }}" class="button button--small button--outline" style="z-index:99">
+                    {{ 'store_availability.store_selector.google_maps_link_label' | t }}
+                  </a>
+                </div>
+              {%- endif -%}
+
+            </div>
+    
+          </div>
+
+        </div>
+
+      </div>
+
+    {%- endfor -%}
+  {%- endcapture -%}
+
+{%- endif -%}
+
+{%- if section.settings.map_enable -%}
+
+  {%- assign map_blocks_found = 0 -%}
+  {%- capture map_blocks -%}
+
+    {%- for block in section.blocks -%}
+
+      {%- if block.settings.store_map_latitude != blank and block.settings.store_map_longitude != blank -%}
+
+        {%- assign map_blocks_found = map_blocks_found | plus: 1 -%}
+        <li
+          data-id="{{ block.settings.store_name | handleize }}-{{ block.id }}"
+          data-latitude="{{ block.settings.store_map_latitude | escape }}"
+          data-longitude="{{ block.settings.store_map_longitude | escape }}"
+          data-marker="{%- liquid
+            unless block.settings.store_map_pin == blank
+              echo block.settings.store_map_pin | image_url: width: 60
+            else  
+              echo 'image-map-pin.png' | asset_url
+            endunless
+          -%}"
+        ><!-- map marker --></li>
+
+      {%- endif -%}
+
+    {%- endfor -%}
+
+  {%- endcapture -%}
+
+{%- endif -%}
+
+<div class="container--large container--vertical-space remove-empty-space">
+  
+  {%- render 'section-heading', heading: section.settings.heading, subheading: section.settings.subheading, heading_tag: section.settings.seo_h_tag, layout: section.settings.section_heading_layout -%}
+
+  <div class="grid grid--layout grid--no-stretch grid-2 grid-portable-1">
+
+    {%- if section.settings.map_enable -%}
+
+      <interactive-map
+        id="map-{{ section.id }}"
+        class="map store-selector-map"
+        data-style="{{ section.settings.map_style }}"
+        data-zoom="{{ section.settings.map_zoom }}"
+        data-style="{{ section.settings.map_style }}"
+        tabindex="-1"
+      >
+        {%- if map_blocks_found > 0 -%}
+          <ul class="map-addresses" data-js-map-addresses style="display:none">
+            {{ map_blocks }}
+          </ul>
+        {%- endif -%}
+        <div class="map-object element--border-radius element--z-1" data-js-map-object id="interactive-map-{{ section.id }}"></div>
+      </interactive-map>
+      <script>window.initLocalMap = () => {}</script>
+      <script src="{{ 'component-interactive-map.js' | asset_url }}" defer></script>
+
+    {%- else -%}
+
+      <div class="element--border-radius store-selector-map" style="" data-js-map-fallback>
+        {%- liquid
+          if section.settings.map_image == blank
+            render 'lazy-svg', image: 'image', ratio: 1.6, class: 'svg-placeholder svg-placeholder--foreground'
+          else
+            assign sizes = 'sizes="(max-width: 767px) 100vw, (max-width: 1280px) 50vw, 640px"'
+            render 'lazy-image', image: section.settings.map_image.src, alt: article.title, sizes: sizes
+          endif
+        -%}
+      </div>
+
+    {%- endif -%}
+
+    {%- if store_blocks -%}
+
+      <store-selector id="StoreSelector" class="store-selector"
+        {% if single_store %} data-single-store {% endif %}
+        data-map-selector="map-{{ section.id }}"
+      >
+        <div class="store-selector-list">
+          {{ store_blocks }}
+        </div>
+
+      </store-selector>
+
+      <script src="{{ 'component-store-selector.js' | asset_url }}" defer></script>
+
+    {%- endif -%}
+
+  </div>
+
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.local-extra-words.sections.stores-map.name",
+    "class": "mount-map mount-css-slider",
+    "settings": [
+      {
+        "type": "header",
+        "content": "t:local-march-update.labels.heading"
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "t:sections.local-extra-words.sections.headings.heading",
+        "default": "Find Us"
+      },
+      {
+        "type": "text",
+        "id": "subheading",
+        "label": "t:sections.local-extra-words.sections.headings.subheading",
+        "default": "Check our stores on a map"
+      },
+      {
+        "type": "select",
+        "id": "section_heading_layout",
+        "label": "t:sections.rich-text.settings.text_alignment.label",
+        "options": [
+          {
+            "value": "section-heading--left",
+            "label": "t:sections.rich-text.settings.text_alignment.options__1.label"
+          },
+          {
+            "value": "section-heading--center",
+            "label": "t:sections.rich-text.settings.text_alignment.options__2.label"
+          }
+        ],
+        "default": "section-heading--left"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.local-extra-words.sections.stores-map.name"
+      },
+      {
+        "type": "checkbox",
+        "id": "map_enable",
+        "label": "t:sections.local-extra-words.sections.store-selector.settings.map.label",
+        "info": "t:sections.local-extra-words.sections.store-selector.settings.map.info",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "map_zoom",
+        "label": "t:sections.local-extra-words.sections.store-selector.settings.zoom.label",
+        "min": 2,
+        "max": 19,
+        "step": 1,
+        "default": 16,
+        "info": "t:sections.local-extra-words.sections.store-selector.settings.zoom.info"
+      },
+      {
+        "type": "select",
+        "id": "map_style",
+        "label": "t:sections.local-extra-words.sections.store-selector.blocks.map.settings.style.label",
+        "options": [
+          {
+            "value": "standard",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.map.settings.style.option__1"
+          },
+          {
+            "value": "silver",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.map.settings.style.option__2"
+          },
+          {
+            "value": "retro",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.map.settings.style.option__3"
+          },
+          {
+            "value": "dark",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.map.settings.style.option__4"
+          },
+          {
+            "value": "night",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.map.settings.style.option__5"
+          },
+          {
+            "value": "aubergine",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.map.settings.style.option__6"
+          }
+        ],
+        "default": "standard"
+      },
+      {
+        "type": "image_picker",
+        "id": "map_image",
+        "label": "t:sections.local-extra-words.sections.store-selector.blocks.map.settings.image.label",
+        "info": "t:sections.local-extra-words.sections.store-selector.blocks.map.settings.image.info"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.refactor_words.seo.name"
+      },
+      {
+        "type": "select",
+        "id": "seo_h_tag",
+        "label": "t:sections.refactor_words.seo.label",
+        "info": "t:sections.refactor_words.seo.info",
+        "options": [
+          {
+            "value": "h1",
+            "label": "H1"
+          },
+          {
+            "value": "h2",
+            "label": "H2"
+          },
+          {
+            "value": "h3",
+            "label": "H3"
+          },
+          {
+            "value": "h4",
+            "label": "H4"
+          },
+          {
+            "value": "span",
+            "label": "span"
+          }
+        ],
+        "default": "h2"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "store",
+        "name": "t:sections.local-extra-words.sections.store-selector.blocks.store.name",
+        "settings": [
+          {
+            "type": "text",
+            "id": "store_name",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.name.label",
+            "default": "My Store"
+          },
+          {
+            "type": "richtext",
+            "id": "store_address",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.address.label",
+            "default": "<p>123 John Doe Street<br\/>Your Town, YT 12345<\/p><p> <\/p><p><strong>Store Hours<br\/><\/strong>Sun: Closed<br\/>Mon-Fri: 9:00 - 17:00<br\/>Sat: 10:00 - 13:00<\/p>"
+          },
+          {
+            "type": "header",
+            "content": "t:sections.local-extra-words.sections.stores-map.settings.gallery.title"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_1",
+            "label": "t:sections.images.label_1"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_2",
+            "label": "t:sections.images.label_2"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_3",
+            "label": "t:sections.images.label_3"
+          },
+          {
+            "type": "select",
+            "id": "image_aspect_ratio",
+            "label": "t:settings_schema.product-grid.settings.aspect_ratio.label",
+            "options": [
+              {
+                "value": "1.5",
+                "label": "t:sections.local-extra-words.settings_schema.aspect_ratio.landscape.label"
+              },
+              {
+                "value": "1.33333",
+                "label": "t:sections.gallery.settings.aspect_ratio.options__1.label"
+              },
+              {
+                "value": "1",
+                "label": "t:sections.gallery.settings.aspect_ratio.options__2.label"
+              },
+              {
+                "value": "0.83333",
+                "label": "t:sections.gallery.settings.aspect_ratio.options__3.label"
+              },
+              {
+                "value": "0.666667",
+                "label": "t:sections.gallery.settings.aspect_ratio.options__4.label"
+              }
+            ],
+            "default": "1.33333"
+          },
+          {
+            "type": "header",
+            "content": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.map.name"
+          },
+          {
+            "type": "paragraph",
+            "content": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.map.info"
+          },
+          {
+            "type": "text",
+            "id": "store_map_latitude",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.map_latitude.label",
+            "info": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.map_latitude.info",
+            "default": "46.7834818"
+          },
+          {
+            "type": "text",
+            "id": "store_map_longitude",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.map_longitude.label",
+            "info": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.map_longitude.info",
+            "default": "23.5464733"
+          },
+          {
+            "type": "image_picker",
+            "id": "store_map_pin",
+            "label": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.map_pin.label",
+            "info": "t:sections.local-extra-words.sections.store-selector.blocks.store.settings.map_pin.info"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "t:sections.local-extra-words.sections.stores-map.name",
+        "blocks": [{
+          "type": "store"
+        }]
+      }
+    ]
+  }
+{% endschema %}

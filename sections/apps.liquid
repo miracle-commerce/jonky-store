@@ -1,0 +1,42 @@
+<div class="container  {% unless section.settings.remove_margin %} container--vertical-space {% endunless %} {% unless section.settings.full_width %} container--large {% else %} container--fullwidth {% endunless %}">
+  {%- liquid
+    for block in section.blocks
+      render block
+    endfor
+  -%}
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.apps.name",
+  "class": "mount-app",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:local-march-update.labels.section_design"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "t:sections.image.fullwidth",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_margin",
+      "label": "t:sections.local-extra-words.sections.rich-text.settings.remove_margin.label",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.apps.presets.name"
+    }
+  ]
+}
+{% endschema %}

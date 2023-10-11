@@ -1,0 +1,8 @@
+<span 
+	class="{{ class }}" 
+	{% unless ratio == blank %} style="padding-top: {{ 100 | divided_by: ratio }}%" {% endunless %}
+>
+	{{ image | placeholder_svg_tag }}	
+</span>
+
+{%- assign ratio = blank -%}

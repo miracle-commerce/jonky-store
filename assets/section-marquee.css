@@ -1,0 +1,43 @@
+/*
+ *  1.0. Mixins
+*/
+.scrolling-text {
+  color: var(--color-text-main);
+  border: 0;
+  width: 100%;
+  height: 6.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+@media screen and (max-width: 1023px) {
+  .scrolling-text {
+    height: 5rem;
+  }
+}
+@media screen and (max-width: 767px) {
+  .scrolling-text {
+    height: 3.75rem;
+  }
+}
+.scrolling-text__container > span {
+  display: inline-block;
+  padding-left: 7.5rem;
+  padding-right: 7.5rem;
+}
+@media screen and (max-width: 1023px) {
+  .scrolling-text__container > span {
+    padding-left: 3.75rem;
+    padding-right: 3.75rem;
+  }
+}
+.scrolling-text p {
+  margin-bottom: 0;
+}
+.scrolling-text a {
+  text-decoration: underline;
+}

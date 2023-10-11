@@ -1,0 +1,68 @@
+{%- if paginate.pages > 1 -%}
+
+  {{ 'component-pagination.css' | asset_url | stylesheet_tag }}
+
+  <nav role="navigation">
+    <ul class="pagination">
+      {%- if paginate.previous -%}
+        <li class="prev">
+          <a href="{{ paginate.previous.url }}">
+            <span class="visually-hidden">{{ 'general.accessibility_labels.previous' | t }}</span>
+            <span aria-hidden="true">{%- render 'theme-symbols', icon: 'chevron' -%}</span>
+          </a>
+        </li>
+      {%- else -%}
+        <li class="prev disabled">
+          <span class="visually-hidden">{{ 'general.accessibility_labels.previous' | t }}</span>
+          <span aria-hidden="true">{%- render 'theme-symbols', icon: 'chevron' -%}</span>
+        </li>
+      {%- endif -%}
+
+      {%- for part in paginate.parts -%}
+        {%- if part.is_link -%}
+          <li class="lap-hide">
+            <a href="{{ part.url }}">
+              <span class="visually-hidden">page</span> {{ part.title }}
+            </a>
+          </li>
+        {%- else -%}
+          {%- if part.title == paginate.current_page -%}
+            <li class="lap-hide active" aria-current="page">
+              <span class="visually-hidden">page</span> {{ part.title }}
+            </li>
+          {%- else -%}
+            <li class="lap-hide">
+              <span class="visually-hidden">page</span> {{ part.title }}
+            </li>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      <li class="mobile"><div
+        {% unless paginate.next %}
+          style="margin-inline-end:-12px"
+        {% endunless %}
+        {% unless paginate.previous %}
+          style="margin-inline-start:-12px"
+        {% endunless %}
+      >
+        {{ paginate.current_page }} / {{ paginate.pages }}</div>
+      </li>
+
+      {%- if paginate.next -%}
+        <li class="next">
+          <a href="{{ paginate.next.url }}">
+            <span class="visually-hidden">{{ 'general.accessibility_labels.next' | t }}</span>
+            <span aria-hidden="true">{%- render 'theme-symbols', icon: 'chevron' -%}</span>
+          </a>
+        </li>
+      {%- else -%}
+        <li class="next disabled">
+          <span class="visually-hidden">{{ 'general.accessibility_labels.next' | t }}</span>
+          <span aria-hidden="true">{%- render 'theme-symbols', icon: 'chevron' -%}</span>
+        </li>
+      {%- endif -%}
+    </ul>
+  </nav>
+  
+{%- endif -%}

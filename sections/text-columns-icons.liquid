@@ -1,0 +1,661 @@
+<div class="container--large {% unless section.settings.remove_margin %} container--vertical-space {% endunless %} {% if section.settings.section_background_color != "rgba(0,0,0,0)" %} container--has-background {% endif %} remove-empty-space">
+  
+  {%- render 'section-heading', heading: section.settings.heading, subheading: section.settings.subheading, heading_tag: section.settings.seo_h_tag, layout: section.settings.section_heading_layout -%}
+
+  <style>
+    #shopify-section-{{ section.id }} .card__icon {
+      border-radius: {{ section.settings.border_radius | append: "px" }};
+    }
+  </style>
+
+  {%- if section.settings.style == 'slider' -%}
+    <css-slider data-options='{
+        "selector": ".js-slider-item",
+        "groupCells": true,
+        "indexNav": true,
+        "navigationDOM": "<span class=\"css-slider-button css-slider-prev\" style=\"display:none\"><svg fill=\"none\" height=\"13\" viewBox=\"0 0 8 13\" width=\"8\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"#000\" ><path d=\"m7.91419 1.41431-6.48529 6.48528-1.4142102-1.41422 6.4852802-6.48527702z\"/><path d=\"m6.48528 12.9849-6.48528027-6.48532 1.41421027-1.41421 6.48528 6.48523z\"/></g></svg></span><span class=\"css-slider-button css-slider-next\" style=\"display:none\"><svg width=\"9\" height=\"13\" viewBox=\"0 0 9 13\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M0.914169 11.5857L7.39945 5.10041L8.81367 6.51463L2.32838 12.9999L0.914169 11.5857Z\" fill=\"black\"/><path d=\"M2.34307 0.0151367L8.82835 6.50042L7.41414 7.91463L0.928857 1.42935L2.34307 0.0151367Z\" fill=\"black\"/></svg></span>"
+      }'
+      class="css-slider css-slider--bottom-navigation"
+    >
+  {%- endif -%}
+
+  <div class="grid {% if section.settings.style == 'slider' %} grid--slider {% else %} grid--layout {% endif %} {{ section.settings.layout }}">
+  
+    {%- for block in section.blocks -%}
+
+      <div class="element--no-border text-align--center element--no-radius js-slider-item" {{ block.shopify_attributes }}>
+
+        <div class="card__icon card__icon--is-img card__icon-size--{% if section.settings.layout contains 'grid-4' %}regular{% elsif section.settings.layout contains 'smel' %}small{% else %}large{% endif %}" id="element-{{ block.id }}">
+          {%- unless block.settings.image == blank -%}
+            <img 
+              src="{{ block.settings.image | image_url: width: 64, height: 64, crop: 'center' }}" alt="{{ block.settings.image.alt | escape }}"
+              srcset="
+                {{ block.settings.image | image_url: width: 64, height: 64, crop: 'center' }} 64w
+                {% if block.settings.image.width >= 128 %} ,{{ block.settings.image | image_url: width: 128, height: 128, crop: 'center' }} 128w, {% endif %} 
+                {% if block.settings.image.width >= 192 %} ,{{ block.settings.image | image_url: width: 192, height: 192, crop: 'center' }} 192w, {% endif %} 
+                {% if block.settings.image.width >= 256 %} ,{{ block.settings.image | image_url: width: 256, height: 256, crop: 'center' }} 256w, {% endif %} 
+              "
+              loading="lazy"
+              sizes="{%- if section.settings.layout contains 'grid-4' -%}
+                (max-width: 474px) 60px, 80px
+              {%- elsif section.settings.layout contains 'smel' -%}
+                60px
+              {%- else -%}
+                (max-width: 474px) 60px, (max-width: 1023px) 80px, 110px
+              {%- endif -%}"
+              width="64" height="64"
+              onload="this.parentNode.classList.add('lazyloaded')"
+            />
+          {%- else -%}
+            {%- render 'icon-pack', icon: block.settings.icon -%}
+          {%- endunless -%}
+        </div>
+
+        <div class="gutter--regular spacing--small remove-empty-space"
+          {% if block.settings.color_background_main == 'rgba(0,0,0,0)' %} style="padding-top:0" {% endif %}
+        >
+
+          {%- unless block.settings.title == blank -%}
+            <div style="color:var(--color-text-main)">
+              <{{ block.settings.seo_h_tag }} class="h5" style="margin-bottom:0;display:block">
+                
+                {%- if block.settings.link != blank -%}
+                  <a href="{{ block.settings.link }}">
+                {%- endif -%}
+                
+                  <span class="text-animation--underline">{{ block.settings.title | escape }}</span>
+                
+                {%- if block.settings.link != blank -%}
+                  </a>
+                {%- endif -%}
+
+              </{{ block.settings.seo_h_tag }}>
+            </div>
+          {%- endunless -%}
+
+          {%- unless block.settings.caption == blank -%}
+            <div class="text-size--small text-color--opacity" style="color:var(--color-text-main)">{{ block.settings.caption | escape }}</div>
+          {%- endunless -%}
+
+        </div>
+      </div>
+
+      {%- if block.settings.color_background_main != 'rgba(0,0,0,0)' -%}
+        {% style %}
+          #element-{{ block.id }} {
+            background-color: {{ block.settings.color_background_main }};
+          }
+        {% endstyle %}
+      {%- endif -%}
+
+      {%- if block.settings.color_icons_main != 'rgba(0,0,0,0)' -%}
+        {% style %}
+          #element-{{ block.id }} svg * {
+            stroke: {{ block.settings.color_icons_main }};
+          }
+        {% endstyle %}
+      {%- endif -%}
+
+    {%- endfor %}
+
+  </div>
+
+  {%- if section.settings.style == 'slider' -%}
+    </css-slider>
+  {%- endif -%}
+
+</div>
+
+{%- if section.settings.section_background_color != "rgba(0,0,0,0)" -%}
+  {% style %}
+    #shopify-section-{{ section.id }} .container--has-background {
+      --color-background-section: {{ section.settings.section_background_color }};
+    }
+  {% endstyle %}
+{%- endif -%}
+
+{%- if section.settings.section_heading_color != "rgba(0,0,0,0)" -%}
+  {% style %}
+    #shopify-section-{{ section.id }} {
+      --color-text-main: {{ section.settings.section_heading_color }};
+    }
+  {% endstyle %}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.text-columns-with-icons.name",
+  "class": "mount-css-slider",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:local-march-update.labels.heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.local-extra-words.sections.headings.heading",
+      "default": "Text columns with icon"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:sections.local-extra-words.sections.headings.subheading",
+      "default": "Share your best offers"
+    },
+    {
+      "type": "select",
+      "id": "section_heading_layout",
+      "label": "t:sections.rich-text.settings.text_alignment.label",
+      "options": [
+        {
+          "value": "section-heading--left",
+          "label": "t:sections.rich-text.settings.text_alignment.options__1.label"
+        },
+        {
+          "value": "section-heading--center",
+          "label": "t:sections.rich-text.settings.text_alignment.options__2.label"
+        }
+      ],
+      "default": "section-heading--left"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-article.blocks.content.name"
+    },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "t:sections.featured-collection.settings.layout.label",
+      "options": [
+        {
+          "label": "t:sections.featured-collection.settings.layout.options__1.label",
+          "value": "slider"
+        },
+        {
+          "label": "t:sections.featured-collection.settings.layout.options__2.label",
+          "value": "grid"
+        }
+      ],
+      "default": "slider"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "t:sections.local-extra-words.sections.columns.name",
+      "info": "t:sections.local-extra-words.sections.columns.info",
+      "options": [
+        {
+          "value": "grid-3 grid-lap-2",
+          "label": "t:sections.local-extra-words.sections.columns.option__2"
+        },
+        {
+          "value": "grid-4 grid-portable-3 grid-lap-2",
+          "label": "t:sections.local-extra-words.sections.columns.option__3"
+        },
+        {
+          "value": "grid-5 grid-portable-4 grid-lap-3 grid-palm-2 smel",
+          "label": "t:sections.local-extra-words.sections.columns.option__4"
+        },
+        {
+          "value": "grid-6 grid-portable-4 grid-lap-3 grid-palm-2 smel",
+          "label": "t:sections.local-extra-words.sections.columns.option__5"
+        }
+      ],
+      "default": "grid-4 grid-portable-3 grid-lap-2"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "t:sections.split-extra-words.settings_schema.typography.settings.border_radius",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 200
+    },
+    {
+      "type": "header",
+      "content": "t:local-march-update.labels.section_design"
+    },
+    {
+      "type": "color",
+      "id": "section_background_color",
+      "label": "t:sections.local-extra-words.settings_schema.product-card.badges.custom_badges.color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "section_heading_color",
+      "label": "t:sections.local-extra-words.settings_schema.product-card.badges.custom_badges.text_color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_margin",
+      "label": "t:sections.local-extra-words.sections.rich-text.settings.remove_margin.label",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:sections.refactor_words.seo.name"
+    },
+    {
+      "type": "select",
+      "id": "seo_h_tag",
+      "label": "t:sections.refactor_words.seo.label",
+      "info": "t:sections.refactor_words.seo.info",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "span",
+          "label": "span"
+        }
+      ],
+      "default": "h2"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "t:sections.text-columns-with-icons.blocks.icon.name",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "t:sections.text-columns-with-icons.blocks.icon.settings.icon.label",
+          "info": "t:sections.local-extra-words.sections.text-columns-with-icons.blocks.select_icon.info",
+          "options": [
+            {
+              "value": "earth-globe",
+              "label": "Earth globe",
+              "group": "Business"
+            },
+            {
+              "value": "favorite",
+              "label": "Favorite",
+              "group": "Business"
+            },
+            {
+              "value": "flag",
+              "label": "Flag",
+              "group": "Business"
+            },
+            {
+              "value": "helpline",
+              "label": "Helpline",
+              "group": "Business"
+            },
+            {
+              "value": "like-hand",
+              "label": "Like hand",
+              "group": "Business"
+            },
+            {
+              "value": "map-marker",
+              "label": "Map marker",
+              "group": "Business"
+            },
+            {
+              "value": "security-shield",
+              "label": "Security shield",
+              "group": "Business"
+            },
+            {
+              "value": "star",
+              "label": "Star",
+              "group": "Business"
+            },
+            {
+              "value": "appointment",
+              "label": "Appointment",
+              "group": "Commerce"
+            },
+            {
+              "value": "archive-box",
+              "label": "Archive box",
+              "group": "Commerce"
+            },
+            {
+              "value": "box",
+              "label": "Box",
+              "group": "Commerce"
+            },
+            {
+              "value": "checkout-cart",
+              "label": "Checkout cart",
+              "group": "Commerce"
+            },
+            {
+              "value": "currency",
+              "label": "Currency",
+              "group": "Commerce"
+            },
+            {
+              "value": "delivery",
+              "label": "Delivery",
+              "group": "Commerce"
+            },
+            {
+              "value": "delivery-time",
+              "label": "Delivery time",
+              "group": "Commerce"
+            },
+            {
+              "value": "giftbox",
+              "label": "Giftbox",
+              "group": "Commerce"
+            },
+            {
+              "value": "label",
+              "label": "Label",
+              "group": "Commerce"
+            },
+            {
+              "value": "open-24-hours",
+              "label": "Open 24 hurs",
+              "group": "Commerce"
+            },
+            {
+              "value": "open-box",
+              "label": "Open box",
+              "group": "Commerce"
+            },
+            {
+              "value": "paper-bag",
+              "label": "Paper bag",
+              "group": "Commerce"
+            },
+            {
+              "value": "shipping-truck",
+              "label": "Shipping truck",
+              "group": "Commerce"
+            },
+            {
+              "value": "store",
+              "label": "Store",
+              "group": "Commerce"
+            },
+            {
+              "value": "time",
+              "label": "Time",
+              "group": "Commerce"
+            },
+            {
+              "value": "time-limit",
+              "label": "Time limit",
+              "group": "Commerce"
+            },
+            {
+              "value": "wallet",
+              "label": "Wallet",
+              "group": "Commerce"
+            },
+            {
+              "value": "alcohol-bottle",
+              "label": "Alcohol bottle",
+              "group": "Food & Drinks"
+            },
+            {
+              "value": "apple",
+              "label": "Apple",
+              "group": "Food & Drinks"
+            },
+            {
+              "value": "asian-cuisine",
+              "label": "Asian cuisine",
+              "group": "Food & Drinks"
+            },
+            {
+              "value": "beer-bottle",
+              "label": "Beer bottle",
+              "group": "Food & Drinks"
+            },
+            {
+              "value": "birthday",
+              "label": "Birthday",
+              "group": "Food & Drinks"
+            },
+            {
+              "value": "brewed-coffee",
+              "label": "Brewed coffee",
+              "group": "Food & Drinks"
+            },
+            {
+              "value": "can",
+              "label": "Can",
+              "group": "Food & Drinks"
+            },
+            {
+              "value": "cheese",
+              "label": "Cheese",
+              "group": "Food & Drinks"
+            },
+            {
+              "value": "coffee-beans",
+              "label": "Coffee beans",
+              "group": "Food & Drinks"
+            },
+            {
+              "value": "dinner",
+              "label": "Dinner",
+              "group": "Food & Drinks"
+            },
+            {
+              "value": "dome-plate",
+              "label": "Dome plate",
+              "group": "Food & Drinks"
+            },
+            {
+              "value": "french-bread",
+              "label": "French bread",
+              "group": "Food & Drinks"
+            },
+            {
+              "value": "ice-pop",
+              "label": "Ice pop",
+              "group": "Food & Drinks"
+            },
+            {
+              "value": "margarita",
+              "label": "Margarita",
+              "group": "Food & Drinks"
+            },
+            {
+              "value": "microwave",
+              "label": "Microwave",
+              "group": "Food & Drinks"
+            },
+            {
+              "value": "milk-carton",
+              "label": "Milk carton",
+              "group": "Food & Drinks"
+            },
+            {
+              "value": "orange-slice",
+              "label": "Orange slice",
+              "group": "Food & Drinks"
+            },
+            {
+              "value": "pizza-slice",
+              "label": "Pizza slice",
+              "group": "Food & Drinks"
+            },
+            {
+              "value": "spirit-glass",
+              "label": "Spirit glass",
+              "group": "Food & Drinks"
+            },
+            {
+              "value": "sushi-roll",
+              "label": "Sushi roll",
+              "group": "Food & Drinks"
+            },
+            {
+              "value": "take-out-box",
+              "label": "Bake-out box",
+              "group": "Food & Drinks"
+            },
+            {
+              "value": "wine-glass",
+              "label": "Wine glass",
+              "group": "Food & Drinks"
+            },
+            {
+              "value": "ecological",
+              "label": "Ecological",
+              "group": "Eco"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf",
+              "group": "Eco"
+            },
+            {
+              "value": "organic",
+              "label": "Organic",
+              "group": "Eco"
+            },
+            {
+              "value": "tree",
+              "label": "Tree",
+              "group": "Eco"
+            }
+          ]
+        },
+        {
+          "id": "image",
+          "type": "image_picker",
+          "label": "t:sections.local-extra-words.sections.text-columns-with-icons.blocks.icon.name",
+          "info": "t:sections.local-extra-words.sections.text-columns-with-icons.blocks.icon.info"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.local-extra-words.sections.headings.text_content"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.local-extra-words.sections.headings.title",
+          "default": "Text with icon"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "t:sections.local-extra-words.sections.headings.caption",
+          "default": "Introduce your brand"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.image-with-text.blocks.image.settings.url.label"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.local-extra-words.sections.headings.custom_colors"
+        },
+        {
+          "type": "color",
+          "id": "color_background_main",
+          "label": "t:sections.split-extra-words.settings_schema.colors.settings.background",
+          "default": "rgba(0,0,0,0)"
+        },
+        {
+          "type": "color",
+          "id": "color_icons_main",
+          "label": "t:sections.local-extra-words.sections.text-columns-with-icons.blocks.icon_color.label",
+          "info": "t:sections.local-extra-words.sections.text-columns-with-icons.blocks.icon_color.info",
+          "default": "rgba(0,0,0,0)"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.refactor_words.seo.name"
+        },
+        {
+          "type": "select",
+          "id": "seo_h_tag",
+          "label": "t:sections.refactor_words.seo.label",
+          "info": "t:sections.refactor_words.seo.info",
+          "options": [
+            {
+              "value": "h1",
+              "label": "H1"
+            },
+            {
+              "value": "h2",
+              "label": "H2"
+            },
+            {
+              "value": "h3",
+              "label": "H3"
+            },
+            {
+              "value": "h4",
+              "label": "H4"
+            },
+            {
+              "value": "span",
+              "label": "span"
+            }
+          ],
+          "default": "h3"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.text-columns-with-icons.name",
+      "blocks": [
+        {
+          "type": "image",
+          "settings": {
+            "title": "Shipping",
+            "caption": "Useful information about your shipping details",
+            "icon": "delivery"
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+            "title": "Returns",
+            "caption": "Show how much time customers have for testing your products",
+            "icon": "time-limit"
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+            "title": "Pickup",
+            "caption": "Let your customers know about local pickup",
+            "icon": "store"
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+            "title": "Brand",
+            "caption": "Write your brand story and journey",
+            "icon": "tree"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

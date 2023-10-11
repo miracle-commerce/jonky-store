@@ -1,0 +1,252 @@
+{%- liquid
+	if type == "classic" 
+		assign links_class = "text-animation--underline-in-header"
+	endif 
+-%}
+
+<div class="site-nav style--{{ type }}">
+
+	<div class="site-nav-container">
+
+		<nav>
+
+			{%- assign mega_menus = false -%}
+
+			<ul class="link-list">
+
+				{%- for link in linklists[linklist].links -%}
+
+					{%- liquid
+						assign link_is_mega_menu = false
+						assign promotion_block = false
+					-%}
+
+					{%- for block in blocks -%}
+						
+						{%- if block.type == 'mega-menu' and block.settings.menu_handle == link.handle -%}
+							
+							{%- assign link_is_mega_menu = true -%}
+							{%- assign mega_menus = true -%}
+
+							{%- if block.settings.show_promotion_block -%}
+
+								{%- assign promotion_block = true -%}
+
+								{%- capture promotion_block -%}
+
+									<li class="mega-link has-promotion">
+
+										<div class="menu-promotion align-content--vertical-middle align-content--horizontal-center gutter--regular element--border-radius" id="menu-promotion-{{ block.id }}">
+
+											<div class="menu-promotion-content align-content gutter--regular spacing--large remove-empty-space">
+
+												{%- if block.settings.promotion_title != blank -%}
+													<span class="menu-promotion-title">
+														<span class="{{ block.settings.promotion_title_size }} text-weight--bold text-line-height--small">{{ block.settings.promotion_title | escape }}</span>
+													</span>
+												{%- endif -%}
+
+												{%- if block.settings.promotion_subtitle != blank -%}
+													<span class="menu-promotion-subtitle {{ block.settings.promotion_subtitle_size }}">{{ block.settings.promotion_subtitle | escape }}</span>
+												{%- endif -%}
+
+												{%- if block.settings.promotion_button_label != blank -%}
+													<a class="menu-promotion-button button button--regular button--solid no-focus-link" href="{{ block.settings.promotion_button_link | escape }}">
+														{{ block.settings.promotion_button_label | escape }}
+													</a>
+												{%- endif -%}
+												
+											</div>
+					
+											{%- unless block.settings.promotion_image == blank -%}
+												<div class="menu-promotion-background-image">
+													{%- assign image = block.settings.promotion_image -%}
+													<img
+														src="{{ image | image_url: width: 240 }}" alt="{{ image.alt | escape }}"
+														srcset="{{ image | image_url: width: 240 }} 180w, {{ image | image_url: width: 360 }} 300w, {{ image | image_url: width: 600 }} 480w, {{ image | image_url: width: 860 }} 720w"
+														sizes="380px"
+														width="{{ image.width }}" height="{{ image.height }}"
+														loading="lazy" 
+													/>
+												</div>
+											{%- endunless -%}
+
+										</div>
+
+										<style type="text/css">
+											{%- liquid
+												assign color_text_brightness = block.settings.promotion_color_txt | color_brightness
+												if color_text_brightness > 150
+													assign color_text_foreground = '#000'
+												else
+													assign color_text_foreground = '#fff'
+												endif
+											-%}
+											#menu-promotion-{{ block.id }} {
+												color: {{ block.settings.promotion_color_txt }};
+											}
+											#menu-promotion-{{ block.id }} .menu-promotion-button {
+												color: {{ color_text_foreground }} !important;
+												background: {{ block.settings.promotion_color_txt }} !important;
+											}
+											#menu-promotion-{{ block.id }} .menu-promotion-button:hover {
+												background: {{ color_text_foreground }} !important;
+												color: {{ block.settings.promotion_color_txt }} !important;
+											}
+											{%- if block.settings.promotion_image == blank -%}
+												#menu-promotion-{{ block.id }} {
+													background: {{ block.settings.promotion_color_bg }};
+												}
+											{%- else -%}
+												#menu-promotion-{{ block.id }} .menu-promotion-background-image:after {
+													background: {{ block.settings.promotion_color_bg }};
+												}
+											{%- endif -%}
+										</style>
+										
+									</li>
+
+								{%- endcapture -%}
+
+							{%- endif -%}
+						
+						{%- endif -%}
+					{%- endfor -%}
+
+					<li 
+						{% if link.links != blank %}
+							class="has-submenu" aria-controls="SiteNavLabel-{{ link.handle }}-{{ type }}" aria-expanded="false" 
+						{% elsif link_is_mega_menu %}
+							class="has-submenu submenu-is-mega-menu"
+						{% endif %} 
+						id="menu-item-{{ link.handle }}"
+					>
+
+						<a class="menu-link {% if link.active or link.child_active %} active {% endif %} {% unless link.links != blank or link_is_mega_menu %} no-focus-link {% endunless %}" href="{{ link.url }}">
+
+							<span><span class="{{ links_class }}">{{ link.title | escape }}</span></span>
+
+							{% if link.links != blank or link_is_mega_menu %}
+								<span class="icon">{%- render 'theme-symbols', icon: 'chevron' -%}</span>
+							{% endif %}
+
+						</a>
+
+						{% if link.links != blank or link_is_mega_menu %}
+
+							<ul class="submenu {% if link_is_mega_menu %} mega-menu {% else %} normal-menu {% endif %}" id="SiteNavLabel-{{ link.handle }}-{{ type }}">
+
+								<div class="submenu-holder {% if link_is_mega_menu and type == 'classic' %} container--large {% endif %}">
+
+									{%- if link_is_mega_menu -%}
+										<div class="submenu-masonry {% if promotion_block %} with-promotion {% else %} without-promotion {% endif %}">
+									{%- endif -%}
+
+									{%- if type == 'sidebar' -%}
+										<li class="submenu-back">
+											<a><span class="icon">{%- render 'theme-symbols', icon: 'chevron' -%}</span>{{ 'general.accessibility_labels.back' | t }}</a>
+										</li>
+									{%- endif -%}
+
+										{%- for childlink in link.links -%}
+
+											<li 
+												{% if link_is_mega_menu %} 
+													class="mega-link {% if childlink.links != blank %} has-babymenu {% endif %}"
+												{% elsif childlink.links != blank %}
+													class="has-babymenu" aria-controls="SiteNavLabel-{{ childlink.handle }}-{{ type }}" aria-expanded="false"
+												{% endif %}
+											>
+
+												<a class="menu-link {% if link_is_mega_menu == false and childlink.active or childlink.child_active %} active {% endif %} {% unless childlink.links != blank %} no-focus-link {% endunless %}" href="{{ childlink.url }}">
+													<span><span class="{{ links_class }}">{{ childlink.title | escape }}</span></span>
+													{%- if childlink.links != blank -%}
+														<span class="icon">{%- render 'theme-symbols', icon: 'chevron' -%}</span>
+													{%- endif -%}
+												</a>
+
+												{%- if childlink.links != blank -%}
+
+													<div class="babymenu">
+														<ul id="SiteNavLabel-{{ childlink.handle }}-{{ type }}">
+
+															{%- if type == 'sidebar' -%}
+																<li class="submenu-back">
+																	<a><span class="icon">{%- render 'theme-symbols', icon: 'chevron' -%}</span>{{ 'general.accessibility_labels.back' | t }}</a>
+																</li>
+															{%- endif -%}
+
+															{% for babylink in childlink.links %}
+																<li><a class="menu-link {% if babylink.active %} active {% endif %} no-focus-link" href="{{ babylink.url }}"><span><span class="{{ links_class }}">{{ babylink.title | escape }}</span></span></a></li>
+															{% endfor %}
+
+														</ul>
+													</div>
+
+												{%- endif -%}
+
+											</li>
+
+										{%- endfor -%}
+
+									{%- if link_is_mega_menu -%}
+										</div>
+									{%- endif -%}
+
+									{%- liquid
+										if promotion_block
+											echo promotion_block
+										endif
+									-%}
+
+								</div>
+
+							</ul>
+
+						{% endif %}
+
+					</li>
+
+				{%- endfor -%}
+
+				{%- if type == 'sidebar' and shop.customer_accounts_enabled -%}
+					<li id="menu-item-account">
+						<a class="menu-link" href="{%- liquid
+							if customer
+								echo routes.account_url
+							else
+							 echo routes.account_login_url
+							endif
+						-%}">
+							<span style="display: inline-flex; align-items: center;">
+								{%- render 'theme-symbols', icon: 'account' -%}
+								{{ 'general.breadcrumb.account' | t }}
+							</span>
+						</a>
+					</li>
+				{%- endif -%}
+
+			</ul>
+
+			{%- if mega_menus and type == 'classic' -%}
+				<script src="{{ 'vendor-macy.js' | asset_url }}" defer onload="runMacy()"></script>
+				<script>
+					function runMacy(){
+						document.querySelectorAll('.site-nav.style--classic .submenu-masonry').forEach(elm=>{
+							const submenuMacy = new Macy({
+								container: elm,
+								columns: elm.classList.contains('with-promotion') ? 3 : 4
+							});
+							setTimeout(()=>{
+								submenuMacy.reInit();
+							}, 100);
+						})
+					}
+				</script>
+			{%- endif -%}
+
+		</nav>
+
+	</div>
+
+</div>

@@ -1,0 +1,109 @@
+{%- unless section.settings.logo_src == blank -%}
+	<div class="gift-card-logo">
+		<a class="logo__image" href="{{ routes.root_url }}" style="display:block;height:{{ section.settings.logo_width | divided_by: section.settings.logo_src.aspect_ratio }}px">
+			<img src="{{ section.settings.logo_src | image_url }}" alt="{{ shop.name | escape }}" style="width: {{ section.settings.logo_width | escape }}px;height:auto;" width="{{ section.settings.logo_src.width }}" height="{{ section.settings.logo_src.height }}" />
+		</a>
+	</div>
+{%- else -%}
+  <div class="gift-card-logo">
+    {{ shop.name | escape }}
+  </div>
+{%- endunless -%}
+
+<div class="gift-card-content {% if gift_card.expired or gift_card.enabled != true %} expired {% endif %}">
+	
+	{% assign formatted_initial_value = gift_card.initial_value | money_without_trailing_zeros: gift_card.currency %}
+
+  <h2 class="h2">{{ 'gift_card.title' | t }}</h2>
+
+  <h3 class="h1 card-value">{% if gift_card.balance != gift_card.initial_value %} <span style="text-decoration: line-through;opacity: .16;">{{ formatted_initial_value }}</span> {{ gift_card.balance | money }} {{ 'gift_card.balance_left' | t }} {% else %} {{ formatted_initial_value }} {% endif %}</h3>
+
+	<div class="gift-card__text">
+
+		{% capture date_format %}{{ 'general.date_format.month_day_year' | t }}{% endcapture %}
+ 		{% assign gift_card_expiry_date = gift_card.expires_on | date: date_format %}
+
+ 		{% if gift_card.enabled and gift_card.expired != true %}
+
+ 			{{ 'gift_card.redeem' | t }}
+
+ 			{% if gift_card.expires_on %}
+ 				<br /><strong>{{ 'gift_card.active' | t: expiry: gift_card_expiry_date }}</strong>
+			{% endif %}
+
+		{% else %}
+
+ 			{{ 'gift_card.disabled' | t }}
+
+    	{% if gift_card.expired and gift_card.enabled %}
+				<br /><strong>{{ 'gift_card.expired' | t: expiry: gift_card_expiry_date }}</strong>
+			{% endif %}
+
+  	{% endif %}
+
+  </div>
+
+  <div class="gift-card__code alert alert--note text-size--xlarge">
+		{{ gift_card.code | format_code }}
+  </div>
+
+	<div class="gift-card__actions">
+		<a href="{{ shop.secure_url }}" class="button button--solid button--regular" target="_blank">{{ 'gift_card.shop_link' | t }}</a>
+		<a href="#" class="button button--outline button--regular" onclick="window.print();">{{ 'gift_card.print' | t }}</a>
+		{%- if gift_card.pass_url -%}
+			<a class="add-to-apple-wallet" href="{{ gift_card.pass_url }}">
+				<img src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}" alt="" />
+			</a>
+		{%- endif -%}
+	</div>
+
+	<svg class="gift-card__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-labelledby="title" role="img" xmlns:xlink="http://www.w3.org/1999/xlink">
+	  <title>Giftbox</title>
+	  <path data-name="layer1"
+	  fill="#f27e7c" d="M24 22H4v12h20V22z"></path>
+	  <path data-name="layer2" fill="#fc6" d="M24 22h16v12H24z"></path>
+	  <path data-name="layer1" fill="#f27e7c" d="M40 22v12h20V22H40zM8 34h16v28H8z"></path>
+	  <path data-name="layer2" fill="#fc6" d="M24 34h16v28H24z"></path>
+	  <path data-name="layer1" fill="#f27e7c" d="M40 34h16v28H40z"></path>
+	  <path data-name="opacity" fill="#fff" opacity=".25" d="M4 22h56v4H4z"></path>
+	  <path data-name="opacity" opacity=".15" d="M8 34h48v7H8z"></path>
+	  <path data-name="stroke" fill="none" stroke="#2e4369" stroke-linecap="round"
+	  stroke-linejoin="round" stroke-width="2" d="M56 34v28H8V34M4 22h56v12H4zm20 0v40m16-40v40M26.2 5A7.4 7.4 0 0 0 20 2a8 8 0 0 0-5.3 14c4.2 3.7 17.3 6 17.3 6 0-6-3.4-14.3-5.8-17zm11.6 0A7.4 7.4 0 0 1 44 2a8 8 0 0 1 5.3 14C45.1 19.7 32 22 32 22c0-6 3.4-14.3 5.8-17z"></path>
+	</svg>
+
+</div>
+	
+<div class="gift-card-qr">
+	<div id="QrCode"></div>
+	<script>
+		new QRCode(document.getElementById('QrCode'), {
+			text: "{{ gift_card.qr_identifier }}",
+			width: 120,
+			height: 120
+		});
+	</script>
+</div>
+
+{% schema %}
+	{
+    "name": "t:sections.main-gift-card.name",
+    "class": "gift-card",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo_src",
+        "label": "t:sections.sidebar.settings.image.label"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "label": "t:sections.sidebar.settings.image_width.label",
+        "min": 50,
+        "max": 250,
+        "step": 2,
+        "default": 100,
+        "unit": "px"
+      }
+    ]
+  }
+{% endschema %}

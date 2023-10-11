@@ -1,0 +1,107 @@
+{%- if section.settings.enable or request.design_mode -%}
+
+  <modal-box id="modal-{{ section.id }}" class="popup-age-verification" 
+    data-options='{
+      "show": 0,
+      "frequency": "month",
+      "enabled": {{ section.settings.enable }},
+      "closeByKey": false,
+      "disableScroll": true
+    }'
+    style="display:none;"
+  >
+    <div class="popup-age-verification__content">
+      <div class="popup-text gutter--regular spacing--large remove-empty-space">
+
+        <div><span class="h4 popup-title">{{ section.settings.heading | escape }}</span></div>
+        <div class="rte">{{ section.settings.content }}</div>
+        <div class="increased-spacing"><button data-js-close class="button button--outline button--regular button--fullwidth">{{ section.settings.button_label | escape }}</button></div>
+
+      </div>
+    </div>
+
+    <div data-content style="display:none" aria-hidden="true">age-verification</div>
+  </modal-box>
+
+  <style>
+    {%- if section.settings.popup_txtcolor != 'rgba(0,0,0,0)' -%}
+      {%- liquid
+        assign popup_txtcolor = section.settings.popup_txtcolor
+        assign popup_txt_brightness = popup_txtcolor | color_brightness 
+        if popup_txt_brightness > 150 
+          assign popup_txt_foreground = '#000' 
+        else 
+          assign popup_txt_foreground = '#fff' 
+        endif 
+      -%}
+      #modal-{{ section.id }} .popup-age-verification__content a,
+      #modal-{{ section.id }} .popup-age-verification__content {
+        color: {{ popup_txtcolor }};
+      }
+      #modal-{{ section.id }} .button {
+        border-color: {{ popup_txtcolor }};
+        color: {{ popup_txtcolor }};
+      }
+      .no-touchevents #modal-{{ section.id }} .button:hover {
+        background: {{ popup_txtcolor }};
+        color: {{ popup_txt_foreground }};
+      }
+    {%- endif -%}
+    {%- if section.settings.popup_bgcolor != 'rgba(0,0,0,0)' -%}
+      #modal-{{ section.id }} .popup-age-verification__content {
+        background: {{ section.settings.popup_bgcolor }};
+        border: none;
+      }
+    {%- endif -%}
+  </style>
+  
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "t:sections.local-extra-words.sections.age-verification.name",
+    "class": "mount-popup",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable",
+        "label": "t:sections.popup.settings.enable.label",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "t:sections.local-extra-words.sections.headings.heading",
+        "default": "Age verification"
+      },
+      {
+        "type": "richtext",
+        "id": "content",
+        "label": "t:sections.rich-text.blocks.text.settings.text.label",
+        "default": "<p>By clicking enter, I certify that I am over the age of 18</p>"
+      },
+      {
+        "type": "text",
+        "id": "button_label",
+        "label": "t:sections.rich-text.blocks.button.settings.button_label.label",
+        "default": "Enter"
+      },
+      {
+        "type": "header",
+        "content": "t:settings_schema.colors.name"
+      },
+      {
+        "type": "color",
+        "id": "popup_bgcolor",
+        "label": "t:sections.announcement-bar.settings.bar_bgcolor.label",
+        "default": "#111111"
+      },
+      {
+        "type": "color",
+        "id": "popup_txtcolor",
+        "label": "t:sections.announcement-bar.settings.bar_txtcolor.label",
+        "default": "#ffffff"
+      }
+    ]
+  }
+{% endschema %}

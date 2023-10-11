@@ -1,0 +1,91 @@
+<div class="mobile-header-usp" data-hook-header-usp="" data-loaded-header-usp="">
+  <div class="mobile-m-usp-bar o-container swiper-container">
+    <div class="swiper-wrapper">
+      <!-- Slide 1 -->
+      <div class="swiper-slide">
+        <div class="mobile-a-usp usp--icon usp-bar__item">
+          <div class="mobile-usp__content">
+            <div class="mobile-usp__text">
+              <img
+                class="mobile-usp__icon"
+                src="{{ 'icons8-clock-96.svg' | asset_url }}"
+                alt="Clock Icon"
+                loading="lazy"
+              >
+              <div id="shippingInfo">
+                <!-- Tekst wordt dynamisch geladen met JavaScript -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Slide 2 -->
+      <div class="swiper-slide">
+        <div class="mobile-a-usp usp--icon usp-bar__item">
+          <div class="mobile-usp__content">
+            <div class="mobile-usp__text">
+              <img
+                class="mobile-usp__icon"
+                src="{{ 'icons8-truck-96.svg' | asset_url }}"
+                alt="Shipping Icon"
+                loading="lazy"
+              >
+              <p><span class="mobile-u-text--green">Gratis</span> verzending vanaf &euro; 50,-</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Slide 3 -->
+      <div class="swiper-slide">
+        <div class="mobile-a-usp usp--icon usp-bar__item">
+          <div class="mobile-usp__content">
+            <div class="mobile-usp__text">
+              <img
+                class="mobile-usp__icon"
+                src="{{ 'icons8-guarantee-96.svg' | asset_url }}"
+                alt="Guarantee Icon"
+                loading="lazy"
+              >
+              <p>
+                Niet tevreden?
+                <a
+                  href="https://jonky.nl/pages/voorwaarden-niet-tevreden-geld-terug-actie-jonky-nl"
+                  class="mobile-u-text--green"
+                  >Geld-terug garantie</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var d = new Date();
+    var n = d.getDay();
+    var shippingInfo = document.getElementById('shippingInfo');
+
+    if (n === 0 || n === 6) { // Weekends
+      shippingInfo.innerHTML = 'Vandaag besteld, <span class="mobile-u-text--green">overmorgen</span> in huis.';
+    } else { // Weekdays
+      shippingInfo.innerHTML = 'Voor 16:00 besteld, <span class="mobile-u-text--green">morgen</span> in huis.';
+    }
+
+    var swiper = new Swiper('.swiper-container', {
+      slidesPerView: 1,
+      spaceBetween: 10,
+      loop: true,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      autoplay: {
+        delay: 3000,
+      },
+    });
+  });
+</script>

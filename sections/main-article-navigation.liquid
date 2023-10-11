@@ -1,0 +1,151 @@
+{{ 'component-blog-item.css' | asset_url | stylesheet_tag }}
+
+{%- if section.settings.title -%}
+  <h2 class="h4 gutter-top--large">{{ section.settings.title | escape }}</h2>
+{%- endif -%}
+
+{%- liquid
+
+  if section.settings.blog_previous != blank
+    assign previous_article = section.settings.blog_previous
+  elsif blog.previous_article 
+    assign previous_article = blog.previous_article 
+  endif
+
+  if section.settings.blog_next != blank
+    assign next_article = section.settings.blog_next
+  elsif blog.next_article 
+    assign next_article = blog.next_article 
+  endif
+
+-%}
+
+{%- if previous_article or next_article -%}
+  <div class="grid grid--layout grid-2 grid-palm-1 grid-tiny-1 gutter-top--regular">
+    {%- liquid
+
+      if previous_article
+        render 'blog-item', article: previous_article, section_blocks: section.blocks, show_image: section.settings.blog_show_image, image_aspect_ratio: section.settings.image_aspect_ratio
+      endif
+
+      if next_article
+        render 'blog-item', article: next_article, section_blocks: section.blocks, show_image: section.settings.blog_show_image, image_aspect_ratio: section.settings.image_aspect_ratio
+      endif
+
+    -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "t:sections.local-extra-words.sections.main-article-navigation.name",
+    "class": "container--medium container--vertical-space",
+    "blocks": [
+      {
+        "type": "title",
+        "name": "t:sections.blog-posts.blocks.title.name",
+        "limit": 1
+      },
+      {
+        "type": "info",
+        "name": "t:sections.blog-posts.blocks.info.name",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "show_date",
+            "label": "t:sections.blog-posts.blocks.info.settings.show_date.label",
+            "default": true
+          },
+          {
+            "type": "checkbox",
+            "id": "show_author",
+            "label": "t:sections.blog-posts.blocks.info.settings.show_author.label",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "show_comments_number",
+            "label": "t:sections.main-article.blocks.title.settings.blog_show_comments.label",
+            "default": false
+          }
+        ]
+      },
+      {
+        "type": "summary",
+        "name": "t:sections.local-extra-words.sections.blog-posts.blocks.summary.name",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "range",
+            "id": "excerpt_limit",
+            "label": "t:sections.local-extra-words.sections.blog-posts.blocks.summary.settings.excerpt_limit",
+            "info": "t:sections.local-extra-words.sections.blog-posts.blocks.summary.settings.excerpt_limit_info",
+            "default": 15,
+            "step": 1,
+            "min": 5,
+            "max": 40
+          }
+        ]
+      },
+      {
+        "type": "link",
+        "name": "t:sections.blog-posts.blocks.link.name",
+        "limit": 1
+      }
+    ],
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "t:sections.blog-posts.settings.title.label",
+        "default": "More articles"
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_image",
+        "label": "t:sections.blog-posts.settings.show_image.label",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "image_aspect_ratio",
+        "label": "t:settings_schema.product-grid.settings.aspect_ratio.label",
+        "options": [
+          {
+            "value": "1.33333",
+            "label": "t:sections.gallery.settings.aspect_ratio.options__1.label"
+          },
+          {
+            "value": "1",
+            "label": "t:sections.gallery.settings.aspect_ratio.options__2.label"
+          },
+          {
+            "value": "0.83333",
+            "label": "t:sections.gallery.settings.aspect_ratio.options__3.label"
+          },
+          {
+            "value": "0.666667",
+            "label": "t:sections.gallery.settings.aspect_ratio.options__4.label"
+          }
+        ],
+        "default": "1.33333"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.local-extra-words.sections.main-article-navigation.settings.header.content",
+        "info": "t:sections.local-extra-words.sections.main-article-navigation.settings.header.info"
+      },
+      {
+        "type": "article",
+        "id": "blog_previous",
+        "label": "t:sections.local-extra-words.sections.main-article-navigation.settings.posts.previous"
+      },
+      {
+        "type": "article",
+        "id": "blog_next",
+        "label": "t:sections.local-extra-words.sections.main-article-navigation.settings.posts.next"
+      }
+    ]
+  }
+{% endschema %}

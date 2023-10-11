@@ -1,0 +1,24 @@
+<script>
+    if(typeof(Spurit) === 'undefined'){
+        var Spurit = {};
+    }
+    if(!Spurit.QuantityBreaks2){
+        Spurit.QuantityBreaks2 = {};
+    }
+    if(!Spurit.QuantityBreaks2.snippet){
+        Spurit.QuantityBreaks2.snippet = {};
+    }
+    let new_product = {{ product | json }};
+    let variant_info = {
+      {%- for variant in product.variants -%}
+          {{variant.id}} : {
+              "variant_id":"{{ variant.id}}",
+              "inventory_policy":"{{ variant.inventory_policy}}",
+              "inventory_quantity":{{ variant.inventory_quantity}},
+              "is_tracked_quantity":"{{ variant.inventory_management}}" !== "",
+          },
+      {%- endfor -%}
+    }
+    new_product.variant_info = Object.values(variant_info)
+    Spurit.QuantityBreaks2.snippet.product = new_product;
+</script>

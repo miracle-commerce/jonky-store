@@ -1,0 +1,128 @@
+<div class="container--large container--vertical-space-small">
+  
+  {%- if section.settings.show_collection_image and collection.image -%}
+  
+    <div id="element-main-collection-banner" class="card element--height-small align-content align-content--{{ section.settings.alignment }} margin-bottom--regular">
+
+      <div class="card__text gutter--large spacing--small remove-empty-space container--compact" style="margin:0">
+        <h1 class="h2">{{ collection.title | escape }}</h1>
+        {%- if section.settings.show_collection_description and collection.description != blank -%}
+          <p class="collection-header__description rte">{{ collection.description }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="card__image card__image--background {% if section.settings.color_background_main != "rgba(0,0,0,0)" %} card__image--with-overlay {% endif %}" aria-hidden="true">
+        {%- capture sizes -%}
+          sizes="calc(40vh * {{ collection.image.aspect_ratio }})"
+        {%- endcapture -%}
+        {%- render 'lazy-image', image: collection.image, type: 'background', alt: collection.title, sizes: sizes -%} 
+      </div>
+
+      {%- render 'custom-colors', id: 'main-collection-banner', text: section.settings.color_text_main, background: section.settings.color_background_main, hide_borders: true -%}
+
+    </div>
+
+  {%- else -%}
+    
+    <div class="section-heading gutter-bottom--page">
+
+      <div class="section-heading__text remove-empty-space">
+
+        <h1 class="h2">{{ collection.title | escape }}</h1>
+
+        {%- if section.settings.show_collection_description and collection.description != blank -%}
+          <div class="collection-header__description rte">{{ collection.description }}</div>
+        {%- endif -%}
+
+      </div>
+
+    </div>
+
+  {%- endif -%}
+
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-collection-banner.name",
+  "class": "main-collection-banner container--remove-margin-after",
+  "settings": [
+    {
+      "id": "show_collection_description",
+      "type": "checkbox",
+      "default": false,
+      "label": "t:sections.main-collection-banner.settings.show_collection_description.label"
+    },
+    {
+      "id": "show_collection_image",
+      "type": "checkbox",
+      "default": false,
+      "label": "t:sections.main-collection-banner.settings.show_collection_image.label"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.main-collection-banner.settings.paragraph.content"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "t:sections.image-with-text.settings.text_alignment.label",
+      "options": [
+        {
+          "value": "horizontal-left align-content--vertical-top",
+          "label": "t:sections.image-with-text.settings.text_alignment.options__1.label"
+        },
+        {
+          "value": "horizontal-center align-content--vertical-top",
+          "label": "t:sections.image-with-text.settings.text_alignment.options__2.label"
+        },
+        {
+          "value": "horizontal-right align-content--vertical-top",
+          "label": "t:sections.image-with-text.settings.text_alignment.options__3.label"
+        },
+        {
+          "value": "horizontal-left align-content--vertical-middle",
+          "label": "t:sections.image-with-text.settings.text_alignment.options__4.label"
+        },
+        {
+          "value": "horizontal-center align-content--vertical-middle",
+          "label": "t:sections.image-with-text.settings.text_alignment.options__5.label"
+        },
+        {
+          "value": "horizontal-right align-content--vertical-middle",
+          "label": "t:sections.image-with-text.settings.text_alignment.options__6.label"
+        },
+        {
+          "value": "horizontal-left align-content--vertical-bottom",
+          "label": "t:sections.image-with-text.settings.text_alignment.options__7.label"
+        },
+        {
+          "value": "horizontal-center align-content--vertical-bottom",
+          "label": "t:sections.image-with-text.settings.text_alignment.options__8.label"
+        },
+        {
+          "value": "horizontal-right align-content--vertical-bottom",
+          "label": "t:sections.image-with-text.settings.text_alignment.options__9.label"
+        }
+      ],
+      "default": "horizontal-left align-content--vertical-bottom"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.local-extra-words.sections.headings.custom_colors"
+    },
+    {
+      "type": "color",
+      "id": "color_background_main",
+      "label": "t:sections.local-extra-words.settings_schema.colors.settings.overlay",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "color_text_main",
+      "label": "t:sections.split-extra-words.settings_schema.colors.settings.text",
+      "default": "rgba(0,0,0,0)"
+    }
+  ]
+}
+{% endschema %}

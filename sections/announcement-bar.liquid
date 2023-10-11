@@ -1,0 +1,212 @@
+{%- liquid
+
+  if section.settings.visibility == 'all'
+    assign show_on_homepage = true
+    assign show_on_pages = true
+  elsif section.settings.visibility == 'homepage'
+    assign show_on_homepage = true
+  elsif section.settings.visibility == 'no-homepage'
+    assign show_on_homepage = false
+    assign show_on_pages = true
+  elsif section.settings.visibility == 'product'
+    assign show_on_product = true
+  endif
+
+  if show_on_product == true and template contains 'product'
+    assign show = true
+  endif
+  if show_on_homepage == true and template == 'index'
+    assign show = true
+  endif
+  if show_on_pages == true and template != 'index'
+    assign show = true
+  endif
+
+-%}
+
+{%- if show -%} 
+
+  {%- if section.blocks.size > 1 -%}
+    <script src="{{ 'section-announcement-bar.js' | asset_url }}" defer></script>
+  {%- endif -%}
+
+  <announcement-bar style="display:block" data-js-inert>
+    <div class="container--large">
+      <div class="announcement-bar">
+
+        <div class="announcement-bar__social-icons lap-hide">
+          {%- liquid
+            if section.settings.show_social_icons
+              render 'social-icons'
+            endif
+          -%}
+        </div>
+        
+        <div class="announcement-bar__content">
+          {%- if section.blocks.size > 1 -%}
+            <span class="announcement-bar__content-nav announcement-bar__content-nav--left announcement-bar__content-nav--disabled">{%- render 'theme-symbols', icon: 'chevron' -%}</span>
+          {%- endif -%}
+
+          <div class="announcement-bar__slider" data-js-slider>
+            {%- for block in section.blocks -%}
+              <span class="announcement" {{ block.shopify_attributes }}>
+                {%- if block.settings.link != blank -%}
+                  <a href="{{ block.settings.link }}" {% if block.settings.target %} target="_blank" {% endif %}>
+                {%- endif -%}
+                  {{ block.settings.text | escape }}
+                {%- if block.settings.link != blank -%} </a> {%- endif -%}
+              </span>
+            {%- endfor -%}
+          </div>
+
+          {%- if section.blocks.size > 1 -%}
+            <span class="announcement-bar__content-nav announcement-bar__content-nav--right">{%- render 'theme-symbols', icon: 'chevron' -%}</span>
+          {%- endif -%}
+
+        </div>
+
+        <div class="announcement-bar__localization-form lap-hide">
+          {%- render 'localization-form', show_country_selector: section.settings.show_country_selector, show_locale_selector: section.settings.show_locale_selector, location: 'ancmt' -%}
+        </div>
+
+      </div>
+    </div>      
+  </announcement-bar>
+
+  {% style %}
+    {%- if section.settings.bar_txtcolor != 'rgba(0,0,0,0)' -%}
+      .announcement-bar, .announcement-bar a, .announcement-bar .localization-form__item-text {
+        color: {{ section.settings.bar_txtcolor }};
+      }
+      .announcement-bar svg *, .announcement-bar .localization-form__item-symbol * {
+        fill: {{ section.settings.bar_txtcolor }};
+      }
+    {%- endif -%}
+    {%- if section.settings.bar_bgcolor != 'rgba(0,0,0,0)' -%}
+      announcement-bar, .announcement-bar__content-nav {
+        background: {{ section.settings.bar_bgcolor }};
+      }
+    {%- endif -%}
+  {% endstyle %}
+
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "t:sections.announcement-bar.name",
+    "class": "mount-announcement-bar",
+    "settings": [
+      {
+        "type": "select",
+        "id": "visibility",
+        "label": "t:sections.refactor_words.announcement-bar.visibility.label",
+        "options": [
+          {
+            "value": "all",
+            "label": "t:sections.refactor_words.announcement-bar.visibility.option_1"
+          },
+          {
+            "value": "homepage",
+            "label": "t:sections.refactor_words.announcement-bar.visibility.option_2"
+          },
+          {
+            "value": "product",
+            "label": "t:sections.refactor_words.announcement-bar.visibility.option_4"
+          },
+          {
+            "value": "no-homepage",
+            "label": "t:sections.refactor_words.announcement-bar.visibility.option_3"
+          }
+        ],
+        "default": "all"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.footer.settings.language_selector.content",
+        "info": "t:sections.footer.settings.language_selector.info"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_locale_selector",
+        "label": "t:sections.footer.settings.language_selector_show.label",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "t:sections.footer.settings.country_selector.content",
+        "info": "t:sections.footer.settings.country_selector.info"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_country_selector",
+        "label": "t:sections.footer.settings.country_selector_show.label",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "t:sections.local-extra-words.sections.announcement-bar.settings.social.header",
+        "info": "t:sections.local-extra-words.sections.announcement-bar.settings.social.info"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_social_icons",
+        "label": "t:sections.local-extra-words.sections.announcement-bar.settings.social.label",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "t:settings_schema.colors.name"
+      },
+      {
+        "type": "color",
+        "id": "bar_bgcolor",
+        "label": "t:sections.announcement-bar.settings.bar_bgcolor.label",
+        "default": "#111111"
+      },
+      {
+        "type": "color",
+        "id": "bar_txtcolor",
+        "label": "t:sections.announcement-bar.settings.bar_txtcolor.label",
+        "default": "#ffffff"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "content",
+        "name": "t:sections.local-extra-words.sections.announcement-bar.blocks.content.name",
+        "settings": [
+          {
+            "type": "text",
+            "id": "text",
+            "label": "t:sections.local-extra-words.sections.announcement-bar.blocks.content.settings.text",
+            "default": "Write an important announcement here"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "t:sections.local-extra-words.sections.announcement-bar.blocks.content.settings.link"
+          },
+          {
+            "type": "checkbox",
+            "id": "target",
+            "label": "t:sections.local-extra-words.sections.announcement-bar.blocks.content.settings.target",
+            "default": false
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "t:sections.announcement-bar.name",
+        "blocks": [
+          {
+            "type": "content"
+          }
+        ]
+      }
+    ],
+    "enabled_on": {
+      "groups": ["header", "footer"]
+    }
+  }
+{% endschema %}

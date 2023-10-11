@@ -1,0 +1,16 @@
+{%- if form.errors -%}
+	{%- for field in form.errors -%}
+		<span class="alert alert--error alert--icon">
+			<span class="alert__icon">
+				{%- render 'theme-symbols', icon: 'alert-error' -%}
+			</span>
+			<span>
+				{%- if field == 'form' -%}
+					{{ form.errors.messages[field] }}
+				{%- else -%}
+					<strong>{{ form.errors.translated_fields[field] }}</strong>&nbsp;{{ form.errors.messages[field] }}
+				{%- endif -%}
+			</span>
+		</span>
+	{%- endfor -%}
+{%- endif -%}

@@ -1,0 +1,182 @@
+/*
+ *  1.0. Mixins
+*/
+.product-item {
+  overflow: visible;
+}
+
+.product-item__image-figure {
+  border-radius: var(--border-radius-cards) var(--border-radius-cards) 0 0;
+  transition: opacity 0.3s linear, visibility 0.3s linear !important;
+}
+.product-item__image .lazy-image:before, .product-item__image .lazy-image:after {
+  border-radius: var(--border-radius-cards) 0 0;
+}
+.product-item__image--no-text .product-item__image-figure {
+  border-radius: var(--border-radius-cards);
+}
+.product-item__image-figure--secondary {
+  opacity: 0;
+  visibility: hidden;
+}
+.no-touchevents .product-item__image--has-secondary:hover .product-item__image-figure--primary {
+  opacity: 0;
+  visibility: hidden;
+}
+.no-touchevents .product-item__image--has-secondary:hover .product-item__image-figure--secondary {
+  opacity: 1;
+  visibility: visible;
+}
+
+div + .equalize-white-space {
+  margin-top: -0.1875rem;
+}
+
+.product-item__price span {
+  width: auto;
+}
+.product-item__price span:not(:first-child) {
+  padding-inline-start: 0.5rem;
+}
+.product-item__price span:empty {
+  display: none;
+}
+.product-item__price .product-price--unit {
+  display: block;
+  padding-inline-start: 0 !important;
+  opacity: 0.76;
+  font-size: 80%;
+  margin-top: -0.125rem;
+  margin-bottom: 0.125rem;
+}
+
+.product-item__text {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+}
+.product-item__text.text-align--center {
+  align-items: center;
+}
+.product-item__text.text-align--right {
+  align-items: flex-end;
+}
+.product-item__text:empty {
+  display: none;
+}
+
+.product-item__quick-buy {
+  width: 100%;
+}
+.product-item__quick-buy .add-to-cart-preloader svg circle {
+  stroke: var(--color-text-cards);
+}
+.product-item__title + .product-item__quick-buy {
+  margin-top: 0.5rem;
+}
+
+.product-item__title:last-child {
+  margin-bottom: 0.5rem;
+}
+
+.product-item__text + .product-item__quick-buy {
+  margin-top: 0.25rem;
+}
+
+.product-item__local-availability .alert {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+.product-item__local-availability .alert:before {
+  width: 0.625rem;
+  height: 0.625rem;
+  margin-inline-end: 0.3125rem;
+  top: 0.0625rem;
+}
+.product-item__local-availability .alert.alert--note:before {
+  border-color: var(--color-text-cards);
+}
+
+.product-item__badges {
+  position: absolute;
+  top: var(--gutter-small);
+  width: calc(100% - (var(--gutter-small) * 2));
+  pointer-events: none;
+}
+html[dir=rtl] .product-item__badges {
+  left: var(--gutter-small);
+}
+html[dir=ltr] .product-item__badges {
+  right: var(--gutter-small);
+}
+.product-text .product-item__badges {
+  position: static;
+  display: flex;
+  gap: 0.75rem;
+  width: auto;
+}
+
+.product-item__badge {
+  clear: both;
+  float: right;
+  margin-bottom: calc(var(--gutter-small) / 2);
+  width: auto;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-inline-start: 0.4375rem;
+  padding-inline-end: 0.4375rem;
+  height: 1.5rem;
+  border-radius: clamp(0px, var(--border-radius-buttons), 3px);
+  background-color: #bbb;
+  line-height: 1.5rem;
+  text-transform: uppercase;
+}
+.product-text .product-item__badge {
+  margin-bottom: 0;
+  max-width: none;
+  float: none;
+  height: 1.75rem;
+  line-height: 1.75rem;
+  padding-inline-start: 0.5625rem;
+  padding-inline-end: 0.5625rem;
+}
+
+.product-item__icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem 0;
+}
+
+.star-rating {
+  font-size: 0;
+  width: 100%;
+  height: 1rem;
+  display: grid;
+  grid-template-columns: max-content auto;
+  align-items: center;
+  gap: 0.625rem;
+}
+.star-rating__stars {
+  background-repeat: repeat-x;
+  font-size: 0;
+  display: inline-block;
+  text-align: start;
+}
+.star-rating__stars-active {
+  display: inline-block;
+  font-size: 0;
+  height: 0.875rem;
+  background-repeat: repeat-x;
+}
+
+.main-content--align-product-items .product-item {
+  display: flex;
+  flex-direction: column;
+}
+.main-content--align-product-items .product-item__text:first-of-type {
+  flex-grow: 1;
+}

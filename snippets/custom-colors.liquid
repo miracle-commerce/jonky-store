@@ -1,0 +1,76 @@
+{%- if background != blank and background != "rgba(0,0,0,0)" -%}
+  {% style %}
+    #element-{{ id }} {
+      --color-background-cards: {{ background }};
+    }
+  {% endstyle %}
+{%- endif -%}
+
+{%- if text != blank and text != "rgba(0,0,0,0)" -%}
+  {%- liquid
+    assign brightness_text_main = text | color_brightness
+    if brightness_text_main > 150 
+      assign color_foreground_main = '#000' 
+    else 
+      assign color_foreground_main = '#fff' 
+    endif 
+  -%}
+  {% style %}
+    #element-{{ id }} {
+      --color-text-cards: {{ text }};
+      --color-foreground-cards: {{ color_foreground_main }};
+      --color-secondary-text-cards: {{ text | color_modify: 'alpha', 0.6 }};
+    }
+  {% endstyle %}
+{%- endif -%}
+
+{%- if accent != blank and accent != "rgba(0,0,0,0)" -%}
+  {%- liquid
+    assign brightness_text_accent = accent | color_brightness
+    if brightness_text_accent > 150 
+      assign color_foreground_accent = '#000' 
+    else 
+      assign color_foreground_accent = '#fff' 
+    endif 
+  -%}
+  {% style %}
+    #element-{{ id }} {
+      --color-accent-cards: {{ accent }};
+      --color-foreground-accent-cards: {{ color_foreground_accent }};
+    }
+  {% endstyle %}
+{%- endif -%}
+
+{%- if shadow != blank and shadow != "rgba(0,0,0,0)" -%}
+  {% style %}
+    #element-{{ id }} {
+      --color-shadow-cards: {{ shadow }};
+      --color-shadow-buttons: {{ shadow }};
+    }
+  {% endstyle %}
+{%- endif -%}
+
+{%- if hide_borders -%}
+  {% style %}
+    #element-{{ id }} {
+      --color-borders-cards: none;
+    }
+  {% endstyle %}
+{%- elsif borders != blank and borders != "rgba(0,0,0,0)" -%}
+  {% style %}
+    #element-{{ id }} {
+      --color-borders-cards: {{ borders }};
+    }
+  {% endstyle %}
+{%- endif -%}
+
+{%- if hide_shadow -%}
+  {% style %}
+    #element-{{ id }} {
+      --shadow-x-cards: 0;
+      --shadow-y-cards: 0;
+      --shadow-blur-cards: 0;
+      --color-shadow-cards: transparent;
+    }
+  {% endstyle %}
+{%- endif -%}

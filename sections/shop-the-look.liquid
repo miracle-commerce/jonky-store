@@ -1,0 +1,329 @@
+{{ 'section-shop-the-look.css' | asset_url | stylesheet_tag }}
+{{ 'component-product-item.css' | asset_url | stylesheet_tag }}
+
+{%- if section.settings.color_background_main != "rgba(0,0,0,0)" -%}
+  {% style %}
+    #element-{{ section.id }} {
+      background-color: {{ section.settings.color_background_main }};
+    }
+  {% endstyle %}
+{%- endif -%}
+{%- if section.settings.color_hide_borders -%}
+  {% style %}
+    #element-{{ section.id }} {
+      border-color: transparent;
+    }
+  {% endstyle %}
+{%- elsif section.settings.color_borders_main != "rgba(0,0,0,0)" -%}
+  {% style %}
+    #element-{{ section.id }} {
+      border-color: {{ section.settings.color_borders_main }};
+    }
+  {% endstyle %}
+{%- endif -%}
+{%- if section.settings.color_hide_shadow -%}
+  {% style %}
+    #element-{{ section.id }} {
+      box-shadow: none;
+    }
+  {% endstyle %}
+{%- endif -%}
+
+<div class="container--large container--vertical-space remove-empty-space {% if section.settings.is_fullwidth %} container--fullwidth {% endif %}">
+
+  <div class="{% if section.settings.is_fullwidth %} container--large container--vertical-space {% endif %}">
+    {%- render 'section-heading', heading: section.settings.heading, subheading: section.settings.subheading, heading_tag: section.settings.seo_h_tag, layout: section.settings.section_heading_layout -%}
+  </div>
+
+  <div id="element-{{ section.id }}" class="panel {% if section.settings.is_fullwidth %} panel--no-radius panel--no-sideborders {% endif %} gutter-top--large gutter-bottom--large element--height-small">
+   
+    <div class="shop-the-look__image {% if section.settings.image == blank %} shop-the-look__image--blank {% endif %}">
+      {%- liquid
+        if section.settings.image == blank
+          render 'lazy-svg', image: 'product-1', ratio: 1, class: 'svg-placeholder'
+        else
+          assign sizes = 'sizes="(max-width: 767px) 100vw, (max-width: 1280px) 50vw, 640px"'
+          render 'lazy-image', image: section.settings.image, alt: section.settings.heading, sizes: sizes, image_alignment: true
+        endif
+      -%}
+    </div>
+
+    <div class="shop-the-look__slider"
+      data-size="{%- liquid 
+        assign size = 0
+        for product in section.settings.product_list 
+          assign size = forloop.index
+        endfor
+        echo size
+      -%}"
+    >
+      <css-slider data-options='{
+        "selector": ".product-item",
+        "indexNav": true,
+        "groupCells": true,
+        "navigationDOM": "<span class=\"css-slider-button css-slider-prev\" style=\"display:none\"><svg fill=\"none\" height=\"13\" viewBox=\"0 0 8 13\" width=\"8\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"#000\" ><path d=\"m7.91419 1.41431-6.48529 6.48528-1.4142102-1.41422 6.4852802-6.48527702z\"/><path d=\"m6.48528 12.9849-6.48528027-6.48532 1.41421027-1.41421 6.48528 6.48523z\"/></g></svg></span><span class=\"css-slider-button css-slider-next\" style=\"display:none\"><svg width=\"9\" height=\"13\" viewBox=\"0 0 9 13\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M0.914169 11.5857L7.39945 5.10041L8.81367 6.51463L2.32838 12.9999L0.914169 11.5857Z\" fill=\"black\"/><path d=\"M2.34307 0.0151367L8.82835 6.50042L7.41414 7.91463L0.928857 1.42935L2.34307 0.0151367Z\" fill=\"black\"/></svg></span>"
+        }'
+        class="css-slider css-slider--bottom-navigation"
+        id="css-slider-{{ section.id }}"
+      >
+        {%- render 'custom-shadow', section_id: section.id -%}
+        <div class="grid grid--slider grid-4 grid-portable-3 grid-lap-2 {% if size == 1 %} grid-palm-1 {% endif %} grid-tiny-1">
+          {%- liquid
+            if section.settings.product_list != blank
+              for product in section.settings.product_list
+                render 'product-item', product: product, section_blocks: section.blocks, index: forloop.index, layout: 'shop'
+              endfor
+            endif
+          -%}
+        </div>
+      </css-slider>
+
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.shop-the-look.name",
+    "class": "can-be-fullwidth mount-css-slider",
+    "max_blocks": 9,
+    "blocks": [
+      {
+        "type": "price",
+        "name": "t:sections.local-extra-words.sections.product-card.blocks.price",
+        "limit": 1
+      },
+      {
+        "type": "title",
+        "name": "t:sections.local-extra-words.sections.product-card.blocks.title",
+        "limit": 1
+      },
+      {
+        "type": "quick_buy",
+        "name": "t:sections.local-extra-words.sections.product-card.blocks.quick_buy",
+        "limit": 1
+      },
+      {
+        "type": "vendor",
+        "name": "t:sections.local-extra-words.sections.product-card.blocks.vendor",
+        "limit": 1
+      },
+      {
+        "type": "rating",
+        "name": "t:sections.local-extra-words.sections.product-card.blocks.rating",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "select",
+            "id": "reviews_app",
+            "label": "t:local-march-update.blocks.rating.app",
+            "options": [
+              {
+                "value": "default",
+                "label": "t:local-march-update.blocks.rating.default_option"
+              },
+              {
+                "value": "loox",
+                "label": "Loox"
+              },
+              {
+                "value": "judgeme",
+                "label": "Judge.me"
+              }
+            ],
+            "default": "default"
+          }
+        ]
+      },
+      {
+        "type": "local_availability",
+        "name": "t:sections.local-extra-words.settings_schema.product-card.local-pickup.name",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "paragraph",
+            "content": "t:sections.local-extra-words.settings_schema.product-card.local-pickup.info"
+          }
+        ]
+      },
+      {
+        "type": "icons",
+        "name": "t:sections.local-extra-words.sections.main-product.blocks.icons.name",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "paragraph",
+            "content": "t:sections.local-extra-words.sections.main-product.blocks.icons.help"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "name": "t:sections.local-extra-words.sections.product-card.blocks.text.name",
+        "settings": [
+          {
+            "type": "text",
+            "id": "metafield",
+            "label": "t:sections.local-extra-words.sections.product-card.blocks.text.settings.text.label",
+            "info": "t:sections.local-extra-words.sections.product-card.blocks.text.info",
+            "info": "custom.product_text"
+          },
+          {
+            "type": "select",
+            "id": "text_size",
+            "label": "t:sections.local-extra-words.sections.product-card.blocks.text.settings.size.label",
+            "options": [
+              {
+                "value": "text-size--xsmall",
+                "label": "t:sections.local-extra-words.sections.product-card.blocks.text.settings.size.option__1"
+              },
+              {
+                "value": "text-size--regular",
+                "label": "t:sections.local-extra-words.sections.product-card.blocks.text.settings.size.option__2"
+              },
+              {
+                "value": "text-size--large",
+                "label": "t:sections.local-extra-words.sections.product-card.blocks.text.settings.size.option__3"
+              }
+            ],
+            "default": "text-size--regular"
+          },
+          {
+            "type": "color",
+            "id": "text_color",
+            "label": "t:sections.local-extra-words.sections.product-card.blocks.text.settings.color.label",
+            "default": "#6A6A6A"
+          },
+          {
+            "type": "checkbox",
+            "id": "text_transform",
+            "label": "t:sections.local-extra-words.sections.product-card.blocks.text.settings.transform.label",
+            "default": false
+          }
+        ]
+      }
+    ],
+    "settings": [
+      {
+        "type": "header",
+        "content": "t:local-march-update.labels.heading"
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "t:sections.local-extra-words.sections.headings.heading",
+        "default": "Shop the look"
+      },
+      {
+        "type": "text",
+        "id": "subheading",
+        "label": "t:sections.local-extra-words.sections.headings.subheading",
+        "default": "Showcase your best products"
+      },
+      {
+        "type": "select",
+        "id": "section_heading_layout",
+        "label": "t:sections.rich-text.settings.text_alignment.label",
+        "options": [
+          {
+            "value": "section-heading--left",
+            "label": "t:sections.rich-text.settings.text_alignment.options__1.label"
+          },
+          {
+            "value": "section-heading--center",
+            "label": "t:sections.rich-text.settings.text_alignment.options__2.label"
+          }
+        ],
+        "default": "section-heading--left"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.main-article.blocks.content.name"
+      },
+      {
+        "id": "image",
+        "type": "image_picker",
+        "label": "t:sections.gallery.blocks.image.settings.image.label"
+      },
+      {
+        "type": "product_list",
+        "id": "product_list",
+        "limit": 6,
+        "label": "t:sections.local-extra-words.sections.main-product.blocks.related.settings.products"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.local-extra-words.sections.headings.custom_colors"
+      },
+      {
+        "type": "color",
+        "id": "color_background_main",
+        "label": "t:sections.split-extra-words.settings_schema.colors.settings.background",
+        "default": "rgba(0,0,0,0)"
+      },
+      {
+        "type": "color",
+        "id": "color_borders_main",
+        "label": "t:sections.local-extra-words.settings_schema.colors.settings.borders",
+        "default": "rgba(0,0,0,0)"
+      },
+      {
+        "type": "checkbox",
+        "id": "color_hide_borders",
+        "label": "t:sections.local-extra-words.settings_schema.colors.settings.hide_border",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "color_hide_shadow",
+        "label": "t:local-march-update.shadows.hide",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "t:sections.refactor_words.seo.name"
+      },
+      {
+        "type": "select",
+        "id": "seo_h_tag",
+        "label": "t:sections.refactor_words.seo.label",
+        "info": "t:sections.refactor_words.seo.info",
+        "options": [
+          {
+            "value": "h1",
+            "label": "H1"
+          },
+          {
+            "value": "h2",
+            "label": "H2"
+          },
+          {
+            "value": "h3",
+            "label": "H3"
+          },
+          {
+            "value": "h4",
+            "label": "H4"
+          },
+          {
+            "value": "span",
+            "label": "span"
+          }
+        ],
+        "default": "h2"
+      }
+    ],
+    "presets": [{
+      "name": "t:sections.shop-the-look.name",
+      "blocks": [
+        { "type": "price" },
+        { "type": "title" },
+        { "type": "quick_buy" }
+      ]
+    }],
+    "disabled_on": {
+      "groups": ["header"]
+    }
+  }
+{% endschema %}

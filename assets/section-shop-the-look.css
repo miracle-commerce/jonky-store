@@ -1,0 +1,102 @@
+/*
+ *  1.0. Mixins
+*/
+.shop-the-look {
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  min-height: 60vh;
+}
+.shop-the-look--image-left {
+  background-position: center left;
+  padding-inline-start: var(--gutter-small);
+}
+.shop-the-look--image-right {
+  background-position: center right;
+  padding-inline-end: var(--gutter-small);
+}
+.shop-the-look__image {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  z-index: 0;
+}
+.shop-the-look__image--blank {
+  background: #f4f3f3;
+  background: linear-gradient(90deg, #f4f3f3 0%, rgba(244, 243, 243, 0) 100%);
+}
+html[dir=rtl] .shop-the-look__image {
+  right: 0;
+}
+html[dir=ltr] .shop-the-look__image {
+  left: 0;
+}
+.shop-the-look__image span,
+.shop-the-look__image figure {
+  padding-top: 0 !important;
+  height: 100% !important;
+}
+@media screen and (max-width: 474px) {
+  .shop-the-look__image {
+    width: 100%;
+    height: 50vh;
+  }
+}
+.shop-the-look__slider {
+  padding: 0 var(--grid-gap);
+  width: 50%;
+  margin-inline-start: 50%;
+  --col-adjusted-width: 200%;
+}
+.shop-the-look__slider .grid {
+  --col-size: calc(
+  	(var(--col-adjusted-width) - var(--col-gap) * (var(--visible-cols) - 1)) /
+  		var(--visible-cols)
+  	) ;
+}
+@media screen and (max-width: 1023px) {
+  .shop-the-look__slider {
+    width: 66.66%;
+    margin-inline-start: 33.33%;
+    --col-adjusted-width: 150%;
+  }
+}
+@media screen and (max-width: 767px) {
+  .shop-the-look__slider {
+    width: 50%;
+    margin-inline-start: 50%;
+    --col-adjusted-width: 200%;
+  }
+  .shop-the-look__slider .css-slider-index-navigation {
+    display: block !important;
+  }
+  .shop-the-look__slider .css-slider-dot-navigation {
+    display: none !important;
+  }
+}
+@media screen and (max-width: 474px) {
+  .shop-the-look__slider {
+    margin-top: 50vh;
+    width: 100%;
+    margin-inline-start: 0;
+    --col-adjusted-width: 100%;
+  }
+}
+.shop-the-look__slider .star-rating__caption {
+  display: none;
+}
+
+.css-slider-custom-navigation {
+  display: flex;
+  margin-bottom: -0.625rem;
+}
+.css-slider-custom-navigation .css-slider-button {
+  margin-inline-start: 0.75rem;
+  border-radius: 100%;
+  border: 1px solid;
+  border-color: transparent;
+  opacity: 1;
+}
+.no-touchevents .css-slider-custom-navigation .css-slider-button:hover {
+  border-color: var(--color-borders-main);
+}

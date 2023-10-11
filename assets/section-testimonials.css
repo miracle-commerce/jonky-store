@@ -1,0 +1,72 @@
+/*
+ *  1.0. Mixins
+*/
+.testimonials--center .testimonial {
+  padding: 0 20%;
+}
+@media screen and (max-width: 1023px) {
+  .testimonials--center .testimonial {
+    padding: 0 10%;
+  }
+}
+@media screen and (max-width: 474px) {
+  .testimonials--center .testimonial {
+    padding: 0;
+  }
+}
+.testimonials--left .testimonial {
+  padding-inline-end: 20%;
+}
+.testimonial__quote {
+  font-size: var(--font-size);
+}
+@media screen and (max-width: 1023px) {
+  .testimonial__quote {
+    font-size: calc(var(--font-size) * 0.9);
+  }
+}
+@media screen and (max-width: 1023px) {
+  .testimonial__quote {
+    font-size: calc(var(--font-size) * 0.8);
+  }
+}
+@media screen and (max-width: 474px) {
+  .testimonial__quote {
+    font-size: calc(var(--font-size) * 0.7);
+  }
+}
+.testimonials--center .testimonial__quote {
+  text-align: center;
+}
+.testimonial__avatar {
+  width: 100%;
+  display: flex;
+  gap: 0.9375rem;
+  align-items: center;
+}
+.testimonials--center .testimonial__avatar {
+  justify-content: center;
+}
+.testimonial__avatar-image {
+  border-radius: 50%;
+  overflow: hidden;
+  width: 4.375rem;
+  background: rgba(0, 0, 0, 0.06);
+}
+.testimonial__avatar-image + .testimonial__avatar-info span {
+  text-align: start !important;
+}
+.testimonial__avatar-image img {
+  border-radius: 50%;
+}
+.testimonial__avatar-info {
+  width: auto;
+}
+.testimonial__avatar-info span {
+  display: block;
+  clear: both;
+  text-align: start;
+}
+.testimonials--center .testimonial__avatar-info span {
+  text-align: center;
+}

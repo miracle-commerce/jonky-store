@@ -1,0 +1,102 @@
+<div 
+  id="FeaturedMedia-{{ section.id }}-{{ media.id }}" 
+  class="product-gallery-item element--border-radius 
+  {% if section.settings.show_border and section.settings.gallery_card_design == false %} element--has-border--body element--has-border--thin {% endif %} 
+  {% if section.settings.gallery_card_design %} element--has-border element--card-bgc element--has-shadow {% endif %}
+  element--border-radius"
+  data-product-media-type="{{ media.media_type }}{% if media.media_type == 'external_video' %}-{{ media.host }}{% endif %}"
+  data-product-single-media-wrapper
+  data-media-id="{{ media.id }}"
+  data-video
+  tabindex="0"
+  data-index="{{ index }}"
+  {%- if media.media_type == 'external_video' -%} 
+    data-video-id="{{ media.external_id }}" 
+    data-video-host="{{ media.host }}"
+  {%- endif -%}
+  {%- if media.media_type == 'image' and enable_zoom -%} data-image-zoom {%- endif -%}
+  {%- if media.media_type == 'image' -%} 
+    {%- if aspect_ratio != 'natural' -%}
+      data-ratio="{{ aspect_ratio }}" style="padding-top: {{ 100 | divided_by: aspect_ratio }}%" 
+    {%- else -%}
+      data-ratio="{{ media.aspect_ratio }}" style="padding-top: {{ 100 | divided_by: media.aspect_ratio }}%" 
+    {%- endif -%}
+  {%- endif -%}
+>
+
+  {%- assign sizes = 'sizes="(max-width: 767px) calc(100vw - 20px), (max-width: 1360px) 50vw, 620px"' -%}
+
+  {%- if media.media_type == 'image' -%}
+
+    {%- liquid
+
+      if index == 0 
+        assign preload = true
+      endif
+      
+      render 'lazy-image', image: media, id: image_id, sizes: sizes, ratio: aspect_ratio, fit: fit, preload: preload, type: 'background', class: 'apply-gallery-animation'
+
+    -%}
+
+    {%- if enable_zoom -%}
+      <product-image-zoom class="product-gallery-item__zoom" data-image="{{ media | image_url }}" aria-hidden="true" tabindex="-1">
+        {%- render 'theme-symbols', icon: 'zoom-in' -%}
+      </product-image-zoom>
+    {% endif %}
+
+  {%- else -%}
+
+      <div class="product-gallery-item__media" {% unless media.aspect_ratio > 0 %} style="padding-top: 100%" {% else %} style="padding-top: {{ 100 | divided_by: media.aspect_ratio }}%" {% endunless %}>
+
+      {%- if media.media_type == "external_video" or media.media_type == "video" -%}
+
+        <video-popup id="video-popup--{{ image_id }}" class="video-popup" style="display:block">
+
+          <template>
+            {%- liquid
+              if media.media_type == "external_video" 
+                assign video_class = 'js-' | append: media.host
+                if media.host == 'youtube'
+                  echo media | external_video_url: autoplay: true, loop: loop, playlist: media.external_id | external_video_tag: class: video_class, loading: "lazy"
+                else 
+                  echo media | external_video_url: autoplay: true, loop: loop | external_video_tag: loading: "lazy", class: video_class
+                endif
+              else
+                echo media | video_tag: autoplay: false, loop: loop, controls: true, preload: "preload"
+              endif
+            -%}
+          </template>
+
+          <div class="video-popup__container" data-js-video-popup-container>
+
+            <a class="video-popup__link" data-js-video-popup-link>
+
+              <span class="video-popup__play" aria-hidden="true">
+                {%- render 'theme-symbols', icon: 'play' -%}
+              </span>
+
+              <span class="video-popup__background" aria-hidden="true">
+                {%- render 'lazy-image', image: media.preview_image, sizes: sizes, id: media.id, type: 'background', class: 'apply-gallery-animation' -%}
+              </span>
+
+            </a>
+
+          </div>
+
+          <button class="video-popup__close" data-js-video-popup-close>
+            <span class="visually-hidden">{{ 'general.accessibility_labels.close' | t }}</span>
+            <span aria-hidden="true" class="exit">{%- render 'theme-symbols', icon: 'close' -%}</span>
+          </button>
+
+        </video-popup>
+
+      {%- elsif media.media_type == 'model' -%}
+        <product-model>
+          {{ media | media_tag: image_size: "2048x", toggleable: true, class: 'apply-gallery-animation' }}
+        </product-model>
+      {%- endif -%}
+    </div>
+  
+  {%- endif -%}
+
+</div>

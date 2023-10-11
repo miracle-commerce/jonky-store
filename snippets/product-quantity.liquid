@@ -1,0 +1,38 @@
+{% assign product_available = variant.available %}
+
+<product-quantity
+  class="product-quantity"
+  {% unless product_available %}
+    style="display:none"
+  {% endunless %}
+  data-js-product-quantity
+>
+  <button
+    class="product-quantity__minus qty-minus no-js-hidden"
+    aria-label="{{ 'general.accessibility_labels.decrease_quantity' | t }}"
+    role="button"
+    controls="qty-{{ id }}"
+  >
+    {%- render 'theme-symbols', icon: 'minus' -%}
+  </button>
+
+  <label for="qty-{{ id }}" class="visually-hidden">{{ 'general.accessibility_labels.quantity' | t }}</label>
+  <input
+    type="number"
+    name="quantity"
+    value="1"
+    min="1"
+    max="999"
+    class="product-quantity__selector qty-selector text-size--xlarge"
+    id="qty-{{ id }}"
+  >
+
+  <button
+    class="product-quantity__plus qty-plus no-js-hidden"
+    aria-label="{{ 'general.accessibility_labels.increase_quantity' | t }}"
+    role="button"
+    controls="qty-{{ id }}"
+  >
+    {%- render 'theme-symbols', icon: 'plus' -%}
+  </button>
+</product-quantity>

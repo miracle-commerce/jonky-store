@@ -1,0 +1,50 @@
+{
+  "type": "footer",
+  "name": "t:sections.refactor_words.labels.footer_group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "text-1": {
+          "type": "text",
+          "settings": {
+            "title": "Contact",
+            "size": "h5",
+            "content": "<p>E-mail: info@jonky.nl<\/p><p>tel: 06-29502165<\/p><p>KVK: 86985051<\/p><p>BTW nummer: NL864167489B01<\/p>",
+            "show_social_icons": false,
+            "enable_follow_on_shop": false
+          }
+        },
+        "66aedfd3-6d9a-40c4-87cf-6c1d9d75db2c": {
+          "type": "menu",
+          "settings": {
+            "title": "Snelle links",
+            "menu": "footer"
+          }
+        },
+        "23b6646a-cfa0-41ea-a096-c7697fdc719c": {
+          "type": "image",
+          "settings": {
+            "title": "",
+            "image": "shopify:\/\/shop_images\/nix_18_afbeelding.png"
+          }
+        }
+      },
+      "block_order": [
+        "text-1",
+        "66aedfd3-6d9a-40c4-87cf-6c1d9d75db2c",
+        "23b6646a-cfa0-41ea-a096-c7697fdc719c"
+      ],
+      "settings": {
+        "layout": "grid-3 grid-lap-1",
+        "show_locale_selector": true,
+        "show_country_selector": true,
+        "remove_margin": false,
+        "seo_h_tag": "h3"
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

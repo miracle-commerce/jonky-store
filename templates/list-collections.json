@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-list-collections",
+      "settings": {
+        "layout": "grid-3 grid-lap-2 grid-tiny-1",
+        "image_aspect_ratio": "1",
+        "display_type": "all",
+        "sort": "alphabetical"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

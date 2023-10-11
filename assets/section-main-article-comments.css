@@ -1,0 +1,67 @@
+/*
+ *  1.0. Mixins
+*/
+.comment:not(:first-child) {
+  margin-top: var(--gutter-regular);
+}
+.comment__content {
+  border: 1px var(--color-borders-main) solid;
+  border-radius: var(--border-radius-cards);
+  padding: var(--gutter-regular);
+}
+.comment__content p:last-child {
+  margin-bottom: 0;
+  position: relative;
+  z-index: 1;
+}
+.comment__date {
+  color: var(--color-secondary-text-main);
+}
+.comment__author {
+  color: var(--color-text-main);
+}
+.comment__info {
+  position: relative;
+  padding-inline-start: 7.5rem;
+  color: var(--color-borders-main);
+  padding-top: 1.125rem;
+}
+@media screen and (max-width: 474px) {
+  .comment__info {
+    padding-inline-start: 5rem;
+  }
+}
+.comment__info span {
+  display: block;
+}
+.comment__info::before {
+  content: "";
+  width: 2.3125rem;
+  height: 2.3125rem;
+  display: inline-block;
+  margin-inline-start: var(--gutter-large);
+  border: solid 1px currentColor;
+  transform: rotate(0deg) skew(0deg, 45deg);
+  top: -1.1875rem;
+  position: absolute;
+  border-top: 0;
+  border-left: 0;
+  background: var(--color-background-main);
+}
+html[dir=rtl] .comment__info::before {
+  right: 0;
+}
+html[dir=ltr] .comment__info::before {
+  left: 0;
+}
+
+.comments__form {
+  margin-top: var(--gutter-large);
+  width: 100%;
+}
+.comments__form .form-field {
+  margin-bottom: var(--gutter-small);
+}
+.comments__form .button {
+  width: auto;
+}

@@ -1,0 +1,155 @@
+<div class="container--large container--vertical-space">
+
+  {%- render 'section-heading', heading: section.settings.title, subheading: section.settings.subtitle, heading_tag: section.settings.seo_h_tag, layout: section.settings.section_heading_layout -%}
+
+  {%- unless section.settings.video == blank -%}
+  
+    {{ 'component-video.css' | asset_url | stylesheet_tag }}
+
+    <video-popup id="video-popup--{{ section.id }}"  class="video-popup video-popup--section element--border-radius" style="display:block"
+      data-video data-product-media-type="{{ section.settings.video.type }}"
+    >
+
+      <template>
+        {%- if section.settings.video.type == 'youtube' -%}
+          <iframe src="https://www.youtube.com/embed/{{ section.settings.video.id }}?enablejsapi=1&autoplay=1" class="js-youtube video-popup__iframe" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.title | escape }}"></iframe>
+        {%- else -%}
+          <iframe src="https://player.vimeo.com/video/{{ section.settings.video.id }}?autoplay=1" class="js-vimeo video-popup__iframe" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.title | escape }}"></iframe>
+        {%- endif -%}
+      </template>
+
+      <div class="video-popup__container" data-js-video-popup-container>
+
+        <a class="video-popup__link" href="{{ section.settings.video }}" data-js-video-popup-link>
+
+          {%- unless section.settings.video == blank -%}
+            <span class="video-popup__play" aria-hidden="true">
+              {%- render 'theme-symbols', icon: 'play' -%}
+            </span>
+          {%- endunless -%}
+
+          {%- unless section.settings.image == blank -%}
+            <span class="video-popup__background" aria-hidden="true">
+              {%- liquid
+                assign sizes = 'sizes="(max-width: 1023px) calc(100vw - 60px), 84vw"'
+                render 'lazy-image', image: section.settings.image, type: 'background', alt: section.settings.title, sizes: sizes
+              -%}
+            </span>
+          {%- else -%}
+            <span class="video-popup__background onboarding-svg onboarding-background">
+              <span style="opacity: .5;">{{ 'lifestyle-1' | placeholder_svg_tag }}</span>
+            </span>
+          {%- endunless -%}
+
+        </a>
+
+      </div>
+
+      <button class="video-popup__close" data-js-video-popup-close>
+        <span class="visually-hidden">{{ 'general.accessibility_labels.close' | t }}</span>
+        <span aria-hidden="true" class="exit">{%- render 'theme-symbols', icon: 'close' -%}</span>
+      </button>
+
+    </video-popup>
+
+    <script src="{{ 'component-video.js' | asset_url }}" defer></script>
+
+  {%- endunless -%}
+
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.local-extra-words.sections.video.name",
+    "class": "mount-video-popup section-w-margin no-overflow",
+    "settings": [
+      {
+        "type": "header",
+        "content": "t:local-march-update.labels.heading"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "t:sections.local-extra-words.sections.headings.heading",
+        "default": "Video"
+      },
+      {
+        "type": "text",
+        "id": "subtitle",
+        "label": "t:sections.local-extra-words.sections.headings.subheading",
+        "default": "Video description"
+      },
+      {
+        "type": "select",
+        "id": "section_heading_layout",
+        "label": "t:sections.rich-text.settings.text_alignment.label",
+        "options": [
+          {
+            "value": "section-heading--left",
+            "label": "t:sections.rich-text.settings.text_alignment.options__1.label"
+          },
+          {
+            "value": "section-heading--center",
+            "label": "t:sections.rich-text.settings.text_alignment.options__2.label"
+          }
+        ],
+        "default": "section-heading--left"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.main-article.blocks.content.name"
+      },
+      {
+        "id": "video",
+        "type": "video_url",
+        "label": "t:sections.local-extra-words.sections.video.settings.video.label",
+        "accept": ["youtube", "vimeo"],
+        "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "t:sections.local-extra-words.sections.video.settings.image.label"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.refactor_words.seo.name"
+      },
+      {
+        "type": "select",
+        "id": "seo_h_tag",
+        "label": "t:sections.refactor_words.seo.label",
+        "info": "t:sections.refactor_words.seo.info",
+        "options": [
+          {
+            "value": "h1",
+            "label": "H1"
+          },
+          {
+            "value": "h2",
+            "label": "H2"
+          },
+          {
+            "value": "h3",
+            "label": "H3"
+          },
+          {
+            "value": "h4",
+            "label": "H4"
+          },
+          {
+            "value": "span",
+            "label": "span"
+          }
+        ],
+        "default": "h2"
+      }
+    ],
+    "presets": [{
+      "name": "t:sections.local-extra-words.sections.video.name"
+    }],
+    "disabled_on": {
+      "groups": ["header"]
+    }
+  }
+{% endschema %}

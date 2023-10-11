@@ -1,0 +1,84 @@
+{
+  "sections": {
+    "main-cart": {
+      "type": "main-cart",
+      "blocks": {
+        "b01189cd-1d4c-465e-9e37-42165c710bc1": {
+          "type": "shopify:\/\/apps\/loox-product-reviews-photos\/blocks\/loox-trust-badge\/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "settings": {
+            "layout": "horizontal-slim",
+            "alignment": "left",
+            "scheme-type": "default",
+            "review-title": "reviews",
+            "rating-icon": true,
+            "average-rating": true,
+            "review-count": true,
+            "open-reviews": true,
+            "show-border": true,
+            "border-radius": 10,
+            "font-size": 20,
+            "background-color": "",
+            "secondary-background-color": "#8e2e2e",
+            "text-color": "",
+            "rating-icon-color": "",
+            "border-color": ""
+          }
+        },
+        "cart-items": {
+          "type": "cart-items",
+          "settings": {
+          }
+        },
+        "d797b960-a130-4e64-b8bd-05e05704b637": {
+          "type": "related-items",
+          "settings": {
+            "title": "Gerelateerde producten",
+            "products_number": 3
+          }
+        },
+        "b0e21b53-6928-4371-9e45-5388ca07d6e0": {
+          "type": "shipping-calculator",
+          "settings": {
+          }
+        },
+        "67273eed-1016-4b22-84f3-dbaa5aac0b1b": {
+          "type": "shopify:\/\/apps\/loox-product-reviews-photos\/blocks\/loox-testimonial-carousel-section\/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "settings": {
+            "maxWidth": 600,
+            "desktopFontSize": 23,
+            "mobileFontSize": 20,
+            "maxNumberOfCharacters": 100,
+            "quoteMarkIcon": "style-2",
+            "reviewerNameColor": "#000000",
+            "textColor": "#000000",
+            "starsColor": "",
+            "quotesIconColor": "#eaeaea",
+            "arrows_iconColor": "#000000",
+            "arrows_hideOnMobile": true,
+            "pagination_active": true,
+            "pagination_selectedDotColor": "#000000",
+            "pagination_dotColor": "#000000",
+            "autoplay_active": true,
+            "autoplay_duration": 2,
+            "productIds": ""
+          }
+        }
+      },
+      "block_order": [
+        "b01189cd-1d4c-465e-9e37-42165c710bc1",
+        "cart-items",
+        "d797b960-a130-4e64-b8bd-05e05704b637",
+        "b0e21b53-6928-4371-9e45-5388ca07d6e0",
+        "67273eed-1016-4b22-84f3-dbaa5aac0b1b"
+      ],
+      "custom_css": [
+        "h1 {font-weight: bold;}"
+      ],
+      "settings": {
+      }
+    }
+  },
+  "order": [
+    "main-cart"
+  ]
+}

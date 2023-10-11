@@ -1,0 +1,270 @@
+<div class="container--large container--vertical-space remove-empty-space">
+  
+  {%- render 'section-heading', heading: section.settings.heading, subheading: section.settings.subheading, heading_tag: section.settings.seo_h_tag, layout: section.settings.section_heading_layout -%}
+
+  {%- if section.settings.style == 'slider' -%}
+    <css-slider data-options='{
+        "selector": ".js-slider-item",
+        "groupCells": true,
+        "indexNav": true,
+        "navigationDOM": "<span class=\"css-slider-button css-slider-prev\" style=\"display:none\"><svg fill=\"none\" height=\"13\" viewBox=\"0 0 8 13\" width=\"8\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"#000\" ><path d=\"m7.91419 1.41431-6.48529 6.48528-1.4142102-1.41422 6.4852802-6.48527702z\"/><path d=\"m6.48528 12.9849-6.48528027-6.48532 1.41421027-1.41421 6.48528 6.48523z\"/></g></svg></span><span class=\"css-slider-button css-slider-next\" style=\"display:none\"><svg width=\"9\" height=\"13\" viewBox=\"0 0 9 13\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M0.914169 11.5857L7.39945 5.10041L8.81367 6.51463L2.32838 12.9999L0.914169 11.5857Z\" fill=\"black\"/><path d=\"M2.34307 0.0151367L8.82835 6.50042L7.41414 7.91463L0.928857 1.42935L2.34307 0.0151367Z\" fill=\"black\"/></svg></span>"
+      }'
+      class="css-slider css-slider--bottom-navigation"
+    >
+  {%- endif -%}
+
+  <div class="grid {% if section.settings.style == 'slider' %} grid--slider {% else %} grid--layout {% endif %} {{ section.settings.layout }} {% if section.settings.block_text_alignment == "text-align--left" %} grid--gap-large {% endif %}">
+  
+    {%- for block in section.blocks -%}
+
+      <div class="element--no-border element--no-radius js-slider-item {{ section.settings.block_text_alignment }}" {{ block.shopify_attributes }}>
+
+        <div class="{% if section.settings.block_text_alignment == "text-align--center" %} gutter--regular {% else %} gutter-right--large gutter-top--regular gutter-bottom--regular{% endif %} spacing--large remove-empty-space">
+
+          {%- unless block.settings.title == blank -%}
+            <div>
+              <{{ block.settings.seo_h_tag }} class="h5" style="margin-bottom:0;display:block">
+                
+                <span class="text-animation--underline">{{ block.settings.title | escape }}</span>
+                
+              </{{ block.settings.seo_h_tag }}>
+            </div>
+          {%- endunless -%}
+
+          {%- unless block.settings.caption == blank -%}
+            <div class="rte remove-empty-space">{{ block.settings.caption }}</div>
+          {%- endunless -%}
+
+        </div>
+      </div>
+
+    {%- endfor %}
+
+  </div>
+
+  {%- if section.settings.style == 'slider' -%}
+    </css-slider>
+  {%- endif -%}
+
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.words_210.text_columns.name",
+  "class": "mount-css-slider",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:local-march-update.labels.heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.local-extra-words.sections.headings.heading",
+      "default": "Text columns"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "t:sections.local-extra-words.sections.headings.subheading"
+    },
+    {
+      "type": "select",
+      "id": "section_heading_layout",
+      "label": "t:sections.rich-text.settings.text_alignment.label",
+      "options": [
+        {
+          "value": "section-heading--left",
+          "label": "t:sections.rich-text.settings.text_alignment.options__1.label"
+        },
+        {
+          "value": "section-heading--center",
+          "label": "t:sections.rich-text.settings.text_alignment.options__2.label"
+        }
+      ],
+      "default": "section-heading--left"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-article.blocks.content.name"
+    },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "t:sections.featured-collection.settings.layout.label",
+      "options": [
+        {
+          "label": "t:sections.featured-collection.settings.layout.options__1.label",
+          "value": "slider"
+        },
+        {
+          "label": "t:sections.featured-collection.settings.layout.options__2.label",
+          "value": "grid"
+        }
+      ],
+      "default": "slider"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "t:sections.local-extra-words.sections.columns.name",
+      "info": "t:sections.local-extra-words.sections.columns.info",
+      "options": [
+        {
+          "value": "grid-3 grid-lap-2",
+          "label": "t:sections.local-extra-words.sections.columns.option__2"
+        },
+        {
+          "value": "grid-4 grid-portable-3 grid-lap-2",
+          "label": "t:sections.local-extra-words.sections.columns.option__3"
+        }
+      ],
+      "default": "grid-4 grid-portable-3 grid-lap-2"
+    },
+    {
+      "type": "select",
+      "id": "block_text_alignment",
+      "label": "t:sections.rich-text.settings.text_alignment.label",
+      "options": [
+        {
+          "value": "text-align--left",
+          "label": "t:sections.rich-text.settings.text_alignment.options__1.label"
+        },
+        {
+          "value": "text-align--center",
+          "label": "t:sections.rich-text.settings.text_alignment.options__2.label"
+        }
+      ],
+      "default": "text-align--left"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.refactor_words.seo.name"
+    },
+    {
+      "type": "select",
+      "id": "seo_h_tag",
+      "label": "t:sections.refactor_words.seo.label",
+      "info": "t:sections.refactor_words.seo.info",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "span",
+          "label": "span"
+        }
+      ],
+      "default": "h2"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "t:sections.words_210.text_columns.block.name",
+      "settings": [
+        {
+          "type": "header",
+          "content": "t:sections.local-extra-words.sections.headings.text_content"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.local-extra-words.sections.headings.title",
+          "default": "Text"
+        },
+        {
+          "type": "richtext",
+          "id": "caption",
+          "label": "t:sections.local-extra-words.sections.faq.headings.content",
+          "default": "<p>Introduce your brand</p>"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.refactor_words.seo.name"
+        },
+        {
+          "type": "select",
+          "id": "seo_h_tag",
+          "label": "t:sections.refactor_words.seo.label",
+          "info": "t:sections.refactor_words.seo.info",
+          "options": [
+            {
+              "value": "h1",
+              "label": "H1"
+            },
+            {
+              "value": "h2",
+              "label": "H2"
+            },
+            {
+              "value": "h3",
+              "label": "H3"
+            },
+            {
+              "value": "h4",
+              "label": "H4"
+            },
+            {
+              "value": "span",
+              "label": "span"
+            }
+          ],
+          "default": "h3"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.words_210.text_columns.name",
+      "blocks": [
+        {
+          "type": "text",
+          "settings": {
+            "title": "Shipping",
+            "caption": "<p>Useful information about your shipping details</p>"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "title": "Returns",
+            "caption": "<p>Show how much time customers have for testing your products</p>"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "title": "Pickup",
+            "caption": "<p>Let your customers know about local pickup</p>"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "title": "Brand",
+            "caption": "<p>Write your brand story and journey</p>"
+          }
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header"]
+  }
+}
+{% endschema %}

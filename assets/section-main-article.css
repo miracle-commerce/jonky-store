@@ -1,0 +1,60 @@
+/*
+ *  1.0. Mixins
+*/
+.article--indent-for-social {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  grid-template-areas: "content social";
+  gap: 5rem;
+}
+@media screen and (max-width: 1023px) {
+  .article--indent-for-social {
+    grid-template-areas: "content" "social";
+    gap: 0;
+    grid-template-columns: 100%;
+  }
+}
+.article__content {
+  grid-area: content;
+}
+.article__meta {
+  grid-area: social;
+  position: relative;
+}
+.article__meta__sticky {
+  position: sticky;
+  top: 1.25rem;
+}
+html[dir=rtl] .article__meta__sticky {
+  right: 0;
+}
+html[dir=ltr] .article__meta__sticky {
+  left: 0;
+}
+.article__meta-tags .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+}
+.article__meta-social + .article__meta-tags {
+  margin-top: var(--gutter-large);
+}
+.article__meta .social-icons svg path {
+  fill: var(--color-text-main);
+  transition: all 100ms linear;
+}
+.no-touchevents .article__meta .social-icons a:hover svg path {
+  fill: var(--color-accent-main);
+}
+.article__intro {
+  margin-bottom: var(--gutter-large);
+}
+.article__featured-image {
+  position: relative;
+  text-align: center;
+  margin-top: var(--gutter-large);
+}
+.article__featured-image svg {
+  max-height: 25rem;
+}

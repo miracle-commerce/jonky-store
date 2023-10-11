@@ -1,0 +1,84 @@
+/*
+ *  1.0. Mixins
+*/
+.pagination a {
+  display: inline-block;
+  line-height: 1;
+  color: var(--color-text-main);
+  border: solid 1px transparent;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  line-height: 38px;
+  transition: ease 250ms background-color, ease 250ms border-color, ease 250ms color;
+}
+.no-touchevents .pagination a:hover, .pagination .no-touchevents a:hover {
+  border-color: var(--color-text-main);
+}
+
+.pagination li.active {
+  background-color: var(--color-text-main);
+  color: var(--color-foreground-main);
+  line-height: 1;
+  border: solid 1px var(--color-borders-main);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  line-height: 38px;
+  cursor: default;
+}
+
+.pagination {
+  padding-top: var(--gutter-large);
+  text-align: start;
+}
+@media screen and (max-width: 767px) {
+  .pagination {
+    text-align: center;
+  }
+}
+.pagination li {
+  margin: 0 0.3125rem;
+  text-align: center;
+}
+.pagination li:not(.hide) {
+  display: inline-block;
+}
+.pagination li.prev, .pagination li.next {
+  background-position: center center;
+  color: transparent !important;
+}
+.pagination li.prev svg path, .pagination li.next svg path {
+  fill: var(--color-text-main);
+}
+.pagination li.prev a, .pagination li.next a {
+  border-color: var(--color-borders-main);
+}
+.no-touchevents .pagination li.prev a:hover, .no-touchevents .pagination li.next a:hover {
+  background-color: var(--color-text-main);
+  border-color: var(--color-text-main);
+}
+.no-touchevents .pagination li.prev a:hover svg path, .no-touchevents .pagination li.next a:hover svg path {
+  fill: var(--color-foreground-main);
+}
+.pagination li.prev {
+  transform: rotate(90deg);
+}
+.pagination li.next {
+  transform: rotate(-90deg);
+}
+.pagination li.mobile {
+  display: none;
+  margin: 0 0.75rem;
+}
+@media screen and (max-width: 767px) {
+  .pagination li.mobile {
+    display: inline-block;
+  }
+}
+.pagination li.disabled {
+  color: var(--color-secondary-text-main);
+  display: inline-block;
+  padding: 0.625rem 0.9375rem;
+  border: solid 1px transparent;
+}

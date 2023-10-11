@@ -1,0 +1,17 @@
+<div class="container {% if section.settings.center %} container--compact {% else %} container--large {% endif %} container--vertical-space-small main-page gutter-bottom--page">
+
+  <h1 class="title h2">{{ 'general.404.title' | t }}</h1>
+
+  <div class="rte">
+    <p>{{ 'general.404.subtitle' | t }}</p>
+  </div>
+  <a style="margin-top:1em" href="{{ routes.all_products_collection_url }}" class="button button--solid button--large">{{ 'general.404.continue_browsing' | t }}</a>
+
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.main-404.name",
+    "class": "shopify-section section-w-margin section-w-mobile-padding"
+  }
+{% endschema %}

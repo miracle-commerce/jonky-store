@@ -1,0 +1,423 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "854e7707-0a53-40f1-82bf-727340968b7c": {
+          "type": "shopify:\/\/apps\/loox-product-reviews-photos\/blocks\/loox-rating\/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "disabled": true,
+          "settings": {
+            "contentSize": 15,
+            "pattern": "[count] reviews",
+            "hideText": false,
+            "alignment": "left",
+            "textColor": "",
+            "starColor": "rgba(0,0,0,0)",
+            "showAllReviews": false,
+            "looxOpenFloatingWidget": false,
+            "emptyRatingWidget": true
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+          }
+        },
+        "ae90b012-a36a-4026-9655-f6d80e628f1a": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>{{ product.metafields.custom.wijn_info.value }}<\/strong><\/p>",
+            "text_size": "text-size--xsmall",
+            "text_color": "#000000",
+            "text_transform": false
+          }
+        },
+        "835fbf54-6b57-4bee-b33a-b7ab75ed2bfb": {
+          "type": "text",
+          "settings": {
+            "text": "<p>{{ product.metafields.custom.inhoud_info.value }}<\/p>",
+            "text_size": "text-size--xsmall",
+            "text_color": "#6a6a6a",
+            "text_transform": false
+          }
+        },
+        "550e851b-d0d2-4391-9eed-c7f7b9d68396": {
+          "type": "text",
+          "settings": {
+            "text": "{{ product.metafields.custom.niet_tevreden | metafield_tag }}",
+            "text_size": "text-size--xsmall",
+            "text_color": "#6a6a6a",
+            "text_transform": false
+          }
+        },
+        "40725f51-fd87-4962-8d63-9ee1325ac7b5": {
+          "type": "price",
+          "settings": {
+          }
+        },
+        "13ea7bbb-c6d4-4307-89fc-2e1886f9f99c": {
+          "type": "icons",
+          "settings": {
+            "title": "",
+            "icon_1_image": "{{ product.metafields.custom.product_badge_file_1.value }}",
+            "icon_1_label": "{{ product.metafields.custom.product_badge_text_1.value }}",
+            "icon_2_image": "{{ product.metafields.custom.product_badge_file_2.value }}",
+            "icon_2_label": "{{ product.metafields.custom.product_badge_text_2.value }}",
+            "icon_3_label": "",
+            "icon_4_label": "",
+            "icon_5_label": "",
+            "icon_6_label": "",
+            "hide_block_if": true
+          }
+        },
+        "8ea16222-4334-47e6-a1f0-c132d2490753": {
+          "type": "text",
+          "settings": {
+            "text": "<p>{{ product.metafields.custom.korte_beschrijving.value }}<\/p>",
+            "text_size": "text-size--xsmall",
+            "text_color": "#807b78",
+            "text_transform": false
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "variants_style": "select",
+            "show_quantities": "below"
+          }
+        },
+        "dc8a0e21-ec43-44aa-9b6b-bc509073be41": {
+          "type": "shopify:\/\/apps\/kaching-bundle-quantity-breaks\/blocks\/app-block\/6c637362-a106-4a32-94ac-94dcfd68cdb8",
+          "disabled": true,
+          "settings": {
+            "product": "{{product}}"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_price": false,
+            "show_quantity_selector": true,
+            "show_preorder": false,
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": false
+          }
+        },
+        "empty_space_2": {
+          "type": "space",
+          "settings": {
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+          }
+        },
+        "fdc5afa4-16fb-473e-ba84-4b92d8d25381": {
+          "type": "space",
+          "settings": {
+          }
+        },
+        "9ea086f8-5c47-4766-b5bd-22ca9d1d59dc": {
+          "type": "nutrition",
+          "settings": {
+            "heading": "Proefnotitie",
+            "label_left": "",
+            "label_right": "",
+            "content": "{{ product.metafields.custom.proefnotitie_test | metafield_tag }}",
+            "content_extra": "",
+            "hide_block_if": true
+          }
+        }
+      },
+      "block_order": [
+        "854e7707-0a53-40f1-82bf-727340968b7c",
+        "title",
+        "ae90b012-a36a-4026-9655-f6d80e628f1a",
+        "835fbf54-6b57-4bee-b33a-b7ab75ed2bfb",
+        "550e851b-d0d2-4391-9eed-c7f7b9d68396",
+        "40725f51-fd87-4962-8d63-9ee1325ac7b5",
+        "13ea7bbb-c6d4-4307-89fc-2e1886f9f99c",
+        "8ea16222-4334-47e6-a1f0-c132d2490753",
+        "variant_picker",
+        "dc8a0e21-ec43-44aa-9b6b-bc509073be41",
+        "buy_buttons",
+        "empty_space_2",
+        "description",
+        "fdc5afa4-16fb-473e-ba84-4b92d8d25381",
+        "9ea086f8-5c47-4766-b5bd-22ca9d1d59dc"
+      ],
+      "settings": {
+        "gallery_style": "slider",
+        "gallery_ratio": "1",
+        "gallery_fit": true,
+        "show_border": true,
+        "gallery_card_design": true,
+        "gallery_padding": 0,
+        "gallery_pagination": "dots",
+        "enable_zoom": true,
+        "enable_video_looping": false
+      }
+    },
+    "7f11a422-4bbb-4d0c-bfaf-27a9d6e3caab": {
+      "type": "text-columns-icons",
+      "blocks": {
+        "5b038fa4-b32f-4811-8c72-f47f85f00dee": {
+          "type": "image",
+          "settings": {
+            "icon": "delivery",
+            "image": "{{ product.metafields.custom.wijn_thermometer.value }}",
+            "title": "{{ product.metafields.custom.smaakpalet_5_0.value }}",
+            "caption": "{{ product.metafields.custom.smaakpalet_5_1.value }}",
+            "link": "",
+            "color_background_main": "#f5f5f5",
+            "color_icons_main": "rgba(0,0,0,0)",
+            "seo_h_tag": "h3"
+          }
+        },
+        "d5f99478-f374-4107-b9b9-531d6185722d": {
+          "type": "image",
+          "settings": {
+            "icon": "time-limit",
+            "image": "{{ product.metafields.custom.wijn_kleur.value }}",
+            "title": "{{ product.metafields.custom.smaakpalet_6_0.value }}",
+            "caption": "{{ product.metafields.custom.smaakpalet_6_1.value }}",
+            "link": "",
+            "color_background_main": "#f5f5f5",
+            "color_icons_main": "rgba(0,0,0,0)",
+            "seo_h_tag": "h3"
+          }
+        },
+        "df1052bb-000f-49d3-8ba9-2ad1d84c4168": {
+          "type": "image",
+          "settings": {
+            "icon": "store",
+            "image": "{{ product.metafields.custom.decanteren_wijn.value }}",
+            "title": "{{ product.metafields.custom.smaakpalet_7_0.value }}",
+            "caption": "{{ product.metafields.custom.smaakpalet_7_1.value }}",
+            "link": "",
+            "color_background_main": "#f5f5f5",
+            "color_icons_main": "rgba(0,0,0,0)",
+            "seo_h_tag": "h3"
+          }
+        },
+        "c9df4f99-e803-4ca1-8bec-9ccc1e5991f9": {
+          "type": "image",
+          "settings": {
+            "icon": "tree",
+            "image": "{{ product.metafields.custom.op_dronk_tot.value }}",
+            "title": "{{ product.metafields.custom.smaakpalet_8_0.value }}",
+            "caption": "{{ product.metafields.custom.smaakpalet_8_1.value }}",
+            "link": "",
+            "color_background_main": "#f5f5f5",
+            "color_icons_main": "rgba(0,0,0,0)",
+            "seo_h_tag": "h3"
+          }
+        }
+      },
+      "block_order": [
+        "5b038fa4-b32f-4811-8c72-f47f85f00dee",
+        "d5f99478-f374-4107-b9b9-531d6185722d",
+        "df1052bb-000f-49d3-8ba9-2ad1d84c4168",
+        "c9df4f99-e803-4ca1-8bec-9ccc1e5991f9"
+      ],
+      "custom_css": [
+        "h2 {font-weight: bold; font-size: 24px; \/* Pas de grootte naar wens aan *\/}"
+      ],
+      "settings": {
+        "heading": "Serveertips",
+        "subheading": "",
+        "section_heading_layout": "section-heading--left",
+        "style": "slider",
+        "layout": "grid-4 grid-portable-3 grid-lap-2",
+        "border_radius": 200,
+        "section_background_color": "rgba(0,0,0,0)",
+        "section_heading_color": "rgba(0,0,0,0)",
+        "remove_margin": false,
+        "seo_h_tag": "h2"
+      }
+    },
+    "24598735-9d4d-4877-a0c2-5e7ffca277d9": {
+      "type": "content-toggles",
+      "blocks": {
+        "template--19692590956880__24598735-9d4d-4877-a0c2-5e7ffca277d9-text-1": {
+          "type": "text",
+          "settings": {
+            "title": "Hoe kan ik zeker zijn dat deze wijn aan mijn verwachtingen voldoet?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>Bij Jonky Wines selecteren we enkel wijnen van de hoogste kwaliteit. Onze strenge kwaliteitsnormen stellen ons in staat om u de zekerheid te bieden dat uw ervaring meer dan bevredigend zal zijn. We zijn zo overtuigd van de kwaliteit van onze selectie dat we een 'niet tevreden, geld terug'-garantie bieden.<\/p><p> U kunt de volledige voorwaarden van deze garantie hier vinden: <a href=\"\/pages\/voorwaarden-niet-tevreden-geld-terug-actie-jonky-nl\" target=\"_blank\" title=\"Voorwaarden &quot;Niet tevreden, geld terug&quot; actie - Jonky.nl\">Voorwaarden Geld-Terug Garantie<\/a>.<\/p>"
+          }
+        },
+        "template--19692590956880__24598735-9d4d-4877-a0c2-5e7ffca277d9-text-2": {
+          "type": "text",
+          "settings": {
+            "title": "Wat is de geschatte levertijd voor mijn bestelling?",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>Wanneer u op een doordeweekse dag vóór 16:00 uur bestelt, streven we ernaar om uw bestelling de volgende dag te bezorgen. Dit is echter afhankelijk van de drukte.<\/p>"
+          }
+        },
+        "618db96b-cf04-479a-b175-7dbb0583a7ca": {
+          "type": "text",
+          "settings": {
+            "title": "{{ product.metafields.custom.faq_question_1.value }}",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>{{ product.metafields.custom.faq1.value }}<\/p>"
+          }
+        },
+        "6965d326-fb38-4584-99d1-ffbcff361c56": {
+          "type": "text",
+          "settings": {
+            "title": "{{ product.metafields.custom.faq2_vraag.value }}",
+            "subtitle": "",
+            "icon": "no-icon",
+            "button_label": "",
+            "button_link": "",
+            "body": "<p>{{ product.metafields.custom.faq2.value }}<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "template--19692590956880__24598735-9d4d-4877-a0c2-5e7ffca277d9-text-1",
+        "template--19692590956880__24598735-9d4d-4877-a0c2-5e7ffca277d9-text-2",
+        "618db96b-cf04-479a-b175-7dbb0583a7ca",
+        "6965d326-fb38-4584-99d1-ffbcff361c56"
+      ],
+      "custom_css": [
+        "h3 {font-size: 22px; font-weight: bold; \/* Voeg andere gewenste stijleigenschappen toe *\/ color: #242337; \/* Tekstkleur is ingesteld op #242337 *\/}"
+      ],
+      "settings": {
+        "heading": "Veelgestelde vragen",
+        "subheading": "",
+        "section_heading_layout": "section-heading--left",
+        "open_first": true,
+        "form_enable": false,
+        "form_title": "Contact form",
+        "seo_h_tag": "h3"
+      }
+    },
+    "18d8a256-c32e-4324-8d8e-50561e6573ef": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "<h1 style=\"font-weight: bold; margin-top: 0; font-size: 22px;\">Reviews<\/h1>\n<div id=\"header\" class=\"minimal-header\">\n    <!-- De rest van de code blijft ongewijzigd -->\n<\/div>",
+        "full_width": false,
+        "remove_margin": false
+      }
+    },
+    "169522256554fcea3a": {
+      "type": "apps",
+      "blocks": {
+        "8febb8b4-94b8-428b-bee5-c11170228683": {
+          "type": "shopify:\/\/apps\/loox-product-reviews-photos\/blocks\/loox-dynamic-section\/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "settings": {
+            "only_photos": false,
+            "aggregated": false,
+            "limit": 20,
+            "hide_thumbnails": false,
+            "maxwidth": 1920
+          }
+        }
+      },
+      "block_order": [
+        "8febb8b4-94b8-428b-bee5-c11170228683"
+      ],
+      "custom_css": [
+
+      ],
+      "settings": {
+        "full_width": false,
+        "remove_margin": true
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+          }
+        },
+        "bcb1b085-777e-4dee-b568-3a90a0ace75b": {
+          "type": "rating",
+          "settings": {
+            "reviews_app": "loox"
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+          }
+        },
+        "quick_buy": {
+          "type": "quick_buy",
+          "settings": {
+          }
+        },
+        "635c4757-d506-4442-be27-67a31faa3a4a": {
+          "type": "icons",
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "bcb1b085-777e-4dee-b568-3a90a0ace75b",
+        "price",
+        "quick_buy",
+        "635c4757-d506-4442-be27-67a31faa3a4a"
+      ],
+      "custom_css": [
+
+      ],
+      "settings": {
+        "heading": "U vindt misschien ook leuk:",
+        "subheading": "",
+        "section_heading_layout": "section-heading--left",
+        "layout": "grid-4 grid-portable-3 grid-lap-2 grid-tiny-1",
+        "products_number": 4,
+        "section_background_color": "rgba(0,0,0,0)",
+        "section_heading_color": "rgba(0,0,0,0)",
+        "remove_margin": false
+      }
+    },
+    "loox-product-reviews-app-section": {
+      "type": "apps",
+      "blocks": {
+        "loox-product-reviews": {
+          "type": "shopify:\/\/apps\/loox-product-reviews-photos\/blocks\/loox-dynamic-section\/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "settings": {
+            "only_photos": false,
+            "aggregated": false,
+            "limit": 20,
+            "hide_thumbnails": false,
+            "maxwidth": 1080
+          }
+        }
+      },
+      "block_order": [
+        "loox-product-reviews"
+      ],
+      "settings": {
+        "full_width": false,
+        "remove_margin": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "7f11a422-4bbb-4d0c-bfaf-27a9d6e3caab",
+    "24598735-9d4d-4877-a0c2-5e7ffca277d9",
+    "18d8a256-c32e-4324-8d8e-50561e6573ef",
+    "169522256554fcea3a",
+    "product-recommendations",
+    "loox-product-reviews-app-section"
+  ]
+}

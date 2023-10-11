@@ -1,0 +1,78 @@
+<div id="AjaxCartSubtotal">
+
+	{%- if type == 'page' and settings.cart_free_shipping -%}
+		<shipping-notice
+			data-free-shipping="{{ settings.cart_free_shipping_amount | times: 100 }}"
+			data-cart-total-amount="{{ cart.total_price }}"
+			data-show-alert
+		>
+		</shipping-notice>
+		<script src="{{ 'component-shipping-notice.js' | asset_url }}" defer></script>
+	{%- endif - %}
+
+	<div class="cart__details 
+		{% if type == 'page' %} cart__subtotal-widget element--has-border--body element--border-radius {% endif %}
+		{% if cart.item_count == 0 %} cart--empty {% endif %}
+	">
+			    
+		{%- if cart.cart_level_discount_applications != blank -%} 
+			<div class="cart__subtotal">
+				<span>{{ 'cart.subtotal' | t }}</span>
+				<strong class="text-size--xlarge">{{ cart.items_subtotal_price | money }}</strong>
+			</div>
+			<div class="cart__discounts">
+				<span>{{ 'cart.discounts' | t }}</span>
+				{%- for discount_application in cart.cart_level_discount_applications -%}
+					<strong class="text-size--large">{{ discount_application.title }} ( -{{ discount_application.total_allocated_amount | money }} )</strong>
+				{%- endfor -%}
+			</div>
+		{%- endif -%}
+
+		<div class="cart__total">
+			<span>{{ 'cart.total' | t }}</span> 
+			<strong class="text-size--heading">{{ cart.total_price | money }}</strong>
+		</div>
+
+
+		{%- if settings.cart_notes_enable and type == 'page' -%}
+			<div class="cart__instructions">
+				<div class="form-field">
+					<label for="cartSpecialInstructions">{{ 'cart.note' | t }}</label>
+					<textarea name="note" id="cartSpecialInstructions" form="cart">{{ cart.note }}</textarea>
+				</div>
+			</div>
+		{%- endif -%}
+
+		<div class="cart__shipping text-color--opacity text-size--small">
+			{%- liquid
+				if cart.taxes_included and shop.shipping_policy.body != blank
+					echo 'cart.policies.taxes_included_and_shipping_policy_html' | t: link: shop.shipping_policy.url
+				elsif cart.taxes_included
+					echo 'cart.policies.taxes_included_but_shipping_at_checkout' | t
+				elsif shop.shipping_policy.body != blank
+					echo 'cart.policies.taxes_and_shipping_policy_at_checkout_html' | t: link: shop.shipping_policy.url
+				else
+					echo 'cart.policies.taxes_and_shipping_at_checkout' | t
+				endif
+			-%}
+		</div>
+
+		<div {% unless template contains 'cart' %} class="flex-buttons" {% endunless %}>
+			{%- unless type == 'page' -%}
+				<a id="ViewCart" href="{{ routes.cart_url }}" class="button button--regular button--solid">{{ 'cart.view_cart' | t }}</a>
+			{%- endunless -%}
+			<button id="CheckOut" class="button button--regular button--outline" type="submit" name="checkout" form="cart">
+				{{ 'cart.checkout' | t }}
+			</button>
+		</div>
+
+		{%- unless template contains 'order' -%}  
+			{%- if additional_checkout_buttons and settings.cart_additional_buttons -%}
+				<div class="additional-checkout-buttons additional-checkout-buttons--vertical">{{ content_for_additional_checkout_buttons }}</div>
+			{%- endif -%}
+		{%- endunless -%}
+
+      
+	</div>
+
+</div>

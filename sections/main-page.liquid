@@ -1,0 +1,24 @@
+<div class="container {% if section.settings.center %} container--medium {% else %} container--large {% endif %} container--vertical-space-small main-page gutter-bottom--page">
+
+  <h1 class="title h2">{{ page.title | escape }}</h1>
+
+  <div class="rte">
+    {{ page.content }}
+  </div>
+
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.main-page.name",
+    "class": "section--remove-bottom-margin-after",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "center",
+        "label": "t:sections.local-extra-words.sections.main-page.settings.center.label",
+        "default": false
+      }
+    ]
+  }
+{% endschema %}

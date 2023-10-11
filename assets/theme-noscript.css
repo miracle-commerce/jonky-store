@@ -1,0 +1,68 @@
+/*
+ *  1.0. Mixins
+*/
+.no-js-hidden,
+#site-store-selector-handle,
+.shopify-payment-button {
+  display: none !important;
+}
+
+.qty-selector {
+  border-style: solid !important;
+  border-width: var(--border-width-forms) !important;
+  border-color: var(--color-borders-forms-primary) !important;
+  border-radius: var(--border-radius-forms);
+}
+
+.product-quantity {
+  min-width: 0 !important;
+  
+.quantity-selector {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  font-size: 15px;
+  border: 1px solid #c2c7d6;
+  border-radius: 25px;
+  box-shadow: 0 1px 1px rgba(194, 199, 214, 0.2);
+  vertical-align: middle; }
+  .quantity-selector svg:hover {
+    opacity: 1; }
+  .quantity-selector .icon--minus {
+    width: 10px;
+    height: 2px; }
+  .quantity-selector .icon--plus {
+    width: 10px;
+    height: 10px; }
+  .quantity-selector .quantity-selector__button:first-child {
+    border-right: 1px solid #c2c7d6; }
+  .quantity-selector .quantity-selector__button:last-child {
+    border-left: 1px solid #c2c7d6; }
+
+
+.quantity-selector__button {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  color: black;
+  height: 100%;
+  transition: color 0.2s ease-in-out; }
+  .quantity-selector__button:not([disabled]):hover {
+  color black; }
+
+}
+
+.header-actions search-form button {
+  display: block !important;
+  font-size: 0;
+  width: 3.125rem;
+  height: 100%;
+  position: absolute;
+  top: 0;
+}
+html[dir=rtl] .header-actions search-form button {
+  right: 0;
+}
+html[dir=ltr] .header-actions search-form button {
+  left: 0;
+}

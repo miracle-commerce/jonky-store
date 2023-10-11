@@ -1,0 +1,73 @@
+{
+  "type": "header",
+  "name": "t:sections.refactor_words.labels.header_group",
+  "sections": {
+    "ed5e0685-6d41-4281-8002-a35f3f23c7f4": {
+      "type": "announcement-bar",
+      "blocks": {
+        "188d5108-4721-4ccb-af41-f588dd0aa772": {
+          "type": "content",
+          "settings": {
+            "text": "Vóór 16:00 besteld, morgen in huis.",
+            "link": "",
+            "target": false
+          }
+        },
+        "76bcbca4-eb48-49e7-8faa-bcbd22ed7db1": {
+          "type": "content",
+          "settings": {
+            "text": "Gratis verzending vanaf €50",
+            "link": "",
+            "target": false
+          }
+        }
+      },
+      "block_order": [
+        "188d5108-4721-4ccb-af41-f588dd0aa772",
+        "76bcbca4-eb48-49e7-8faa-bcbd22ed7db1"
+      ],
+      "disabled": true,
+      "settings": {
+        "visibility": "all",
+        "show_locale_selector": true,
+        "show_country_selector": true,
+        "show_social_icons": true,
+        "bar_bgcolor": "#8e2e2e",
+        "bar_txtcolor": "#ffffff"
+      }
+    },
+    "header": {
+      "type": "header",
+      "blocks": {
+        "store": {
+          "type": "store-selector",
+          "disabled": true,
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "store"
+      ],
+      "custom_css": [
+
+      ],
+      "settings": {
+        "logo_src": "shopify:\/\/shop_images\/2fccfb57-bc14-4eb7-b19e-0d4dfbc46317_6c093810-d47e-45d9-b991-8b6e2d29513e.png",
+        "logo_height": 75,
+        "main_linklist": "main-menu",
+        "show_search": true,
+        "sticky_header": true,
+        "select_header_actions_on_mobile": "no",
+        "show_header_actions": true,
+        "show_locale_selector": false,
+        "show_country_selector": false,
+        "show_social_icons": true
+      }
+    }
+  },
+  "order": [
+    "ed5e0685-6d41-4281-8002-a35f3f23c7f4",
+    "header"
+  ]
+}

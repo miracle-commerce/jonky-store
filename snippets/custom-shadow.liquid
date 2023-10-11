@@ -1,0 +1,16 @@
+{%- if settings.shadow_cards_x != 0 -%}
+  {% style %}
+    {%- if settings.shadow_cards_x < 0 -%}
+      #css-slider-{{ section_id }} .css-slider-holder {
+        scroll-padding-inline-start: {{ settings.shadow_cards_x | abs | plus: settings.shadow_cards_blur }}px;
+      }
+    {%- else -%}
+      #css-slider-{{ section_id }} .css-slider-holder {
+        scroll-padding-inline-end: {{ settings.shadow_cards_x | plus: settings.shadow_cards_blur }}px;
+      }
+    {%- endif -%}
+    #css-slider-{{ section_id }} .grid:after {
+      content: "";
+    }
+  {% endstyle %}
+{%- endif -%}

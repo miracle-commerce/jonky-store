@@ -1,0 +1,239 @@
+{%- assign product_variant = product.selected_or_first_available_variant -%}
+
+<div id="product-item-{{ product.id }}" class="product-item card" data-js-product-item>
+
+  {%- liquid
+    
+    if settings.product_card_aspect_ratio == 'natural'
+      if product.media.size == 0 or blank_product
+        assign aspect_ratio = 1
+      else
+        unless product.featured_media.aspect_ratio > 0
+          assign aspect_ratio = 1
+        else
+          assign aspect_ratio = product.featured_media.aspect_ratio
+        endunless
+      endif
+    else
+      assign aspect_ratio = settings.product_card_aspect_ratio
+    endif
+
+    if settings.within_filter_enabled and product_collection
+      assign product_url = product.url | within: product_collection
+    else
+      assign product_url = product.url
+    endif
+
+  -%}
+
+  <a href="{{ product_url }}" 
+    class="card__image product-item__image
+    {% if section_blocks.size == 0 %} product-item__image--no-text {% endif %}
+    {% if settings.product_card_show_secondary_image and product.media.size >= 2 %} product-item__image--has-secondary {% endif %}"
+    style="padding-top:{{ 100 | divided_by: aspect_ratio }}%"
+  >
+
+    {%- liquid
+
+      unless layout == 'shop'
+        if layout contains 'grid-4'
+          assign sizes = '(max-width: 1023px) calc((100vw - 100px) / 3), (max-width: 1280px) calc((100vw - 120px) / 4), 300px"'
+        else 
+          assign sizes= '(max-width: 1280px) calc((100vw - 120px) / 3), 420px"'
+        endif
+        assign sizes = sizes | prepend: 'sizes="(max-width: 359px) calc(100vw - 30px), (max-width: 767px) calc((100vw - 50px) / 2),'
+      else
+        assign sizes = 'sizes="(max-width: 474px) calc((100vw - 100px) / 2), (max-width: 767px) calc((100vw - 50px) / 2), (max-width: 1023px) calc((100vw - 100px) / 3), (max-width: 1280px) calc((100vw - 150px) / 4), 285px"'
+      endunless
+      
+      if product.media.size == 0 or blank_product
+        echo 'image' | placeholder_svg_tag
+      else
+        render 'lazy-image', image: product.featured_media, alt: product.title, ratio: aspect_ratio, fit: settings.product_card_aspect_ratio_fit, type: 'background', class: 'product-item__image-figure product-item__image-figure--primary lazy-image--animation', sizes: sizes, preload: preload
+      endif
+
+      if settings.product_card_show_secondary_image and product.media.size >= 2
+        render 'lazy-image', image: product.media[1], ratio: aspect_ratio, fit: settings.product_card_aspect_ratio_fit, type: 'background', class: 'product-item__image-figure product-item__image-figure--secondary lazy-image--animation', sizes: sizes
+      endif
+
+    -%}
+
+  </a>
+
+  <div class="card__text product-item__text gutter--regular spacing--xlarge remove-empty-space text-align--{{ settings.product_card_text_alignment }}">
+
+    {%- for block in section_blocks -%}
+      {%- case block.type %}
+
+        {%- when 'title' -%}
+          <a class="product-item__title" 
+            href="{{ product_url }}" title="{{ product.title | escape }}" 
+            {{ block.shopify_attributes }}
+          >
+            <div class="remove-line-height-space--small">
+              <span class="text-animation--underline text-size--{{ settings.product_card_text_size }} text-line-height--small text-weight--bold text-animation--underline">
+                {%- liquid 
+                  unless blank_product 
+                    echo product.title 
+                  else 
+                    echo 'general.onboarding.product_title' | t
+                  endunless
+                -%}
+              </span>
+            </div>
+          </a>
+
+        {%- when 'price' -%}
+          <div 
+            class="product-item__price text-size--large equalize-white-space" 
+            {{ block.shopify_attributes }}
+          >
+            <div class="remove-line-height-space">
+              {% unless blank_product %}
+                {%- render 'product-price', target: product, variant: product_variant, product_price_varies: product.price_varies -%}
+              {%- else -%}
+                {{ 9999 | money }}
+              {%- endunless -%}
+            </div>
+          </div>
+
+        {%- when 'text' -%}
+          <div 
+            class="product-item__text {{ block.settings.text_size }} text-line-height--medium equalize-white-space"
+            style="
+              {% if block.settings.text_color != 'rgba(0,0,0,0)' %} color: {{ block.settings.text_color }}; {% endif %}
+              {% if block.settings.text_transform %} text-transform: uppercase {% endif %}
+            " 
+            {{ block.shopify_attributes }}
+          >
+            {%- liquid
+              assign metafield_reference = block.settings.metafield
+              if metafield_reference != blank
+                assign metafield_keys = metafield_reference | split: '.'
+                assign metafield_value = product.metafields[metafield_keys[0]][metafield_keys[1]]
+                if metafield_value != blank
+                  echo metafield_value | prepend: '<div class="remove-line-height-space--medium">' | append: '</div>'
+                endif              
+              endif
+            -%}
+          </div>
+
+        {%- when 'icons' -%}
+          <div 
+            class="product-item__icons"
+            {{ block.shopify_attributes }}
+          >
+            {%- liquid
+
+              if settings.product_icon_1_image != blank or settings.product_icon_1_label != blank
+                assign image_metafield_keys = settings.product_icon_1_image | split: '.'
+                assign icon_1_image = product.metafields[image_metafield_keys[0]][image_metafield_keys[1]] | image_url
+                assign label_metafield_keys = settings.product_icon_1_label | split: '.'
+                assign icon_1_image_label = product.metafields[label_metafield_keys[0]][label_metafield_keys[1]]
+                render 'product-icon-label', icon: icon_1_image, label: icon_1_image_label, style: 'tooltip'
+              endif
+
+              if settings.product_icon_2_image != blank or settings.product_icon_2_label != blank
+                assign image_metafield_keys = settings.product_icon_2_image | split: '.'
+                assign icon_2_image = product.metafields[image_metafield_keys[0]][image_metafield_keys[1]] | image_url
+                assign label_metafield_keys = settings.product_icon_2_label | split: '.'
+                assign icon_2_image_label = product.metafields[label_metafield_keys[0]][label_metafield_keys[1]]
+                render 'product-icon-label', icon: icon_2_image, label: icon_2_image_label, style: 'tooltip'
+              endif
+
+              if settings.product_icon_3_image != blank or settings.product_icon_3_label != blank
+                assign image_metafield_keys = settings.product_icon_3_image | split: '.'
+                assign icon_3_image = product.metafields[image_metafield_keys[0]][image_metafield_keys[1]] | image_url
+                assign label_metafield_keys = settings.product_icon_3_label | split: '.'
+                assign icon_3_image_label = product.metafields[label_metafield_keys[0]][label_metafield_keys[1]]
+                render 'product-icon-label', icon: icon_3_image, label: icon_3_image_label, style: 'tooltip'
+              endif
+
+              if settings.product_icon_4_image != blank or settings.product_icon_4_label != blank
+                assign image_metafield_keys = settings.product_icon_4_image | split: '.'
+                assign icon_4_image = product.metafields[image_metafield_keys[0]][image_metafield_keys[1]] | image_url
+                assign label_metafield_keys = settings.product_icon_4_label | split: '.'
+                assign icon_4_image_label = product.metafields[label_metafield_keys[0]][label_metafield_keys[1]]
+                render 'product-icon-label', icon: icon_4_image, label: icon_4_image_label, style: 'tooltip'
+              endif
+
+              if settings.product_icon_5_image != blank or settings.product_icon_5_label != blank
+                assign image_metafield_keys = settings.product_icon_5_image | split: '.'
+                assign icon_5_image = product.metafields[image_metafield_keys[0]][image_metafield_keys[1]] | image_url
+                assign label_metafield_keys = settings.product_icon_5_label | split: '.'
+                assign icon_5_image_label = product.metafields[label_metafield_keys[0]][label_metafield_keys[1]]
+                render 'product-icon-label', icon: icon_5_image, label: icon_5_image_label, style: 'tooltip'
+              endif
+
+              if settings.product_icon_6_image != blank or settings.product_icon_6_label != blank
+                assign image_metafield_keys = settings.product_icon_6_image | split: '.'
+                assign icon_6_image = product.metafields[image_metafield_keys[0]][image_metafield_keys[1]] | image_url
+                assign label_metafield_keys = settings.product_icon_6_label | split: '.'
+                assign icon_6_image_label = product.metafields[label_metafield_keys[0]][label_metafield_keys[1]]
+                render 'product-icon-label', icon: icon_6_image, label: icon_6_image_label, style: 'tooltip'
+              endif
+
+            -%}
+
+          </div>
+
+        {%- when 'vendor' -%}
+          <div 
+            class="product-item__vendor text-size--large text-color--opacity equalize-white-space" 
+            {{ block.shopify_attributes }}
+          >
+            <div class="remove-line-height-space">{{ product.vendor }}</div>
+          </div>
+
+        {%- when 'quick_buy' -%}
+          {%- if product.available -%}
+            {%- if settings.product_card_align_buy -%}
+              </div><div 
+                class="product-item__text gutter--regular spacing--xlarge remove-empty-space text-align--{{ settings.product_card_text_alignment }}" 
+                style="padding-top: 0;"
+              >
+            {%- endif -%}
+            <div 
+              class="product-item__quick-buy" 
+              {{ block.shopify_attributes }}
+            >
+              {%- render 'quick-buy', product: product, button_classes: 'button--regular button--fullwidth', layout: layout -%}
+            </div>
+          {%- endif -%}
+
+        {%- when 'rating' -%}
+          <div 
+            class="product-item__ratings"
+            {{ block.shopify_attributes }}
+          >
+            {%- render 'star-rating', vendor: block.settings.reviews_app, product: product, hide_no_reviews_on_mobile: true -%}
+          </div>
+
+        {%- when 'local_availability' -%}
+
+          <pickup-availability-compact
+            class="no-js-hidden product-item__local-availability text-size--xsmall"
+            data-base-url="{{ shop.url }}{{ routes.root_url }}"
+            data-variant-id="{{ product_variant.id }}"
+            data-has-only-default-variant="{{ product.has_only_default_variant }}"
+            data-id="{{ section.id }}"
+            {{ block.shopify_attributes }}
+          >
+            <span class="alert alert--note alert--circle alert--circle-loading">
+              {{ 'store_availability.compact_widget.checking_availability' | t }}
+            </span>
+          </pickup-availability-compact>
+
+      {%- endcase %}
+    {%- endfor -%}
+
+  </div>
+
+  {%- liquid
+    unless blank_product
+      render 'product-badges', product: product, text_class: 'text-size--xsmall'
+    endunless 
+  -%}
+
+
+</div>

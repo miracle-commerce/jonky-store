@@ -1,0 +1,47 @@
+/*
+ *  1.0. Mixins
+*/
+.progress-dots__wrapper,
+.progress-slider__wrapper {
+  display: flex;
+  gap: 0.9375rem;
+  align-items: center;
+}
+
+.progress-dots {
+  font-size: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.3125rem;
+}
+.progress-dots__caption {
+  white-space: nowrap;
+}
+.progress-dots__item {
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
+}
+
+.progress-slider {
+  width: 100%;
+  border-radius: 1.25rem;
+  position: relative;
+}
+.progress-slider__caption {
+  white-space: nowrap;
+}
+.progress-slider__active {
+  display: inline-block;
+  height: 100%;
+  border-radius: 1.25rem;
+  position: absolute;
+  top: 0;
+}
+html[dir=rtl] .progress-slider__active {
+  right: 0;
+}
+html[dir=ltr] .progress-slider__active {
+  left: 0;
+}

@@ -1,0 +1,174 @@
+{{ 'section-newsletter.css' | asset_url | stylesheet_tag }}
+
+<div id="element-{{ section.id }}" class="container--large {% unless section.settings.remove_margin %} container--vertical-space {% endunless %} {% if section.settings.section_background_color != "rgba(0,0,0,0)" %} container--has-background {% endif %} text-align--center">
+
+  <div class="card newsletter gutter-top--xlarge gutter-bottom--xlarge">
+		<div class="newsletter__container spacing--xlarge">
+
+      {%- if section.settings.show_icon -%}
+        <div class="newsletter__icon">
+          {%- render 'theme-symbols', icon: 'send', color: section.settings.color_text_main -%}
+        </div>
+      {%- endif -%}
+
+      {%- unless section.settings.title == blank -%}
+			  <div class="increased-spacing">
+          <{{ section.settings.seo_h_tag }} class="h3" style="display:block">{{ section.settings.title | escape }}</{{ section.settings.seo_h_tag }}>
+        </div>
+      {%- endunless -%}
+
+      {%- assign form_id = 'newsletter-' | append: section.id -%}
+      {%- form 'customer', id: form_id, class: 'increased-spacing' -%}
+      
+        {%- render 'form-errors', form: form -%}
+
+        {%- if form.posted_successfully? -%}
+          
+          <p class="text-size--large">{{ 'general.newsletter.confirmation' | t }}</p>
+
+        {%- else -%}
+          
+          <fieldset>
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <input type="email" class="newsletter__input" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter.email_label' | t }}" name="contact[email]" id="Email-{{ form_id }}" aria-label="{{ 'general.newsletter.email_label' | t }}" autocorrect="off" autocapitalize="off" required>
+            <button type="submit" class="button button--outline button--large" id="Subscribe-{{ form_id }}" aria-label="{{ 'general.newsletter.submit_label' | t }}">
+              <span aria-hidden="true">{{ 'general.newsletter.submit_label' | t }}</span>
+            </button>
+          </fieldset>
+
+        {%- endif -%}
+
+      {%- endform -%}
+
+      {%- unless section.settings.text == blank -%}
+        <div class="increased-spacing">
+          <span class="newsletter__info text-size--small">{{ section.settings.text }}</span>
+        </div>
+      {%- endunless -%}
+
+		</div>
+  </div>
+
+	{%- render 'custom-colors', id: section.id, text: section.settings.color_text_main, background: section.settings.color_background_main, borders: section.settings.color_borders_main, shadow: section.settings.color_shadow_main -%}
+
+</div>
+
+{%- if section.settings.section_background_color != "rgba(0,0,0,0)" -%}
+  {% style %}
+    #shopify-section-{{ section.id }} .container--has-background {
+      --color-background-section: {{ section.settings.section_background_color }};
+    }
+  {% endstyle %}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.newsletter.name",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "t:sections.local-extra-words.sections.newsletter.show_icon",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.local-extra-words.sections.headings.title",
+      "default": "Your best promotion yet"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "t:sections.rich-text.blocks.text.settings.text.label",
+      "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements or welcome customers to your store.</p>"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.local-extra-words.sections.headings.custom_colors"
+    },
+    {
+      "type": "color",
+      "id": "color_background_main",
+      "label": "t:sections.split-extra-words.settings_schema.colors.settings.background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "color_text_main",
+      "label": "t:sections.split-extra-words.settings_schema.colors.settings.text",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "color_borders_main",
+      "label": "t:sections.local-extra-words.settings_schema.colors.settings.borders",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "color_shadow_main",
+      "label": "t:local-march-update.shadows.label",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "header",
+      "content": "t:local-march-update.labels.section_design"
+    },
+    {
+      "type": "color",
+      "id": "section_background_color",
+      "label": "t:sections.local-extra-words.settings_schema.product-card.badges.custom_badges.color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_margin",
+      "label": "t:sections.local-extra-words.sections.rich-text.settings.remove_margin.label",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:sections.refactor_words.seo.name"
+    },
+    {
+      "type": "select",
+      "id": "seo_h_tag",
+      "label": "t:sections.refactor_words.seo.label",
+      "info": "t:sections.refactor_words.seo.info",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "span",
+          "label": "span"
+        }
+      ],
+      "default": "h2"
+    }
+  ],
+  "presets": 
+  [
+    {
+      "name": "t:sections.newsletter.name"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header"]
+  }
+}
+{% endschema %}

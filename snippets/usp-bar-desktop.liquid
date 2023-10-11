@@ -1,0 +1,58 @@
+<div class="header-usp" data-hook-header-usp="" data-loaded-header-usp="">
+  <ul class="m-usp-bar o-container">
+    <li class="a-usp usp--icon usp-bar__item" id="usp1">
+      <div class="usp__content">
+        <img class="usp__icon" src="{{ 'icons8-clock-96.svg' | asset_url }}" alt="Clock Icon">
+        <div>
+          <div class="usp__text weekday-text">
+            <p>Voor 16:00 besteld, <span class="u-text--green">morgen</span> in huis.</p>
+          </div>
+          <div class="usp__text weekend-text" style="display: none;">
+            <p>Vandaag besteld, <span class="u-text--green">overmorgen</span> in huis.</p>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li class="a-usp usp--icon usp-bar__item">
+      <div class="usp__content">
+        <img class="usp__icon" src="{{ 'icons8-truck-96.svg' | asset_url }}" alt="Shipping Icon">
+        <div class="usp__text">
+          <p><span class="u-text--green">Gratis</span> verzending vanaf &euro; 50,-</p>
+        </div>
+      </div>
+    </li>
+    <li class="a-usp usp--icon usp-bar__item">
+      <div class="usp__content">
+        <img class="usp__icon" src="{{ 'icons8-guarantee-96.svg' | asset_url }}" alt="Guarantee Icon">
+        <div class="usp__text">
+          <p>
+            Niet tevreden?
+            <a href="https://jonky.nl/pages/voorwaarden-niet-tevreden-geld-terug-actie-jonky-nl" class="u-text--green"
+              >Geld-terug garantie</a
+            >
+          </p>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var d = new Date();
+    var n = d.getDay();
+
+    if (n === 0 || n === 6) {
+      var weekdayText = document.querySelector('.weekday-text');
+      var weekendText = document.querySelector('.weekend-text');
+
+      if (weekdayText) {
+        weekdayText.style.display = 'none';
+      }
+
+      if (weekendText) {
+        weekendText.style.display = 'block';
+      }
+    }
+  });
+</script>

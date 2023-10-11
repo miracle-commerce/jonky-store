@@ -1,0 +1,114 @@
+{%- assign date_format = 'general.date_format.month_day_year' | t -%}
+
+<div class="blog-item 
+  {% if type == 'page' %} 
+    spacing--large 
+  {% elsif emphasize_first and index == 1 %} 
+    blog-item--emphasized spacing--small
+  {% else %} 
+    spacing--small 
+  {% endif %} 
+remove-empty-space"> 
+
+  {%- if show_image -%}
+    <a class="blog-item__image element--has-border element--border-radius increased-spacing" href="{{ article.url }}" title="{{ article.title | escape }}">
+      {%- liquid
+        if article.image == blank
+          render 'lazy-svg', image: 'product-1', ratio: image_aspect_ratio, class: 'svg-placeholder'
+        else
+          if type == 'page'
+            assign sizes = 'sizes="(max-width: 767px) 100vw, (max-width: 1280px) 50vw, 640px"'
+          else  
+            if emphasize_first 
+              if index == 1
+                assign sizes = 'sizes="(max-width: 767px) 100vw, (max-width: 1280px) 50vw, 640px"'
+              else 
+                assign sizes = 'sizes="(max-width: 767px) 100vw, (max-width: 1280px) 25vw, 320px"'
+              endif
+            else 
+              assign sizes = 'sizes="(max-width: 767px) 100vw, (max-width: 1280px) 33vw, 430px"'
+            endif
+          endif
+          render 'lazy-image', image: article.image.src, alt: article.title, ratio: image_aspect_ratio, class: 'lazy-image--animation element--border-radius', sizes: sizes
+        endif
+      -%}
+    </a>
+  {%- endif -%}
+  
+  {%- for block in section.blocks -%}
+    
+    {%- case block.type -%}
+
+      {%- when 'title' -%}
+        <div class="blog-item__title-holder" {{ block.shopify_attributes }}>
+          <a href="{{ article.url }}" title="{{ article.title | escape }}">
+            <span class="{% if type == 'page' %} text-size--xlarge text-line-height--small {% else %} text-size--large {% endif %} text-weight--bold text-animation--underline">
+              {%- liquid
+                unless blank_article
+                  echo article.title
+                else
+                  echo 'general.onboarding.article_title' | t
+                endunless
+              -%}
+            </span>
+          </a>
+        </div>
+
+      {%- when 'summary' -%}
+        <div class="blog-item__excerpt" {{ block.shopify_attributes }}>
+          <span class="element--is-inline-block">
+            {%- liquid
+              if article.excerpt.size > 0
+                echo article.excerpt | strip_html
+              else
+                echo article.content | strip_html | truncatewords: block.settings.excerpt_limit, "..."
+              endif
+            -%}
+          </span>
+        </div>
+
+      {%- when 'info' -%}
+        <div class="blog-item__meta text-color--opacity" {{ block.shopify_attributes }}>
+
+          {%- if block.settings.show_author -%}
+            <span class="blog-item__author text-size--small">
+              {%- liquid
+                unless blank_article
+                  echo article.author | escape
+                else  
+                  echo 'general.onboarding.author_name' | t
+                endunless 
+              -%}
+            </span>
+          {%- endif -%}
+
+          {%- if block.settings.show_date -%}
+            <span class="blog-item__date text-size--small">
+              {%- liquid 
+                unless blank_article
+                  echo article.published_at | date: date_format 
+                else 
+                  echo 'Feb 28 2020' | date: date_format
+                endunless
+              -%}
+            </span>
+          {%- endif -%}
+
+          {%- if block.settings.show_comments_number -%}
+            <span class="blog-item__date text-size--small">
+              {%- liquid
+                unless blank_article
+                  echo 'blog.grid.comments_count' | t: count: article.comments_count
+                else
+                  echo 'general.onboarding.seven_comments' | t
+                endunless
+              -%}
+            </span>
+          {%- endif -%}
+
+        </div>
+    {%- endcase -%}
+
+  {%- endfor -%}
+
+</div>

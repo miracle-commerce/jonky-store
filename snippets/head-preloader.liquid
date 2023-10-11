@@ -1,0 +1,82 @@
+{%- liquid
+
+  echo 'theme.css' | asset_url | preload_tag: as: 'style'
+  echo 'section-header.css' | asset_url | preload_tag: as: 'style'
+
+  if template contains 'article'
+    echo 'section-main-article.css' | asset_url | preload_tag: as: 'style'
+  elsif template contains 'blog'
+    echo 'component-blog-item.css' | asset_url | preload_tag: as: 'style'
+  elsif template contains 'collection'
+    echo 'component-product-item.css' | asset_url | preload_tag: as: 'style'
+  elsif template contains 'product' 
+    echo 'section-main-product.css' | asset_url | preload_tag: as: 'style'
+  endif
+    
+-%}
+
+{%- if template contains 'product' and product.featured_media -%}
+
+  {%- assign image = product.featured_media -%}
+  {%- capture srcset -%} 
+    {%- if image.width >= 240 -%}{{ image | image_url: width: 240 }} 240w{%- endif -%} 
+    {%- if image.width >= 360 -%},{{ image | image_url: width: 360 }} 360w{%- endif -%} 
+    {%- if image.width >= 420 -%},{{ image | image_url: width: 420 }} 420w{%- endif -%} 
+    {%- if image.width >= 480 -%},{{ image | image_url: width: 480 }} 480w{%- endif -%} 
+    {%- if image.width >= 640 -%},{{ image | image_url: width: 640 }} 640w{%- endif -%} 
+    {%- if image.width >= 840 -%},{{ image | image_url: width: 840 }} 840w{%- endif -%} 
+    {%- if image.width >= 1080 -%},{{ image | image_url: width: 1080 }} 1080w{%- endif -%} 
+    {%- if image.width >= 1280 -%},{{ image | image_url: width: 1280 }} 1280w{%- endif -%} 
+    {%- if image.width >= 1540 -%},{{ image | image_url: width: 1540 }} 1540w{%- endif -%} 
+    {%- if image.width >= 1860 -%},{{ image | image_url: width: 1860 }} 1860w{%- endif -%} 
+    {%- if image.width >= 2100 -%},{{ image | image_url: width: 2100 }} 2100w{%- endif -%}
+    {%- if image.width >= 2460 -%},{{ image | image_url: width: 2460 }} 2460w{%- endif -%}
+    {%- if image.width >= 2820 -%},{{ image | image_url: width: 2820 }} 2820w{%- endif -%}
+    {%- if image.width >= 3360 -%},{{ image | image_url: width: 3360 }} 3360w{%- endif -%}
+    {%- if image.width >= 3820 -%},{{ image | image_url: width: 3820 }} 3820w{%- endif -%}
+  {%- endcapture -%}
+
+  <link rel="preload" as="image" href="{{ image | image_url: width: 480 }}" imagesrcset="{{ srcset }}" imagesizes="(max-width: 767px) calc(100vw - 20px), (max-width: 1360px) 50vw, 620px">
+
+{%- elsif template contains 'collection' -%}
+
+ 	{%- for product in collection.products limit: 2 -%}
+ 		{%- liquid 
+ 			assign image = product.featured_media
+ 			assign media_sizes = '(max-width: 359px) calc(100vw - 30px), (max-width: 767px) calc((100vw - 50px) / 2)'
+		-%}
+		{%- if settings.product_card_aspect_ratio == 'natural' -%}
+			{%- capture srcset -%} 
+				{%- if image.width >= 240 -%}{{ image | image_url: width: 240 }} 240w{%- endif -%} 
+				{%- if image.width >= 360 -%},{{ image | image_url: width: 360 }} 360w{%- endif -%} 
+				{%- if image.width >= 420 -%},{{ image | image_url: width: 420 }} 420w{%- endif -%} 
+				{%- if image.width >= 480 -%},{{ image | image_url: width: 480 }} 480w{%- endif -%} 
+				{%- if image.width >= 640 -%},{{ image | image_url: width: 640 }} 640w{%- endif -%} 
+				{%- if image.width >= 840 -%},{{ image | image_url: width: 840 }} 840w{%- endif -%} 
+				{%- if image.width >= 1080 -%},{{ image | image_url: width: 1080 }} 1080w{%- endif -%} 
+			{%- endcapture -%}
+		{%- else -%}
+			{%- liquid 
+				assign divide_ratio = 1 | divided_by: settings.product_card_aspect_ratio
+				assign height_240 = 240 | times: divide_ratio | round
+				assign height_360 = 360 | times: divide_ratio | round
+				assign height_420 = 420 | times: divide_ratio | round
+				assign height_480 = 480 | times: divide_ratio | round
+				assign height_640 = 640 | times: divide_ratio | round
+				assign height_840 = 840 | times: divide_ratio | round
+				assign height_1080 = 1080 | times: divide_ratio | round
+			-%}
+			{%- capture srcset -%} 
+				{%- if image.width >= 240 and image.height >= height_240 -%}{{ image | image_url: width: 240, height: height_240, crop: 'center' }} 240w{%- endif -%}
+				{%- if image.width >= 360 and image.height >= height_360 -%},{{ image | image_url: width: 360, height: height_360, crop: 'center' }} 360w{%- endif -%}
+				{%- if image.width >= 420 and image.height >= height_420 -%},{{ image | image_url: width: 420, height: height_420, crop: 'center' }} 420w{%- endif -%}
+				{%- if image.width >= 480 and image.height >= height_480 -%},{{ image | image_url: width: 480, height: height_480, crop: 'center' }} 480w{%- endif -%}
+				{%- if image.width >= 640 and image.height >= height_640 -%},{{ image | image_url: width: 640, height: height_640, crop: 'center' }} 640w{%- endif -%}
+				{%- if image.width >= 840 and image.height >= height_840 -%},{{ image | image_url: width: 840, height: height_840, crop: 'center' }} 840w{%- endif -%}
+				{%- if image.width >= 1080 and image.height >= height_1080 -%},{{ image | image_url: width: 1080, height: height_1080, crop: 'center' }} 1080w{%- endif -%}
+			{%- endcapture -%}
+		{%- endif -%}
+		<link rel="preload" as="image" href="{{ image | image_url: width: 480 }}" imagesrcset="{{ srcset }}" imagesizes="{{ media_sizes }}">
+ 	{%- endfor -%}
+	
+{%- endif -%}

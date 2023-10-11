@@ -1,0 +1,53 @@
+{{ 'section-account.css' | asset_url | stylesheet_tag }}
+
+<div class="container--large container--vertical-space">
+	
+	<div class="account">
+
+		<h1 class="h2" style="margin-bottom:var(--compact-header-padding)">{{ 'customers.register_page.title' | t }}</h1>
+
+		<div class="account__form-block gutter-top--large">
+		{% form 'create_customer', class: 'simple-form' %}
+
+			{% render 'form-errors', form: form %}
+		
+			<div class="account__form-row">
+				<label for="first_name" class="hidden">{{ 'customers.register_page.form.first_name_label' | t }}</label>
+				<input type="text" value="" name="customer[first_name]" id="first_name" placeholder="{{ 'customers.register_page.form.first_name_label' | t }}" {% if form.errors contains "first_name" %} class="error"{% endif %} autocapitalize="words" autofocus>
+			</div>
+			
+			<div class="account__form-row">
+				<label for="last_name" class="hidden">{{ 'customers.register_page.form.last_name_label' | t }}</label>
+				<input type="text" value="" name="customer[last_name]" id="last_name" placeholder="{{ 'customers.register_page.form.last_name_label' | t }}" {% if form.errors contains "last_name" %} class="error"{% endif %} autocapitalize="words">
+			</div>
+
+			<div class="account__form-row">
+				<label for="email" class="hidden">{{ 'customers.register_page.form.email_label' | t }}</label>
+				<input type="email" value="" name="customer[email]" id="email" placeholder="{{ 'customers.register_page.form.email_label' | t }}" {% if form.errors contains "email" %} class="error"{% endif %} autocorrect="off" autocapitalize="off">
+			</div>
+
+			<div class="account__form-row">
+				<label for="password" class="hidden">{{ 'customers.register_page.form.password_label' | t }}</label>
+				<input type="password" value="" name="customer[password]" id="create_password" placeholder="{{ 'customers.register_page.form.password_label' | t }}" {% if form.errors contains "password" %} class="error"{% endif %}>
+			</div>
+
+			<div class="account__form-row form-actions gutter-top--small">
+				<input class="button button--solid button--regular" type="submit" value="{{ 'customers.register_page.form.submit_button' | t }}">
+			</div>
+			
+			<div class="account__form-row text-size--small">
+				{{ 'customers.register_page.login_text' | t }} <a href="{{ routes.account_login_url }}">{{ 'customers.login_page.form_login_button' | t }}</a>
+			</div>
+
+		{% endform %}
+		</div>
+	</div>
+
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.local-extra-words.sections.customers.register.name",
+    "class": "section--remove-bottom-margin-after"
+  }
+{% endschema %}

@@ -1,0 +1,32 @@
+<gift-card-recipient class="gift-card-recipient gutter-top--regular" style="display:block">
+
+  <div class="contact__fields">
+
+    <div class="contact-form__row contact-form__row--checkbox">
+      <input type="checkbox" id="shopify-send-gift-card-to-recipent-{{ section.id }}" class="styled-checkbox" name="properties[__shopify_send_gift_card_to_recipient]"/>
+      <label for="shopify-send-gift-card-to-recipent-{{ section.id }}">{{ 'gift_card.recipient.checkbox' | t }}</label>
+    </div>
+
+    <div class="gift-card-recipient__fields hide">
+
+      <div class="contact-form__row">
+        <label class="visually-hidden" for="shopify-send-gift-card-to-recipent-email-{{ section.id }}">{{ 'gift_card.recipient.email_label' | t }}</label>
+        <input type="email" placeholder="{{ 'gift_card.recipient.email_label' | t }}" name="properties[Recipient email]" value="{{ form.email }}" required id="shopify-send-gift-card-to-recipent-email-{{ section.id }}" />
+      </div>
+
+      <div class="contact-form__row">
+        <label class="visually-hidden" for="shopify-send-gift-card-to-recipent-name-{{ section.id }}">{{ 'gift_card.recipient.name_label' | t }}</label>
+        <input type="text" placeholder="{{ 'gift_card.recipient.name_label' | t }}" name="properties[Recipient name]" value="{{ form.name }}" id="shopify-send-gift-card-to-recipent-name-{{ section.id }}" />
+      </div>
+
+      <div class="contact-form__row">
+        <label class="visually-hidden" for="shopify-send-gift-card-to-recipent-message-{{ section.id }}">{{ 'gift_card.recipient.message_label' | t }}</label>
+        <textarea rows="3" placeholder="{{ 'gift_card.recipient.message_label' | t }}" name="properties[Message]" value="{{ form.message }}" maxlength="200" style="height:8rem" id="shopify-send-gift-card-to-recipent-message-{{ section.id }}"></textarea>
+        <span style="display:block;text-align:right;margin-top:.5em" class="text-size--small">{{ 'gift_card.recipient.max_characters' | t: max_chars: '200' }}</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</gift-card-recipient>

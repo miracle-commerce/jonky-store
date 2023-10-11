@@ -1,0 +1,29 @@
+<script>
+  if(typeof(Spurit) === 'undefined'){
+      var Spurit = {};
+  }
+  if(!Spurit.QuantityBreaks2){
+      Spurit.QuantityBreaks2 = {};
+  }
+  if(!Spurit.QuantityBreaks2.snippet){
+    Spurit.QuantityBreaks2.snippet = {};
+  }
+
+  Spurit.QuantityBreaks2.snippet.appId = '44';
+  Spurit.QuantityBreaks2.snippet.shopHash = '967a716769f7410c7a8ae3ea39da1fca';
+  Spurit.QuantityBreaks2.snippet.shopDomain = 'feyenoordchampagne.myshopify.com';
+  Spurit.QuantityBreaks2.snippet.folderStore = 'https://amaicdn.com/pricing-by-quantity/store';
+  Spurit.QuantityBreaks2.snippet.folderCss = 'https://amaicdn.com/pricing-by-quantity/css';
+  Spurit.QuantityBreaks2.snippet.moneyFormat = '{{ shop.money_format }}';
+  Spurit.QuantityBreaks2.snippet.cacheTimestamp = 1683661791;
+
+  if(typeof(Spurit.globalSnippet) === 'undefined'){
+      Spurit.globalSnippet = {
+          shop_currency: '{{ shop.currency }}',
+          money_format: '{{ shop.money_format }}',
+          cart: {{ cart | json }},
+          customer_id: '{{ customer.id }}'
+      };
+  }
+</script>
+<script src="https://amaicdn.com/pricing-by-quantity/common.js"></script>

@@ -1,0 +1,95 @@
+<div class="container--{{ section.settings.image_size }} container--vertical-space">
+
+    {%- if section.settings.link -%}
+      <a href="{{ section.settings.link }}" {% unless section.settings.open_in_new_window == false %} target="_blank" {% endunless %}>
+    {%- endif -%}  
+
+    {%- liquid
+      unless section.settings.image_size == 'fullwidth'
+        assign border_class = 'element--border-radius'
+        assign sizes = 'sizes="(max-width: 1360px) calc(100vw - 20px), 1280px"'
+      else
+        assign sizes = 'sizes="100vw"'
+      endunless
+    -%}
+
+    <div class="{% if section.settings.mobile_image %} element--hide-on-small {% endif %} {{ border_class }}">
+      {%- liquid
+        if section.settings.image
+          render 'lazy-image', image: section.settings.image, sizes: sizes, class: border_class
+        else
+          render 'lazy-svg', image: 'image', ratio: 1.5, class: 'svg-placeholder svg-placeholder--foreground'
+        endif
+      -%}
+    </div>
+
+    {%- if section.settings.mobile_image -%}
+      <div class="element--hide-on-desk {{ border_class }}">
+        {%- render 'lazy-image', image: section.settings.mobile_image, sizes: sizes, class: border_class -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.link -%}
+      </a>
+    {%- endif -%}  
+
+</div>
+
+{% schema %}
+  {
+    "name": "t:sections.local-extra-words.sections.image-section.name",
+    "settings": [
+      {
+        "id": "image",
+        "type": "image_picker",
+        "label": "t:sections.gallery.blocks.image.settings.image.label"
+      },
+      {
+        "id": "mobile_image",
+        "type": "image_picker",
+        "label": "t:sections.image.mobile_image"
+      },
+      {
+        "type": "url",
+        "id": "link",
+        "label": "t:sections.local-extra-words.sections.announcement-bar.blocks.content.settings.link"
+      },
+      {
+        "type": "checkbox",
+        "id": "open_in_new_window",
+        "label": "t:sections.local-extra-words.sections.announcement-bar.blocks.content.settings.target",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "image_size",
+        "label": "t:sections.local-extra-words.sections.image-section.settings.image_size.label",
+        "options": [
+          {
+            "value": "compact",
+            "label": "t:sections.image-with-text.settings.image_height.options__1.label"
+          },
+          {
+            "value": "medium",
+            "label": "t:sections.image-with-text.settings.image_height.options__2.label"
+          },
+          {
+            "value": "large",
+            "label": "t:sections.image-with-text.settings.image_height.options__3.label"
+          },
+          {
+            "value": "fullwidth",
+            "label": "t:sections.image.fullwidth"
+          }
+        ],
+        "default": "large",
+        "info": "t:sections.local-extra-words.sections.image-section.settings.image_size.info"
+      }
+    ],    
+    "presets": [
+      {
+        "name": "t:sections.local-extra-words.sections.image-section.name"
+      }
+    ]
+  }
+{% endschema %}
