@@ -5,14 +5,13 @@
       "blocks": {
         "854e7707-0a53-40f1-82bf-727340968b7c": {
           "type": "shopify:\/\/apps\/loox-product-reviews-photos\/blocks\/loox-rating\/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
-          "disabled": true,
           "settings": {
             "contentSize": 15,
             "pattern": "[count] reviews",
             "hideText": false,
             "alignment": "left",
-            "textColor": "",
-            "starColor": "rgba(0,0,0,0)",
+            "textColor": "#2d3142",
+            "starColor": "#2d3142",
             "showAllReviews": false,
             "looxOpenFloatingWidget": false,
             "emptyRatingWidget": true
@@ -35,16 +34,7 @@
         "835fbf54-6b57-4bee-b33a-b7ab75ed2bfb": {
           "type": "text",
           "settings": {
-            "text": "<p>{{ product.metafields.custom.inhoud_info.value }}<\/p>",
-            "text_size": "text-size--xsmall",
-            "text_color": "#6a6a6a",
-            "text_transform": false
-          }
-        },
-        "550e851b-d0d2-4391-9eed-c7f7b9d68396": {
-          "type": "text",
-          "settings": {
-            "text": "{{ product.metafields.custom.niet_tevreden | metafield_tag }}",
+            "text": "<p>Ontvang <strong>€5,- <\/strong>Korting met de code \"<strong>JONKY50\"<\/strong><\/p>",
             "text_size": "text-size--xsmall",
             "text_color": "#6a6a6a",
             "text_transform": false
@@ -57,6 +47,7 @@
         },
         "13ea7bbb-c6d4-4307-89fc-2e1886f9f99c": {
           "type": "icons",
+          "disabled": true,
           "settings": {
             "title": "",
             "icon_1_image": "{{ product.metafields.custom.product_badge_file_1.value }}",
@@ -86,24 +77,27 @@
             "show_quantities": "below"
           }
         },
-        "dc8a0e21-ec43-44aa-9b6b-bc509073be41": {
-          "type": "shopify:\/\/apps\/kaching-bundle-quantity-breaks\/blocks\/app-block\/6c637362-a106-4a32-94ac-94dcfd68cdb8",
-          "disabled": true,
-          "settings": {
-            "product": "{{product}}"
-          }
-        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
             "show_price": false,
-            "show_quantity_selector": true,
+            "show_quantity_selector": false,
             "show_preorder": false,
             "show_dynamic_checkout": false,
             "show_gift_card_recipient": false
           }
         },
-        "empty_space_2": {
+        "d56bfcb6-ae8b-4047-bb87-cb8c5d6148e7": {
+          "type": "space",
+          "settings": {
+          }
+        },
+        "ad20c3c4-d464-4e05-b9b2-a34451406306": {
+          "type": "shopify:\/\/apps\/hextom-ultimate-sales-boost\/blocks\/usb-payment-badge\/00e81c42-8ae7-4b0b-b43d-99393b885fc4",
+          "settings": {
+          }
+        },
+        "2e4c6787-5994-4ef2-8aa2-2764b2665408": {
           "type": "space",
           "settings": {
           }
@@ -135,25 +129,25 @@
         "title",
         "ae90b012-a36a-4026-9655-f6d80e628f1a",
         "835fbf54-6b57-4bee-b33a-b7ab75ed2bfb",
-        "550e851b-d0d2-4391-9eed-c7f7b9d68396",
         "40725f51-fd87-4962-8d63-9ee1325ac7b5",
         "13ea7bbb-c6d4-4307-89fc-2e1886f9f99c",
         "8ea16222-4334-47e6-a1f0-c132d2490753",
         "variant_picker",
-        "dc8a0e21-ec43-44aa-9b6b-bc509073be41",
         "buy_buttons",
-        "empty_space_2",
+        "d56bfcb6-ae8b-4047-bb87-cb8c5d6148e7",
+        "ad20c3c4-d464-4e05-b9b2-a34451406306",
+        "2e4c6787-5994-4ef2-8aa2-2764b2665408",
         "description",
         "fdc5afa4-16fb-473e-ba84-4b92d8d25381",
         "9ea086f8-5c47-4766-b5bd-22ca9d1d59dc"
       ],
       "settings": {
         "gallery_style": "slider",
-        "gallery_ratio": "1",
+        "gallery_ratio": "1.33333",
         "gallery_fit": true,
         "show_border": true,
         "gallery_card_design": true,
-        "gallery_padding": 0,
+        "gallery_padding": 2,
         "gallery_pagination": "dots",
         "enable_zoom": true,
         "enable_video_looping": false
@@ -221,6 +215,7 @@
         "df1052bb-000f-49d3-8ba9-2ad1d84c4168",
         "c9df4f99-e803-4ca1-8bec-9ccc1e5991f9"
       ],
+      "disabled": true,
       "custom_css": [
         "h2 {font-weight: bold; font-size: 24px; \/* Pas de grootte naar wens aan *\/}"
       ],
@@ -292,7 +287,7 @@
         "6965d326-fb38-4584-99d1-ffbcff361c56"
       ],
       "custom_css": [
-        "h3 {font-size: 22px; font-weight: bold; \/* Voeg andere gewenste stijleigenschappen toe *\/ color: #242337; \/* Tekstkleur is ingesteld op #242337 *\/}"
+        "h3 {font-size: 22px; font-weight: bold; \/* Voeg andere gewenste stijleigenschappen toe *\/"
       ],
       "settings": {
         "heading": "Veelgestelde vragen",

@@ -31,8 +31,8 @@
         "visibility": "all",
         "show_locale_selector": true,
         "show_country_selector": true,
-        "show_social_icons": true,
-        "bar_bgcolor": "#8e2e2e",
+        "show_social_icons": false,
+        "bar_bgcolor": "#2d3142",
         "bar_txtcolor": "#ffffff"
       }
     },

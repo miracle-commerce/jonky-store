@@ -125,3 +125,134 @@ sticky-add-to-cart product-quantity input[type="number"]{
         padding: 0 20px;
     }
 }
+
+
+
+
+sticky-add-to-cart{
+    padding-top: 10px; 
+    padding-bottom: 10px; 
+    border-top: 1px solid var(--color-borders-header);
+    border-bottom: 1px solid var(--color-borders-header);
+    background-color: var(--color-background-header);
+    width: 100%;
+    position: fixed; 
+    bottom: 0;
+    left: 0; 
+    right: 0;
+    z-index: 999;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.8s;
+}
+
+sticky-add-to-cart.sticky-show{
+    visibility: visible;
+    opacity: 1;
+    transition: all 0.8s;
+}
+
+.sticky-add-to-cart{
+    display: flex; 
+    flex-wrap: wrap; 
+    align-items: center; 
+    justify-content: space-between;
+    column-gap: 20px;
+    width: 100%;
+    border: none;
+}
+
+
+.stickyCart__image{
+    width: 50px; 
+    height: 0; 
+    padding-bottom: 50px;
+    background-size: contain; 
+    background-position: center center; 
+}
+
+.stickyCart__meta{
+    width: calc(100% - 600px);
+    display: flex; 
+    flex-wrap: wrap; 
+    row-gap: 10px;
+    margin: 0;
+}
+
+.stickyCart__price{
+    width: 100px;
+}
+
+.stickyCart__addToCart{
+    width: 260px;
+}
+
+sticky-add-to-cart .product-quantity__minus, sticky-add-to-cart .product-quantity__plus{
+    width: 30px; 
+    height: 30px; 
+}
+
+sticky-add-to-cart .product-quantity__minus svg, sticky-add-to-cart .product-quantity__plus svg{
+    width: 14px; 
+    height: 14px;
+}
+
+sticky-add-to-cart product-quantity.product-quantity{
+    font-size: 16px; 
+    min-width: initial; 
+    width: 100px;
+}
+
+sticky-add-to-cart product-quantity input[type="number"]{
+    width: 30px; 
+    height: 30px;
+    font-size: 20px;
+}
+
+.stickyCart__productTitle{
+    font-size: 18px;
+    margin-bottom: 0;
+}
+
+.stickyCart__metacontent{
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
+
+.stickyCart__addToCart button{
+    display: flex; 
+    flex-wrap: wrap; 
+    align-items: center; 
+    justify-content: center;
+    column-gap: 10px;
+}
+
+.stickyCart__addToCart button .button__icon{
+    margin: 0 !important;
+    display: flex; 
+    flex-wrap: wrap; 
+    align-items: center;
+}
+
+@media only screen and (max-width: 768px){
+    .sticky-add-to-cart{
+        justify-content: center;
+        column-gap: 20px;
+    }
+    .stickyCart__image, .stickyCart__meta, .stickyCart__price{
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 480px){
+    .stickyCart__addToCart{
+        width: calc(100% - 120px);
+    }
+
+    .stickyCart__addToCart button{
+        width: 100%; 
+        font-size: 14px; 
+        padding: 0 20px;
+    }
+}

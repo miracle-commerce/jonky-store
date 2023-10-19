@@ -143,30 +143,30 @@
     }
   },
   "current": {
-    "headings_font": "helvetica_n4",
-    "headings_size": 50,
-    "headings_line": 1.2,
-    "body_font": "helvetica_n4",
+    "headings_font": "serif",
+    "headings_size": 40,
+    "headings_line": 1.1,
+    "body_font": "sans-serif",
     "body_size": 17,
     "body_line": 1.5,
     "buttons_weight": "bolder",
     "menu_size": 16,
-    "menu_weight": "normal",
+    "menu_weight": "bolder",
     "color_background_header": "#ffffff",
-    "color_text_header": "#242337",
-    "color_accent_header": "#8e2e2e",
+    "color_text_header": "#2d3142",
+    "color_accent_header": "#a9554c",
     "color_background_main": "#ffffff",
-    "color_text_main": "#000000",
-    "color_accent_main": "#8e2e2e",
+    "color_text_main": "#2d3142",
+    "color_accent_main": "#2d3142",
     "color_background_cards": "#f5f5f5",
-    "color_text_cards": "#242337",
-    "color_accent_cards": "#8e2e2e",
-    "color_borders_cards": "#e1e1e1",
-    "shadow_cards_color": "#000000",
-    "shadow_buttons_color": "#8e2e2e",
+    "color_text_cards": "#2d3142",
+    "color_accent_cards": "#a9554c",
+    "color_borders_cards": "#ffffff",
+    "shadow_cards_color": "#2d3142",
+    "shadow_buttons_color": "#a9554c",
     "color_background_footer": "#fcfcfc",
-    "color_text_footer": "#000000",
-    "color_accent_footer": "#242337",
+    "color_text_footer": "#2d3142",
+    "color_accent_footer": "#a9554c",
     "container_vertical_space": 80,
     "grid_gap": 26,
     "border_width_cards": 1,
@@ -187,7 +187,7 @@
     "product_card_show_secondary_image": true,
     "product_card_text_alignment": "center",
     "product_card_text_size": "large",
-    "product_card_button_style": "outline",
+    "product_card_button_style": "solid",
     "product_card_align_buy": true,
     "product_card_color_background_main": "#ffffff",
     "product_card_color_text_main": "#000000",
@@ -237,11 +237,11 @@
             "type": "cookies",
             "disabled": true,
             "settings": {
-              "enable": true,
+              "enable": false,
               "show_after": 1,
               "visibility": "homepage",
               "popup_bgcolor": "rgba(0,0,0,0)",
-              "popup_txtcolor": "#730707"
+              "popup_txtcolor": "rgba(0,0,0,0)"
             }
           }
         },
@@ -310,8 +310,8 @@
         "settings": {
         }
       },
-      "15557474716127144420": {
-        "type": "shopify:\/\/apps\/kaching-bundle-quantity-breaks\/blocks\/app-embed-block\/6c637362-a106-4a32-94ac-94dcfd68cdb8",
+      "8857984110089213392": {
+        "type": "shopify:\/\/apps\/hextom-ultimate-sales-boost\/blocks\/usb-embeded-block\/00e81c42-8ae7-4b0b-b43d-99393b885fc4",
         "disabled": false,
         "settings": {
         }

@@ -231,7 +231,6 @@ summary::-webkit-details-marker {
 }
 .card .button--solid {
   background-color: var(--color-text-cards);
-  border-color: var(--color-text-cards);
   color: var(--color-foreground-cards);
 }
 .card .button--icon svg * {
@@ -1638,8 +1637,7 @@ html[dir=ltr] .button--loader .button__preloader-element {
   background-color: transparent;
 }
 .button--solid {
-  background-color: var(--color-text-main);
-  border-color: var(--color-text-main);
+  background-color: var(--color-accent-main);
   color: var(--color-foreground-main);
 }
 .button--no-padding {
@@ -2398,13 +2396,10 @@ html[dir=ltr] .container--has-background:after, html[dir=ltr] .card__image svg, 
 
 /* Style voor de "Toevoegen aan winkelwagen" knop */
 #product-form-template--19759437185360__main > div > div .add-to-cart {
-  background-color: #242337; /* Bijgewerkte achtergrondkleur */
-  color: white;
   padding: 10px 20px;
   white-space: nowrap;
   overflow: hidden;
   max-width: 100%;
-  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -2436,11 +2431,11 @@ html[dir=ltr] .container--has-background:after, html[dir=ltr] .card__image svg, 
 
 .header-usp,
 .mobile-header-usp {
-    background-color: #eeeeee; /* Bijgewerkte achtergrondkleur */
+    background-color: #2D3142; /* Bijgewerkte achtergrondkleur */
     padding: 10px 0;
     width: 100%;
     z-index: 123;
-    color: #242337; /* Bijgewerkte tekstkleur */
+    color: #FFFFFF; /* Bijgewerkte tekstkleur */
 }
 
 .m-usp-bar,
@@ -2472,7 +2467,7 @@ html[dir=ltr] .container--has-background:after, html[dir=ltr] .card__image svg, 
 .usp__icon  {
     margin-right: 8px;
     width: 24px;
-    height: auto; 
+    height: 20px; 
 }
 
 .usp__text,
@@ -2484,7 +2479,7 @@ html[dir=ltr] .container--has-background:after, html[dir=ltr] .card__image svg, 
     align-items: center;
     justify-content: center;
     width: 100%;
-    color: #242337; /* Bijgewerkte tekstkleur */
+    color: #FFFFFF; /* Bijgewerkte tekstkleur */
 }
 
 .usp__text p,
@@ -2492,12 +2487,15 @@ html[dir=ltr] .container--has-background:after, html[dir=ltr] .card__image svg, 
     margin: 0;
     vertical-align: middle;
     line-height: 24px; 
-    color: #242337; /* Bijgewerkte tekstkleur */
+    color: #FFFFFF; /* Bijgewerkte tekstkleur */
+    font-style: italic;
+    
 }
 
 .u-text--green,
 .mobile-u-text--green {
-    color: green; /* Overweeg dit aan te passen voor betere zichtbaarheid op de lichtere achtergrond */
+    color: #81C784; /* Overweeg dit aan te passen voor betere zichtbaarheid op de lichtere achtergrond */
+    font-weight: normal;
 }
 
 .swiper-container {
@@ -2543,30 +2541,30 @@ html[dir=ltr] .container--has-background:after, html[dir=ltr] .card__image svg, 
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #242337; /* Bijgewerkte tekstkleur */
+    color: #FFFFFF; /* Bijgewerkte tekstkleur */
   }
 
   .mobile-usp__text p {
     margin: 0;
-    color: #242337; /* Bijgewerkte tekstkleur */
+    color: #FFFFFF; /* Bijgewerkte tekstkleur */
   }
   
   .mobile-usp__icon {
     width: auto;
     height: auto;
-    max-width: 25px;
+     max-width: 25px;
     margin-right: 10px;
   }
 
 /* Maak alleen de geopende vraag dikgedrukt */
 .toggle--faq.opened .toggle__title .text-weight--bold {
   font-weight: bold; /* Voeg andere gewenste stijleigenschappen toe */
-  color: #242337; /* Tekstkleur is ingesteld op #242337 */
+  color: #2D3142; /* Tekstkleur is ingesteld op #242337 */
 } 
 
 /* Houd de niet-geopende vragen normaal */
-.toggle--faq:not(.opened) .toggle__title .text-weight--bold {
+.toggle--faq:not(.opened) .toggle__title {
   font-weight: normal; /* Voeg andere gewenste stijleigenschappen toe */
-  color: #242337; /* Tekstkleur is ingesteld op #242337 */
+  color: #2D3142; /* Tekstkleur is ingesteld op #242337 */
 }
 

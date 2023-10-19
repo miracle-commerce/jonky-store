@@ -21,15 +21,15 @@
           "settings": {
           }
         },
+        "price": {
+          "type": "price",
+          "settings": {
+          }
+        },
         "af351734-7984-4fd9-8a9c-a36f47cdef10": {
           "type": "rating",
           "settings": {
             "reviews_app": "loox"
-          }
-        },
-        "price": {
-          "type": "price",
-          "settings": {
           }
         },
         "quick_buy": {
@@ -40,8 +40,8 @@
       },
       "block_order": [
         "title",
-        "af351734-7984-4fd9-8a9c-a36f47cdef10",
         "price",
+        "af351734-7984-4fd9-8a9c-a36f47cdef10",
         "quick_buy"
       ],
       "custom_css": [

@@ -13,13 +13,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0">
 
     {{ 'theme.css' | asset_url | stylesheet_tag }}
-    <div id="desktop-usp" class="usp">
-      {% include 'usp-bar-desktop' %}
-    </div>
 
-    <div id="mobile-usp" class="usp">
-      {% include 'usp-bar-mobile' %}
-    </div>
+
+<div id="mobile-usp">
+    {%- include 'usp-bar-mobile' -%}
+</div>
+
+<div id="desktop-usp">
+    {%- include 'usp-bar-desktop' -%}
+</div>
+
+
 
     {%- if settings.favicon -%}
       <link rel="shortcut icon" href="{{ settings.favicon | image_url: width: 32, height: 32 }}" type="image/png">
@@ -46,9 +50,8 @@
       endunless
     -%}
 
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
     <link rel="canonical" href="{{ canonical_url }}">
-
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <link rel="preconnect" href="https://cdn.shopify.com">
     {%- unless settings.headings_font.system? and settings.body_font.system? -%}
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
@@ -56,7 +59,6 @@
 
     {%- render 'head-preloader' -%}
     {%- render 'head-variables', direction: direction -%}
-    {%- render 'theme-symbols', icon: 'cart' -%}
 
     {{ content_for_header }}
 
@@ -218,32 +220,8 @@
         predictive_search_placeholder: `<div class="search-results"><div class="search-block"><a class="search-item search-item--blank"><div class="thumbnail"></div><div class="content"><span class="title"></span><span class="caption"></span></div></a><a class="search-item search-item--blank"><div class="thumbnail"></div><div class="content"><span class="title"></span><span class="caption"></span></div></a><a class="search-item search-item--blank"><div class="thumbnail"></div><div class="content"><span class="title"></span><span class="caption"></span></div></a></div></div>`
       }
     }
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </script>
+      
+</script>
 
     <script src="{{ 'component-quick-buy.js' | asset_url }}" defer></script>
     <script src="{{ 'component-pickup-availability.js' | asset_url }}" defer></script>

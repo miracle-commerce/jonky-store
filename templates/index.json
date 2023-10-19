@@ -6,11 +6,11 @@
         "1653646142fd3f3126-0": {
           "type": "image",
           "settings": {
-            "image": "shopify:\/\/shop_images\/JONKY_BIANCO_Facebook-omslagfoto.png",
+            "image": "shopify:\/\/shop_images\/JONKY_BIANCO_Facebook-omslagfoto_864_x_1000_px_1000_x_864_px_1600_x_900_px_-3.jpg",
             "mobile_image": "shopify:\/\/shop_images\/JONKY_BIANCO_Facebook-omslagfoto_864_x_1000_px_648_x_480_px.png",
             "caption": "",
             "title": "",
-            "link": "shopify:\/\/products\/jonky-bianco-75-cl",
+            "link": "shopify:\/\/collections\/all",
             "button_label": "",
             "color_background_main": "rgba(0,0,0,0)",
             "color_text_main": "rgba(0,0,0,0)",
@@ -37,18 +37,18 @@
       ],
       "settings": {
         "desktop_height": "60vh",
-        "mobile_height": "60vh",
-        "is_auto_height": true,
+        "mobile_height": "40vh",
+        "is_auto_height": false,
         "autorotate_enable": false,
         "autorotate_interval": 5,
         "alignment": "horizontal-left align-content--vertical-middle",
         "text_size": "regular",
-        "title_size": "h1",
-        "button_size": "large",
+        "title_size": "h3",
+        "button_size": "regular",
         "button_style": "solid",
         "is_fullwidth": true,
         "section_background_color": "rgba(0,0,0,0)",
-        "section_heading_color": "rgba(0,0,0,0)",
+        "section_heading_color": "#2d3142",
         "remove_margin": true,
         "color_hide_borders": false,
         "color_hide_shadow": false
@@ -65,7 +65,7 @@
         "2fe5312e-e69f-45d1-bac2-bcdf636d2cf0": {
           "type": "rating",
           "settings": {
-            "reviews_app": "default"
+            "reviews_app": "loox"
           }
         },
         "price": {
@@ -77,19 +77,13 @@
           "type": "quick_buy",
           "settings": {
           }
-        },
-        "0732fb3a-f464-4724-9427-62214bde5409": {
-          "type": "local_availability",
-          "settings": {
-          }
         }
       },
       "block_order": [
         "title",
         "2fe5312e-e69f-45d1-bac2-bcdf636d2cf0",
         "price",
-        "quick_buy",
-        "0732fb3a-f464-4724-9427-62214bde5409"
+        "quick_buy"
       ],
       "custom_css": [
         "h2 {font-weight: bold;}"
@@ -309,7 +303,7 @@
             "button_label": "Lees meer",
             "link": "shopify:\/\/pages\/over-ons",
             "button_size": "large",
-            "button_style": "outline"
+            "button_style": "solid"
           }
         }
       },
@@ -318,16 +312,15 @@
         "1655130414988486bd-1",
         "1655130414988486bd-2"
       ],
-      "disabled": true,
       "settings": {
-        "image_position": "left",
-        "height": "small",
+        "image_position": "top no-image",
+        "height": "regular",
         "image_crop": false,
-        "text_alignment": "horizontal-center",
-        "is_fullwidth": true,
+        "text_alignment": "horizontal-right",
+        "is_fullwidth": false,
         "section_background_color": "rgba(0,0,0,0)",
         "remove_margin": false,
-        "color_background_main": "#e1e0d7",
+        "color_background_main": "rgba(0,0,0,0)",
         "color_text_main": "rgba(0,0,0,0)",
         "color_accent_main": "rgba(0,0,0,0)",
         "color_borders_main": "rgba(0,0,0,0)",
