@@ -499,7 +499,7 @@
               {% if settings.cart_action == 'overlay' %} data-ajax-cart data-js-product-form {% endif %}
             >
               
-              {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+              {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form', data-main-product-form: true -%}
 
                 <template>
                   <input type="hidden" name="id" value="{{ current_variant.id }}">
@@ -520,11 +520,11 @@
 
                     {%- liquid 
                       if block.settings.show_quantity_selector
-                        render 'product-quantity', variant: current_variant, id: section.id
+                        render 'product-quantity', variant: current_variant, id: section.id, main_product_qty_selector: true
                       endif
                     -%}
 
-<button type="submit" name="add" class="add-to-cart button button--solid button--product button--loader {% unless current_variant.available %} disabled {% endunless %}" data-js-product-add-to-cart>
+<button type="submit" name="add" class="add-to-cart button button--solid button--product button--loader {% unless current_variant.available %} disabled {% endunless %}" data-js-product-add-to-cart data-main-product-add-to-cart>
   <span class="button__icon" role="img" aria-hidden="true" style="margin-right: 10px; margin-bottom: 5px; vertical-align: middle;"> <!-- Voeg vertical-align: middle; toe om het icoon te centreren -->
     <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path class="circle" d="M9.5 20C9.77614 20 10 19.7761 10 19.5C10 19.2239 9.77614 19 9.5 19C9.22386 19 9 19.2239 9 19.5C9 19.7761 9.22386 20 9.5 20Z" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>

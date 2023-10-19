@@ -231,6 +231,7 @@ summary::-webkit-details-marker {
 }
 .card .button--solid {
   background-color: var(--color-text-cards);
+  border-color: var(--color-text-cards);
   color: var(--color-foreground-cards);
 }
 .card .button--icon svg * {
@@ -1638,6 +1639,7 @@ html[dir=ltr] .button--loader .button__preloader-element {
 }
 .button--solid {
   background-color: var(--color-text-main);
+  border-color: var(--color-text-main);
   color: var(--color-foreground-main);
 }
 .button--no-padding {
@@ -2396,7 +2398,7 @@ html[dir=ltr] .container--has-background:after, html[dir=ltr] .card__image svg, 
 
 /* Style voor de "Toevoegen aan winkelwagen" knop */
 #product-form-template--19759437185360__main > div > div .add-to-cart {
-  background-color: #8E2E2E; /* Bijgewerkte achtergrondkleur */
+  background-color: #242337; /* Bijgewerkte achtergrondkleur */
   color: white;
   padding: 10px 20px;
   white-space: nowrap;
@@ -2563,7 +2565,7 @@ html[dir=ltr] .container--has-background:after, html[dir=ltr] .card__image svg, 
 } 
 
 /* Houd de niet-geopende vragen normaal */
-.toggle--faq:not(.opened) .toggle__title {
+.toggle--faq:not(.opened) .toggle__title .text-weight--bold {
   font-weight: normal; /* Voeg andere gewenste stijleigenschappen toe */
   color: #242337; /* Tekstkleur is ingesteld op #242337 */
 }

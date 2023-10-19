@@ -124,12 +124,12 @@
 }
 
 .copyright {
-  background-color: #eeeeee;
+  background-color: #242337;
   padding: 10px 0;
   font-size: 12px;
   font-family: sans-serif;
   font-weight: normal;
-  color: #242337;
+  color: #FFFFFF;
 }
 
 .container-copyright {
@@ -154,16 +154,16 @@
 .d-lg-none {
   display: block !important;
   padding: 0 !important;
-  color: #242337; /* Extra toegevoegd voor witte tekst */
+  color: #FFFFFF; /* Extra toegevoegd voor witte tekst */
 }
 
 .d-lg-none a, .d-lg-flex a {
-  color: #242337; /* Kleur van de links ingesteld op wit */
+  color: #FFFFFF; /* Kleur van de links ingesteld op wit */
   text-decoration: none;
 }
 
 .d-lg-none a:hover, .d-lg-flex a:hover {
-  color: #242337; /* Hover effect indien nodig aangepast */
+  color: #FFFFFF; /* Hover effect indien nodig aangepast */
 }
 
 .d-lg-flex { display: none; }
@@ -171,11 +171,11 @@
 @media (min-width: 992px) {
   .d-lg-none { display: none !important; }
   .d-lg-flex { display: flex !important; }
-  .d-lg-flex { color: #242337; } /* Extra toegevoegd voor witte tekst */
+  .d-lg-flex { color: #FFFFFF; } /* Extra toegevoegd voor witte tekst */
 }
 
 .divider {
   margin-left: 5px;
   margin-right: 5px;
-  color: #242337; 
+  color: #FFFFFF; 
 }

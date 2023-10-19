@@ -19,6 +19,29 @@ if (window.location.pathname.includes('/products/')) {
 
         // Pas de standaardwaarde van qtySelector aan naar 6
         qtySelector.value = 1;
+        qtySelector.addEventListener('change', (e)=>{
+          console.log(e);
+          if(e.detail.synced == false){
+            if(this.dataset.stickyCart == 'true'){
+              let mainQuantitySelector = document.querySelector("[data-main-product-quantity-selector]");
+              if(mainQuantitySelector){
+                mainQuantitySelector.querySelector("[name='quantity']").value = qtySelector.value;
+                mainQuantitySelector.querySelector("[name='quantity']").dispatchEvent(new CustomEvent('change', {detail:{
+                  synced: true
+                }}))
+              }
+            }else if (this.dataset.mainProductQuantitySelector == "true"){
+              let stickyCartQtySelector = document.querySelector("product-quantity[data-sticky-cart='true']");
+              if(stickyCartQtySelector){
+                stickyCartQtySelector.querySelector("[name='quantity']").value = qtySelector.value;
+                stickyCartQtySelector.querySelector("[name='quantity']").dispatchEvent(new CustomEvent('change', {detail:{
+                  synced: true
+                }}))
+                console.log(stickyCartQtySelector.querySelector("[name='quantity']").value);
+              }
+            }
+          }
+        })
 
         if (parseInt(qtySelector.value) - 1 < qtyMin) {
           qtyMinus.classList.add('disabled');
@@ -38,6 +61,7 @@ if (window.location.pathname.includes('/products/')) {
             if (currentQty - 1 <= qtyMin) {
               qtyMinus.classList.add('disabled');
             }
+            qtySelector.dispatchEvent(new Event("change", { detail: {synced: false}}));
           }
         });
 
@@ -52,6 +76,7 @@ if (window.location.pathname.includes('/products/')) {
             if (currentQty + 1 >= qtyMax) {
               qtyPlus.classList.add('disabled');
             }
+            qtySelector.dispatchEvent(new CustomEvent("change", { detail: {synced: false}}));
           }
         });
       }
