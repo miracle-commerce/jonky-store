@@ -143,10 +143,10 @@
     }
   },
   "current": {
-    "headings_font": "serif",
-    "headings_size": 40,
+    "headings_font": "montserrat_n6",
+    "headings_size": 32,
     "headings_line": 1.1,
-    "body_font": "serif",
+    "body_font": "montserrat_n4",
     "body_size": 17,
     "body_line": 1.5,
     "buttons_weight": "bolder",
