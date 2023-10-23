@@ -5,11 +5,12 @@
       "blocks": {
         "854e7707-0a53-40f1-82bf-727340968b7c": {
           "type": "shopify:\/\/apps\/loox-product-reviews-photos\/blocks\/loox-rating\/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "disabled": true,
           "settings": {
             "contentSize": 15,
-            "pattern": "[count] reviews",
+            "pattern": "[rating] \/ 5",
             "hideText": false,
-            "alignment": "left",
+            "alignment": "",
             "textColor": "#2d3142",
             "starColor": "#2d3142",
             "showAllReviews": false,
@@ -22,12 +23,17 @@
           "settings": {
           }
         },
+        "40725f51-fd87-4962-8d63-9ee1325ac7b5": {
+          "type": "price",
+          "settings": {
+          }
+        },
         "ae90b012-a36a-4026-9655-f6d80e628f1a": {
           "type": "text",
           "settings": {
             "text": "<p><strong>{{ product.metafields.custom.wijn_info.value }}<\/strong><\/p>",
             "text_size": "text-size--xsmall",
-            "text_color": "#000000",
+            "text_color": "#6a6a6a",
             "text_transform": false
           }
         },
@@ -40,14 +46,8 @@
             "text_transform": false
           }
         },
-        "40725f51-fd87-4962-8d63-9ee1325ac7b5": {
-          "type": "price",
-          "settings": {
-          }
-        },
         "13ea7bbb-c6d4-4307-89fc-2e1886f9f99c": {
           "type": "icons",
-          "disabled": true,
           "settings": {
             "title": "",
             "icon_1_image": "{{ product.metafields.custom.product_badge_file_1.value }}",
@@ -81,7 +81,7 @@
           "type": "buy_buttons",
           "settings": {
             "show_price": false,
-            "show_quantity_selector": false,
+            "show_quantity_selector": true,
             "show_preorder": false,
             "show_dynamic_checkout": false,
             "show_gift_card_recipient": false
@@ -127,9 +127,9 @@
       "block_order": [
         "854e7707-0a53-40f1-82bf-727340968b7c",
         "title",
+        "40725f51-fd87-4962-8d63-9ee1325ac7b5",
         "ae90b012-a36a-4026-9655-f6d80e628f1a",
         "835fbf54-6b57-4bee-b33a-b7ab75ed2bfb",
-        "40725f51-fd87-4962-8d63-9ee1325ac7b5",
         "13ea7bbb-c6d4-4307-89fc-2e1886f9f99c",
         "8ea16222-4334-47e6-a1f0-c132d2490753",
         "variant_picker",
@@ -215,7 +215,6 @@
         "df1052bb-000f-49d3-8ba9-2ad1d84c4168",
         "c9df4f99-e803-4ca1-8bec-9ccc1e5991f9"
       ],
-      "disabled": true,
       "custom_css": [
         "h2 {font-weight: bold; font-size: 24px; \/* Pas de grootte naar wens aan *\/}"
       ],
@@ -301,6 +300,7 @@
     },
     "18d8a256-c32e-4324-8d8e-50561e6573ef": {
       "type": "custom-liquid",
+      "disabled": true,
       "settings": {
         "custom_liquid": "<h1 style=\"font-weight: bold; margin-top: 0; font-size: 22px;\">Reviews<\/h1>\n<div id=\"header\" class=\"minimal-header\">\n    <!-- De rest van de code blijft ongewijzigd -->\n<\/div>",
         "full_width": false,
@@ -312,6 +312,7 @@
       "blocks": {
         "8febb8b4-94b8-428b-bee5-c11170228683": {
           "type": "shopify:\/\/apps\/loox-product-reviews-photos\/blocks\/loox-dynamic-section\/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "disabled": true,
           "settings": {
             "only_photos": false,
             "aggregated": false,
@@ -369,6 +370,7 @@
         "quick_buy",
         "635c4757-d506-4442-be27-67a31faa3a4a"
       ],
+      "disabled": true,
       "custom_css": [
 
       ],
@@ -388,6 +390,7 @@
       "blocks": {
         "loox-product-reviews": {
           "type": "shopify:\/\/apps\/loox-product-reviews-photos\/blocks\/loox-dynamic-section\/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "disabled": true,
           "settings": {
             "only_photos": false,
             "aggregated": false,

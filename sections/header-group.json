@@ -59,10 +59,10 @@
         "show_search": true,
         "sticky_header": true,
         "select_header_actions_on_mobile": "no",
-        "show_header_actions": true,
+        "show_header_actions": false,
         "show_locale_selector": false,
         "show_country_selector": false,
-        "show_social_icons": true
+        "show_social_icons": false
       }
     }
   },
