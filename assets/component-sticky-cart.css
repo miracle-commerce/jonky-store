@@ -101,6 +101,7 @@ sticky-add-to-cart product-quantity input[type="number"]{
     align-items: center; 
     justify-content: center;
     column-gap: 10px;
+    padding: 5px 20px;
 }
 
 .stickyCart__addToCart button .button__icon{
