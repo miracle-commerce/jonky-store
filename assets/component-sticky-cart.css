@@ -102,6 +102,8 @@ sticky-add-to-cart product-quantity input[type="number"]{
     justify-content: center;
     column-gap: 10px;
     padding: 5px 20px;
+    background-color: var(--color-accent-main) !important;
+  box-shadow: var(--shadow-x-buttons) var(--shadow-y-buttons) var(--shadow-blur-buttons) var(--color-shadow-buttons) !important;
 }
 
 .stickyCart__addToCart button .button__icon{

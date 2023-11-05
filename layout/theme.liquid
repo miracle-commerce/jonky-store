@@ -14,13 +14,7 @@
 
     {{ 'theme.css' | asset_url | stylesheet_tag }}
 
-<div id="mobile-usp">
-    {%- include 'usp-bar-mobile' -%}
-</div>
 
-<div id="desktop-usp">
-    {%- include 'usp-bar-desktop' -%}
-</div>
 
 
 
@@ -297,12 +291,8 @@
       </script>
     {%- endif -%}
 
-    {% if template contains 'product' %}
-      {% render 'sticky-add-to-cart', product: product %}
-    {% endif %}
-
+  
     
-    <script type="text/javascript" src="https://cdn.hextom.com/js/ultimatesalesboost.js?shop=c3f40f.myshopify.com"></script>
 
 
     {{ shop.metafields.loox.global_html_body }}

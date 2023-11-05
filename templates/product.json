@@ -11,20 +11,15 @@
             "pattern": "[rating] \/ 5",
             "hideText": false,
             "alignment": "",
-            "textColor": "#2d3142",
-            "starColor": "#2d3142",
+            "textColor": "#595753",
+            "starColor": "#ad8159",
             "showAllReviews": false,
             "looxOpenFloatingWidget": false,
-            "emptyRatingWidget": true
+            "emptyRatingWidget": false
           }
         },
         "title": {
           "type": "title",
-          "settings": {
-          }
-        },
-        "40725f51-fd87-4962-8d63-9ee1325ac7b5": {
-          "type": "price",
           "settings": {
           }
         },
@@ -33,21 +28,29 @@
           "settings": {
             "text": "<p><strong>{{ product.metafields.custom.wijn_info.value }}<\/strong><\/p>",
             "text_size": "text-size--xsmall",
-            "text_color": "#6a6a6a",
+            "text_color": "rgba(0,0,0,0)",
             "text_transform": false
+          }
+        },
+        "40725f51-fd87-4962-8d63-9ee1325ac7b5": {
+          "type": "price",
+          "disabled": true,
+          "settings": {
           }
         },
         "835fbf54-6b57-4bee-b33a-b7ab75ed2bfb": {
           "type": "text",
+          "disabled": true,
           "settings": {
             "text": "<p>Ontvang <strong>€5,- <\/strong>Korting met de code \"<strong>JONKY50\"<\/strong><\/p>",
             "text_size": "text-size--xsmall",
-            "text_color": "#6a6a6a",
+            "text_color": "rgba(0,0,0,0)",
             "text_transform": false
           }
         },
         "13ea7bbb-c6d4-4307-89fc-2e1886f9f99c": {
           "type": "icons",
+          "disabled": true,
           "settings": {
             "title": "",
             "icon_1_image": "{{ product.metafields.custom.product_badge_file_1.value }}",
@@ -66,7 +69,7 @@
           "settings": {
             "text": "<p>{{ product.metafields.custom.korte_beschrijving.value }}<\/p>",
             "text_size": "text-size--xsmall",
-            "text_color": "#807b78",
+            "text_color": "rgba(0,0,0,0)",
             "text_transform": false
           }
         },
@@ -80,7 +83,7 @@
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
-            "show_price": false,
+            "show_price": true,
             "show_quantity_selector": true,
             "show_preorder": false,
             "show_dynamic_checkout": false,
@@ -89,11 +92,6 @@
         },
         "d56bfcb6-ae8b-4047-bb87-cb8c5d6148e7": {
           "type": "space",
-          "settings": {
-          }
-        },
-        "ad20c3c4-d464-4e05-b9b2-a34451406306": {
-          "type": "shopify:\/\/apps\/hextom-ultimate-sales-boost\/blocks\/usb-payment-badge\/00e81c42-8ae7-4b0b-b43d-99393b885fc4",
           "settings": {
           }
         },
@@ -127,15 +125,14 @@
       "block_order": [
         "854e7707-0a53-40f1-82bf-727340968b7c",
         "title",
-        "40725f51-fd87-4962-8d63-9ee1325ac7b5",
         "ae90b012-a36a-4026-9655-f6d80e628f1a",
+        "40725f51-fd87-4962-8d63-9ee1325ac7b5",
         "835fbf54-6b57-4bee-b33a-b7ab75ed2bfb",
         "13ea7bbb-c6d4-4307-89fc-2e1886f9f99c",
         "8ea16222-4334-47e6-a1f0-c132d2490753",
         "variant_picker",
         "buy_buttons",
         "d56bfcb6-ae8b-4047-bb87-cb8c5d6148e7",
-        "ad20c3c4-d464-4e05-b9b2-a34451406306",
         "2e4c6787-5994-4ef2-8aa2-2764b2665408",
         "description",
         "fdc5afa4-16fb-473e-ba84-4b92d8d25381",
@@ -147,9 +144,9 @@
         "gallery_fit": true,
         "show_border": true,
         "gallery_card_design": true,
-        "gallery_padding": 2,
+        "gallery_padding": 4,
         "gallery_pagination": "dots",
-        "enable_zoom": true,
+        "enable_zoom": false,
         "enable_video_looping": false
       }
     },
@@ -164,7 +161,7 @@
             "title": "{{ product.metafields.custom.smaakpalet_5_0.value }}",
             "caption": "{{ product.metafields.custom.smaakpalet_5_1.value }}",
             "link": "",
-            "color_background_main": "#f5f5f5",
+            "color_background_main": "rgba(0,0,0,0)",
             "color_icons_main": "rgba(0,0,0,0)",
             "seo_h_tag": "h3"
           }
@@ -177,7 +174,7 @@
             "title": "{{ product.metafields.custom.smaakpalet_6_0.value }}",
             "caption": "{{ product.metafields.custom.smaakpalet_6_1.value }}",
             "link": "",
-            "color_background_main": "#f5f5f5",
+            "color_background_main": "rgba(0,0,0,0)",
             "color_icons_main": "rgba(0,0,0,0)",
             "seo_h_tag": "h3"
           }
@@ -190,7 +187,7 @@
             "title": "{{ product.metafields.custom.smaakpalet_7_0.value }}",
             "caption": "{{ product.metafields.custom.smaakpalet_7_1.value }}",
             "link": "",
-            "color_background_main": "#f5f5f5",
+            "color_background_main": "rgba(0,0,0,0)",
             "color_icons_main": "rgba(0,0,0,0)",
             "seo_h_tag": "h3"
           }
@@ -203,7 +200,7 @@
             "title": "{{ product.metafields.custom.smaakpalet_8_0.value }}",
             "caption": "{{ product.metafields.custom.smaakpalet_8_1.value }}",
             "link": "",
-            "color_background_main": "#f5f5f5",
+            "color_background_main": "rgba(0,0,0,0)",
             "color_icons_main": "rgba(0,0,0,0)",
             "seo_h_tag": "h3"
           }
@@ -215,6 +212,7 @@
         "df1052bb-000f-49d3-8ba9-2ad1d84c4168",
         "c9df4f99-e803-4ca1-8bec-9ccc1e5991f9"
       ],
+      "disabled": true,
       "custom_css": [
         "h2 {font-weight: bold; font-size: 24px; \/* Pas de grootte naar wens aan *\/}"
       ],
@@ -312,7 +310,6 @@
       "blocks": {
         "8febb8b4-94b8-428b-bee5-c11170228683": {
           "type": "shopify:\/\/apps\/loox-product-reviews-photos\/blocks\/loox-dynamic-section\/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
-          "disabled": true,
           "settings": {
             "only_photos": false,
             "aggregated": false,
@@ -330,7 +327,7 @@
       ],
       "settings": {
         "full_width": false,
-        "remove_margin": true
+        "remove_margin": false
       }
     },
     "product-recommendations": {

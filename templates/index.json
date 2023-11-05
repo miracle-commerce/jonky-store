@@ -6,8 +6,7 @@
         "1653646142fd3f3126-0": {
           "type": "image",
           "settings": {
-            "image": "shopify:\/\/shop_images\/JONKY_BIANCO_Facebook-omslagfoto_864_x_1000_px_1000_x_864_px_1600_x_900_px_-3.jpg",
-            "mobile_image": "shopify:\/\/shop_images\/JONKY_BIANCO_Facebook-omslagfoto_864_x_1000_px_648_x_480_px.png",
+            "image": "shopify:\/\/shop_images\/JONKY_BIANCO_Facebook-omslagfoto_f49f16b9-b1de-4e01-8ac6-10ff51abf365.png",
             "caption": "",
             "title": "",
             "link": "shopify:\/\/collections\/all",
@@ -38,7 +37,7 @@
       "settings": {
         "desktop_height": "60vh",
         "mobile_height": "40vh",
-        "is_auto_height": false,
+        "is_auto_height": true,
         "autorotate_enable": false,
         "autorotate_interval": 5,
         "alignment": "horizontal-left align-content--vertical-middle",
@@ -778,7 +777,7 @@
         "title": "Meld je aan voor onze nieuwsbrief",
         "text": "",
         "color_background_main": "rgba(0,0,0,0)",
-        "color_text_main": "#000000",
+        "color_text_main": "rgba(0,0,0,0)",
         "color_borders_main": "rgba(0,0,0,0)",
         "color_shadow_main": "rgba(0,0,0,0)",
         "section_background_color": "rgba(0,0,0,0)",

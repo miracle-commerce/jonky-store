@@ -4,12 +4,12 @@
 .footer2 {
   margin-top: var(--container-vertical-space);
   border-top: 1px solid var(--color-borders-footer);
-  background: #2D3142;
-  color: #FFFFFF;
+  background: #F2F0EE;
+  color: #AD8159;
   padding: 70px 0;
 }
 .footer2 a {
-  color: #FFFFFF;
+  color: #AD8159;
   transition: all 100ms linear;
 }
 
@@ -66,7 +66,7 @@
 
 .footer2-col h4 {
   font-size: 18px;
-  color: #FFFFFF;
+  color: #AD8159;
   text-transform: capitalize;
   margin-bottom: 20px;
   font-weight: normal;
@@ -79,7 +79,7 @@
 
 .footer2-col ul li a {
   font-size: 14px;
-  color: #FFFFFF;
+  color: #AD8159;
   text-decoration: none;
   font-weight: small;
   display: block;
@@ -87,7 +87,7 @@
 }
 
 .footer2-col ul li a:hover {
-  color: #FFFFFF;
+  color: #AD8159;
 }
 
 .footer2-col .social-links2 a {
@@ -99,7 +99,7 @@
   text-align: center;
   line-height: 40px;
   border-radius: 50%;
-  color: #FFFFFF;
+  color: #AD8159;
   transition: all 0.5s ease;
 }
 
@@ -117,12 +117,11 @@
 }
 
 .copyright {
-  background-color: #292d3d;
+  background-color: #F2F0EE;
   padding: 10px 0;
   font-size: 12px;
-  font-family: sans-serif;
-  font-weight: normal;
-  color: #FFFFFF;
+  font-weight: bold;
+  color: #AD8159;
 }
 
 .container-copyright {
@@ -147,16 +146,16 @@
 .d-lg-none {
   display: block !important;
   padding: 0 !important;
-  color: #FFFFFF; /* Extra toegevoegd voor witte tekst */
+  color: #AD8159; /* Extra toegevoegd voor witte tekst */
 }
 
 .d-lg-none a, .d-lg-flex a {
-  color: #FFFFFF; /* Kleur van de links ingesteld op wit */
+  color: #AD8159; /* Kleur van de links ingesteld op wit */
   text-decoration: none;
 }
 
 .d-lg-none a:hover, .d-lg-flex a:hover {
-  color: #FFFFFF; /* Hover effect indien nodig aangepast */
+  color: #AD8159; /* Hover effect indien nodig aangepast */
 }
 
 .d-lg-flex { display: none; }
@@ -164,11 +163,11 @@
 @media (min-width: 992px) {
   .d-lg-none { display: none !important; }
   .d-lg-flex { display: flex !important; }
-  .d-lg-flex { color: #FFFFFF; } /* Extra toegevoegd voor witte tekst */
+  .d-lg-flex { color: #AD8159; } /* Extra toegevoegd voor witte tekst */
 }
 
 .divider {
   margin-left: 5px;
   margin-right: 5px;
-  color: #FFFFFF; 
+  color: #AD8159; 
 }
