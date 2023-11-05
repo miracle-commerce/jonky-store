@@ -2,14 +2,22 @@
 <script type="text/javascript" src="{{'component-sticky-cart.js' | asset_url}}" async></script>
 {% assign current_variant = product.selected_or_first_available_variant %}
 <sticky-add-to-cart>
-  <div class="header-container container--large sticky-add-to-cart">
+  <div class="header-container container--large sticky-add-to-cart" {{'now' | date: '%u'}}>
     <span class="stickyCart__item stickyCart__image" style="background-image: url('{{current_variant.image | default: product.featured_image | image_url: width: 60}}')">
     </span>
     <div class="stickCart__item stickyCart__meta">
       <p class="stickyCart__productTitle stickyCart__metaitem">{{product.title}}</p>
-      {% if product.metafields.custom.stickycart_content.value != blank %}
-<div class="stickyCart__metacontent stickyCart__metaitem">{{product.metafields.custom.stickycart_content | metafield_tag | strip_html}}</div>
-      {% endif %}
+      <ul class="stickyCart__metacontent stickyCart__metaitem">
+        {%- assign current_day = 'now' | date: '%u' -%}
+        {%- if current_day == 6 or current_day == 7 -%}
+          <li class="stickCart__metacontent__item">{%- render 'icon-checkmark' -%} Vandaag besteld, overmorgen in huis.</li>
+        {%- else -%}
+          <li class="stickCart__metacontent__item">{%- render 'icon-checkmark' -%} Voor 16:00 besteld, morgen in huis.</li>
+        {%- endif -%}
+        <li class="stickCart__metacontent__item">{%- render 'icon-checkmark' -%} Niet tevreden? <a href="https://jonky.nl/pages/voorwaarden-niet-tevreden-geld-terug-actie-jonky-nl">Geld-terug garantie</a></li>
+        <li class="stickCart__metacontent__item">{%- render 'icon-checkmark' -%} Beste uit de test door gecertificeerd vinoloog</li>
+      </ul>
+      
     </div>
     <div class="stickyCart__item stickyCart__price">
       {%- render 'product-price', variant: current_variant, target: current_variant -%}

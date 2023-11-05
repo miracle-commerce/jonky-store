@@ -248,3 +248,16 @@ sticky-add-to-cart product-quantity input[type="number"]{
         display: none;
     }
 }
+
+.stickyCart__metacontent{
+    width: 100%;
+}
+
+.stickCart__metacontent__item{
+    font-size: 14px;
+}
+
+.stickCart__metacontent__item svg{
+    width: 10px;
+    margin-right: 5px;
+}
