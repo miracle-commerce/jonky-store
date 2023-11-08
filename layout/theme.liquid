@@ -292,7 +292,9 @@
     {%- endif -%}
 
   
-    
+  {%- if template contains 'product' -%}
+    {% render 'sticky-add-to-cart', product: product %}
+  {%- endif -%}    
 
 
     {{ shop.metafields.loox.global_html_body }}

@@ -37,7 +37,6 @@ if (window.location.pathname.includes('/products/')) {
                 stickyCartQtySelector.querySelector("[name='quantity']").dispatchEvent(new CustomEvent('change', {detail:{
                   synced: true
                 }}))
-                console.log(stickyCartQtySelector.querySelector("[name='quantity']").value);
               }
             }
           }
