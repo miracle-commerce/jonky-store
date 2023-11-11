@@ -258,7 +258,9 @@ sticky-add-to-cart product-quantity input[type="number"]{
 }
 
 .stickCart__metacontent__item{
+    display: inline;
     font-size: 14px;
+    margin-right: 10px;
 }
 
 .stickCart__metacontent__item svg{

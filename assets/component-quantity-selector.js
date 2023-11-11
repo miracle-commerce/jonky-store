@@ -18,7 +18,7 @@ if (window.location.pathname.includes('/products/')) {
           : 999;
 
         // Pas de standaardwaarde van qtySelector aan naar 6
-        qtySelector.value = 1;
+        // qtySelector.value = 1;
         qtySelector.addEventListener('change', (e)=>{
           console.log(e);
           if(e.detail.synced == false){
