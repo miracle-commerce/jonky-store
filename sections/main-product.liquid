@@ -520,7 +520,7 @@
 
                     {%- liquid 
                       if block.settings.show_quantity_selector
-                        render 'product-quantity', variant: current_variant, id: section.id, main_product_qty_selector: true
+                        render 'product-quantity', variant: current_variant, id: section.id, data_parent: "main-product"
                       endif
                     -%}
 

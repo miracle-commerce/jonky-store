@@ -518,11 +518,13 @@ if ( typeof ProductForm !== 'function' ) {
 		onSubmitHandler(e) {	
 
 			e.preventDefault();
-			
+			console.log(e.detail);
 			const submitButton = this.querySelector('[type="submit"]');
-
 			submitButton.classList.add('working');
-
+			const stickySubmitButton = document.querySelector('[data-sticky-add-cart]');
+			if(stickySubmitButton){
+				stickySubmitButton.classList.add('working');
+			}
 			const body = this._serializeForm(this.form);
 			let alert = '';
 
@@ -596,6 +598,9 @@ if ( typeof ProductForm !== 'function' ) {
 				})
 				.finally(() => {
 					submitButton.classList.remove('working');
+					if(stickySubmitButton){
+						stickySubmitButton.classList.remove('working');
+					}
 				});
 		}
 

@@ -24,7 +24,7 @@
     </div>
     <div class="stickyCart__item stickyCart__qty-controller">
       {%- liquid 
-          render 'product-quantity', variant: current_variant, id: section.id, is_sticky_cart: true
+          render 'product-quantity', variant: current_variant, id: section.id, data_parent: "sticky-bar"
       -%}
     </div>
     <div class="stickyCart__item stickyCart__addToCart">

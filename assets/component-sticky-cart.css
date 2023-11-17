@@ -235,17 +235,6 @@ sticky-add-to-cart product-quantity input[type="number"]{
     }
 }
 
-@media only screen and (max-width: 480px){
-    .stickyCart__addToCart{
-        width: calc(100% - 120px);
-    }
-
-    .stickyCart__addToCart button{
-        width: 100%; 
-        font-size: 16px; 
-        padding: 0 20px;
-    }
-}
 
 @media only screen and (max-width: 768px){
     .main-product .product__cart-functions{
@@ -266,4 +255,39 @@ sticky-add-to-cart product-quantity input[type="number"]{
 .stickCart__metacontent__item svg{
     width: 10px;
     margin-right: 5px;
+}
+
+
+/* Styles for quantity box of sticky cart bar on mobile */
+@media only screen and (max-width: 768px){
+    sticky-add-to-cart  product-quantity{
+        height: 45px;
+        padding: 5px;
+        background-color: #e3e3e3;
+        display: flex;
+        align-items: center;
+        column-gap: 5px;
+    }
+    sticky-add-to-cart .product-quantity__minus, sticky-add-to-cart .product-quantity__plus{
+        border-radius: initial; 
+        border: none; 
+    }
+
+    sticky-add-to-cart product-quantity input[type=number]{
+        background: #fff; 
+        border-radius: initial;
+        padding: 5px 10px;
+    }
+
+    .stickyCart__addToCart{
+        width: calc(100% - 120px);
+    }
+
+    .stickyCart__addToCart button{
+        border: none;  
+        width: 100%;
+        height: 45px;
+        font-size: 16px; 
+        padding: 0 20px;
+    }
 }

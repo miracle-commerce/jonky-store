@@ -7,6 +7,7 @@ if (window.location.pathname.includes('/products/')) {
         super();
 
         // Zoek de relevante elementen binnen de huidige context van deze custom element
+        const ProductId = this.dataset.productId;
         const qtySelector = this.querySelector('.product-quantity__selector');
         const qtyMinus = this.querySelector('.qty-minus');
         const qtyPlus = this.querySelector('.qty-plus');
@@ -16,31 +17,10 @@ if (window.location.pathname.includes('/products/')) {
         const qtyMax = qtySelector.getAttribute('max')
           ? parseInt(qtySelector.getAttribute('max'))
           : 999;
-
+        
+        
         // Pas de standaardwaarde van qtySelector aan naar 6
-        // qtySelector.value = 1;
-        qtySelector.addEventListener('change', (e)=>{
-          console.log(e);
-          if(e.detail.synced == false){
-            if(this.dataset.stickyCart == 'true'){
-              let mainQuantitySelector = document.querySelector("[data-main-product-quantity-selector]");
-              if(mainQuantitySelector){
-                mainQuantitySelector.querySelector("[name='quantity']").value = qtySelector.value;
-                mainQuantitySelector.querySelector("[name='quantity']").dispatchEvent(new CustomEvent('change', {detail:{
-                  synced: true
-                }}))
-              }
-            }else if (this.dataset.mainProductQuantitySelector == "true"){
-              let stickyCartQtySelector = document.querySelector("product-quantity[data-sticky-cart='true']");
-              if(stickyCartQtySelector){
-                stickyCartQtySelector.querySelector("[name='quantity']").value = qtySelector.value;
-                stickyCartQtySelector.querySelector("[name='quantity']").dispatchEvent(new CustomEvent('change', {detail:{
-                  synced: true
-                }}))
-              }
-            }
-          }
-        })
+        qtySelector.value = 1;
 
         if (parseInt(qtySelector.value) - 1 < qtyMin) {
           qtyMinus.classList.add('disabled');
@@ -49,33 +29,73 @@ if (window.location.pathname.includes('/products/')) {
           qtyPlus.classList.add('disabled');
         }
 
+        this.addEventListener("updateQuantityController", (e)=>{
+          const newQuantity = e.detail.quantity;
+          if(newQuantity == qtyMin){
+            qtyMinus.classList.add('disabled');
+          }else if(newQuantity > qtyMin && qtyMinus.classList.contains('disabled')){
+            qtyMinus.classList.remove('disabled');
+          }
+
+          if(newQuantity == qtyMax){
+            qtyPlus.classList.add('disabled');
+          }else if(newQuantity < qtyMax && qtyPlus.classList.contains('disabled'));
+            qtyPlus.classList.remove('disabled');
+        })
+
         qtyMinus.addEventListener('click', (e) => {
           e.preventDefault();
-          if (!qtyMinus.classList.contains('disabled')) {
-            const currentQty = parseInt(qtySelector.value);
-            if (currentQty - 1 >= qtyMin) {
-              qtySelector.value = currentQty - 1;
-              qtyPlus.classList.remove('disabled');
+          const newQty = parseInt(qtySelector.value) - 1; 
+          if(newQty >= qtyMin){
+            qtySelector.value = newQty; 
+            this.dispatchEvent(new CustomEvent("updateQuantityController", {detail: {
+              quantity: newQty
+            }}));
+
+            if(ProductId){
+              document.querySelectorAll(`product-quantity[data-product-id='${ProductId}']`).forEach((productQtyBox)=>{
+                if(ProductQuantity !== this){
+                  var SiblingProductQuantity = productQtyBox;
+                  var SiblingQtySelector = SiblingProductQuantity.querySelector(".product-quantity__selector");
+
+                  if(SiblingProductQuantity){
+                    SiblingQtySelector.value = newQty;
+                    SiblingProductQuantity.dispatchEvent(new CustomEvent("updateQuantityController", {detail: {
+                      quantity: newQty
+                    }}))
+                  }
+                }
+              })
             }
-            if (currentQty - 1 <= qtyMin) {
-              qtyMinus.classList.add('disabled');
-            }
-            qtySelector.dispatchEvent(new Event("change", { detail: {synced: false}}));
+
+            
           }
         });
 
         qtyPlus.addEventListener('click', (e) => {
           e.preventDefault();
-          if (!qtyPlus.classList.contains('disabled')) {
-            const currentQty = parseInt(qtySelector.value);
-            if (currentQty + 1 <= qtyMax) {
-              qtySelector.value = currentQty + 1;
-              qtyMinus.classList.remove('disabled');
+          const newQty = parseInt(qtySelector.value) + 1; 
+          if(newQty <= qtyMax){
+            qtySelector.value = newQty; 
+            this.dispatchEvent(new CustomEvent("updateQuantityController", {detail: {
+              quantity: newQty
+            }}));
+
+            if(ProductId){
+              document.querySelectorAll(`product-quantity[data-product-id='${ProductId}']`).forEach((productQtyBox)=>{
+                if(ProductQuantity !== this){
+                  var SiblingProductQuantity = productQtyBox;
+                  var SiblingQtySelector = SiblingProductQuantity.querySelector(".product-quantity__selector");
+
+                  if(SiblingProductQuantity){
+                    SiblingQtySelector.value = newQty;
+                    SiblingProductQuantity.dispatchEvent(new CustomEvent("updateQuantityController", {detail: {
+                      quantity: newQty
+                    }}))
+                  }
+                }
+              })
             }
-            if (currentQty + 1 >= qtyMax) {
-              qtyPlus.classList.add('disabled');
-            }
-            qtySelector.dispatchEvent(new CustomEvent("change", { detail: {synced: false}}));
           }
         });
       }

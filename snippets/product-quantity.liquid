@@ -6,11 +6,10 @@
     style="display:none"
   {% endunless %}
   data-js-product-quantity
-  data-sticky-cart="{% if is_sticky_cart %}true{% else %}false{% endif %}"
-  {% if main_product_qty_selector %}
-    data-main-product-quantity-selector="true"
+  data-parent="{{data_parent}}"
+  {% if product %}
+  data-product-id="{{product.id}}"
   {% endif %}
-  data-synced="false"
 >
   <button
     class="product-quantity__minus qty-minus no-js-hidden"
