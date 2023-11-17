@@ -274,7 +274,6 @@ sticky-add-to-cart product-quantity input[type="number"]{
     }
 
     sticky-add-to-cart product-quantity input[type=number]{
-        background: #fff; 
         border-radius: initial;
         padding: 5px 10px;
     }

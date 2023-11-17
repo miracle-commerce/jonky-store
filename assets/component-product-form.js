@@ -518,7 +518,6 @@ if ( typeof ProductForm !== 'function' ) {
 		onSubmitHandler(e) {	
 
 			e.preventDefault();
-			console.log(e.detail);
 			const submitButton = this.querySelector('[type="submit"]');
 			submitButton.classList.add('working');
 			const stickySubmitButton = document.querySelector('[data-sticky-add-cart]');
